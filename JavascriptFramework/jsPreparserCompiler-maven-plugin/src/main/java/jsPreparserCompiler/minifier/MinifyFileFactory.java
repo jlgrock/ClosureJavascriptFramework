@@ -1,12 +1,12 @@
-package namespaceclosure.minifier;
+package jsPreparserCompiler.minifier;
 
 import java.io.File;
 import java.io.IOException;
 
-import namespaceclosure.minifier.google.GoogleEnumConverter;
-import namespaceclosure.minifier.google.GoogleMinifier;
-import namespaceclosure.minifier.google.calcdeps.CalcDepsOptions;
-import namespaceclosure.minifier.google.calcdeps.DiscoverGoogleBase;
+import jsPreparserCompiler.minifier.google.GoogleEnumConverter;
+import jsPreparserCompiler.minifier.google.GoogleMinifier;
+import jsPreparserCompiler.minifier.google.calcdeps.CalcDepsOptions;
+import jsPreparserCompiler.minifier.google.calcdeps.DiscoverGoogleBase;
 
 import org.apache.maven.plugin.logging.SystemStreamLog;
 

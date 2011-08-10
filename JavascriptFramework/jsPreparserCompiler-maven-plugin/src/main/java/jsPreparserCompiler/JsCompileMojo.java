@@ -1,4 +1,4 @@
-package namespaceclosure;
+package jsPreparserCompiler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import namespaceclosure.framework.DependencyObjects;
-import namespaceclosure.framework.DirectivesObject;
-import namespaceclosure.framework.InitObject;
-import namespaceclosure.framework.NamespaceObject;
-import namespaceclosure.io.ConcatenateStreams;
-import namespaceclosure.io.DirectoryCopier;
-import namespaceclosure.io.FileListBuilder;
-import namespaceclosure.mojotools.PackagingType;
+import jsPreparserCompiler.framework.DependencyObjects;
+import jsPreparserCompiler.framework.DirectivesObject;
+import jsPreparserCompiler.framework.InitObject;
+import jsPreparserCompiler.framework.NamespaceObject;
+import jsPreparserCompiler.io.ConcatenateStreams;
+import jsPreparserCompiler.io.DirectoryCopier;
+import jsPreparserCompiler.io.FileListBuilder;
+import jsPreparserCompiler.mojotools.PackagingType;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;

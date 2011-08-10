@@ -1,4 +1,4 @@
-package namespaceclosure.io;
+package jsPreparserCompiler.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

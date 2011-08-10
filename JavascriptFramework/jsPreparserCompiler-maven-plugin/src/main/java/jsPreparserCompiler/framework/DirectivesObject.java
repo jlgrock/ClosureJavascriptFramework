@@ -1,4 +1,4 @@
-package namespaceclosure.framework;
+package jsPreparserCompiler.framework;
 
 import java.io.BufferedReader;
 import java.io.File;

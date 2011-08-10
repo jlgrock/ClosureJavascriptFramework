@@ -1,11 +1,11 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import namespaceclosure.io.JSDirectoryWalker;
+import jsPreparserCompiler.io.JSDirectoryWalker;
 
 public class DiscoverGoogleBase {
 	public static File discover(File dir) throws IOException {

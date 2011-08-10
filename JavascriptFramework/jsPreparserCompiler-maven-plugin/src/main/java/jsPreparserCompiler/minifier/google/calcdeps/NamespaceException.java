@@ -1,4 +1,4 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 public class NamespaceException extends Exception {
 

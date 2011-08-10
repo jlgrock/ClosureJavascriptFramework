@@ -1,11 +1,11 @@
-package namespaceclosure;
+package jsPreparserCompiler;
 
 import java.io.IOException;
 import java.util.zip.ZipException;
 
-import namespaceclosure.mojotools.ArtifactExtractor;
-import namespaceclosure.mojotools.PackagingType;
-import namespaceclosure.mojotools.ScopeType;
+import jsPreparserCompiler.mojotools.ArtifactExtractor;
+import jsPreparserCompiler.mojotools.PackagingType;
+import jsPreparserCompiler.mojotools.ScopeType;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

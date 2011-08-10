@@ -1,11 +1,11 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 import java.io.File;
 import java.io.IOException;
 
+import jsPreparserCompiler.io.RelativePath;
 import junit.framework.Assert;
 
-import namespaceclosure.io.RelativePath;
 
 import org.junit.Before;
 import org.junit.Test;

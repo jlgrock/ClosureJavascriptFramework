@@ -1,4 +1,4 @@
-package namespaceclosure.io;
+package jsPreparserCompiler.io;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -6,7 +6,8 @@ import java.io.FilenameFilter;
 import java.util.Collection;
 import java.util.HashSet;
 
-import namespaceclosure.minifier.google.calcdeps.DirectoryWalkResult;
+import jsPreparserCompiler.minifier.google.calcdeps.DirectoryWalkResult;
+
 
 import org.mockito.Mockito;
 

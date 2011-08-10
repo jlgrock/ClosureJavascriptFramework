@@ -1,4 +1,4 @@
-package namespaceclosure.io;
+package jsPreparserCompiler.io;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import namespaceclosure.minifier.google.calcdeps.DirectoryWalkResult;
+import jsPreparserCompiler.minifier.google.calcdeps.DirectoryWalkResult;
 
 import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.filefilter.FileFilterUtils;

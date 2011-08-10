@@ -1,4 +1,4 @@
-package namespaceclosure.mojotools;
+package jsPreparserCompiler.mojotools;
 
 import java.util.HashMap;
 import java.util.Map;

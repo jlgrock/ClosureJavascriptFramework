@@ -1,12 +1,12 @@
-package namespaceclosure.io;
+package jsPreparserCompiler.io;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import junit.framework.Assert;
-import namespaceclosure.minifier.google.calcdeps.DirectoryWalkResult;
+import jsPreparserCompiler.io.JSDirectoryWalker;
+import jsPreparserCompiler.minifier.google.calcdeps.DirectoryWalkResult;
 
 import org.junit.Before;
 import org.junit.Test;

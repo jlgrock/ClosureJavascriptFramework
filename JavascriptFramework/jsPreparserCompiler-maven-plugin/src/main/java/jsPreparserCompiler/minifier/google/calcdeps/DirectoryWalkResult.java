@@ -1,4 +1,4 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 import java.io.File;
 import java.util.HashSet;

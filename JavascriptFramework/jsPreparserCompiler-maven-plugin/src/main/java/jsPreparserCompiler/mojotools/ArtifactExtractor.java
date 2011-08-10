@@ -1,4 +1,4 @@
-package namespaceclosure.mojotools;
+package jsPreparserCompiler.mojotools;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

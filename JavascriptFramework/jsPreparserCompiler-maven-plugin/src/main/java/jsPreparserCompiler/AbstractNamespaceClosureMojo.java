@@ -1,8 +1,8 @@
-package namespaceclosure;
+package jsPreparserCompiler;
 
 import java.io.File;
 
-import namespaceclosure.mojotools.PackagingType;
+import jsPreparserCompiler.mojotools.PackagingType;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

@@ -1,9 +1,9 @@
-package namespaceclosure.minifier.google;
+package jsPreparserCompiler.minifier.google;
 
-import namespaceclosure.minifier.MinificationException;
-import namespaceclosure.minifier.MinifyFramework;
-import namespaceclosure.minifier.google.calcdeps.CalcDeps;
-import namespaceclosure.minifier.google.calcdeps.CalcDepsOptions;
+import jsPreparserCompiler.minifier.MinificationException;
+import jsPreparserCompiler.minifier.MinifyFramework;
+import jsPreparserCompiler.minifier.google.calcdeps.CalcDeps;
+import jsPreparserCompiler.minifier.google.calcdeps.CalcDepsOptions;
 
 public class GoogleMinifier implements MinifyFramework {
 	final CalcDepsOptions calcDepsOptions;

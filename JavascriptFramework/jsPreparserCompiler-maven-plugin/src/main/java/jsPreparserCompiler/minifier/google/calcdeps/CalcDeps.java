@@ -1,4 +1,4 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import namespaceclosure.io.JSDirectoryWalker;
+import jsPreparserCompiler.io.JSDirectoryWalker;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Location;

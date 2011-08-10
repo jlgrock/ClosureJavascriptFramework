@@ -1,4 +1,4 @@
-package namespaceclosure.minifier;
+package jsPreparserCompiler.minifier;
 
 import java.io.File;
 

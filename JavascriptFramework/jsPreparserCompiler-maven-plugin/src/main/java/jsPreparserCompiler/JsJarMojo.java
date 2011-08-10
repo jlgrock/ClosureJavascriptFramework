@@ -1,8 +1,8 @@
-package namespaceclosure;
+package jsPreparserCompiler;
 
 import java.io.File;
 
-import namespaceclosure.utils.JsJarArchiver;
+import jsPreparserCompiler.utils.JsJarArchiver;
 
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.plugin.MojoExecutionException;

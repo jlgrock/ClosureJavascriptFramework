@@ -1,4 +1,4 @@
-package namespaceclosure.minifier;
+package jsPreparserCompiler.minifier;
 
 import java.util.HashMap;
 import java.util.Map;

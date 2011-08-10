@@ -1,4 +1,4 @@
-package namespaceclosure.io;
+package jsPreparserCompiler.io;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import namespaceclosure.io.JSDirectoryWalker;
-import namespaceclosure.minifier.google.GoogleMinificationType;
+import jsPreparserCompiler.io.JSDirectoryWalker;
+import jsPreparserCompiler.minifier.google.GoogleMinificationType;
 
 import org.apache.maven.plugin.logging.Log;
 

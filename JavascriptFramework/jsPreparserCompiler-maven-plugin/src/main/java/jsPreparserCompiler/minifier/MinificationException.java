@@ -1,4 +1,4 @@
-package namespaceclosure.minifier;
+package jsPreparserCompiler.minifier;
 
 public class MinificationException extends Exception {
 	private static final long serialVersionUID = -1949031695912114181L;

@@ -1,4 +1,4 @@
-package namespaceclosure.minifier.google.calcdeps;
+package jsPreparserCompiler.minifier.google.calcdeps;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import namespaceclosure.io.RelativePath;
+import jsPreparserCompiler.io.RelativePath;
 
 public class DependencyInfo {
 	private File file;

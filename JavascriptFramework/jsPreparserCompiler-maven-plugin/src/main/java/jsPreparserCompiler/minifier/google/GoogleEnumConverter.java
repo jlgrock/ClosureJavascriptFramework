@@ -1,7 +1,7 @@
-package namespaceclosure.minifier.google;
+package jsPreparserCompiler.minifier.google;
 
-import namespaceclosure.minifier.MinificationException;
-import namespaceclosure.minifier.MinificationType;
+import jsPreparserCompiler.minifier.MinificationException;
+import jsPreparserCompiler.minifier.MinificationType;
 
 
 public class GoogleEnumConverter {

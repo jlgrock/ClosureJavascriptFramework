@@ -1,4 +1,4 @@
-package namespaceclosure.minifier;
+package jsPreparserCompiler.minifier;
 
 public class NoMinifier implements MinifyFramework {
 

@@ -1,14 +1,14 @@
-package namespaceclosure;
+package jsPreparserCompiler;
 
 import java.io.IOException;
 import java.util.List;
 
-import namespaceclosure.io.DirectoryCopier;
-import namespaceclosure.minifier.MinificationException;
-import namespaceclosure.minifier.MinificationOptions;
-import namespaceclosure.minifier.MinificationType;
-import namespaceclosure.minifier.MinifyFileFactory;
-import namespaceclosure.minifier.MinifyFramework;
+import jsPreparserCompiler.io.DirectoryCopier;
+import jsPreparserCompiler.minifier.MinificationException;
+import jsPreparserCompiler.minifier.MinificationOptions;
+import jsPreparserCompiler.minifier.MinificationType;
+import jsPreparserCompiler.minifier.MinifyFileFactory;
+import jsPreparserCompiler.minifier.MinifyFramework;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

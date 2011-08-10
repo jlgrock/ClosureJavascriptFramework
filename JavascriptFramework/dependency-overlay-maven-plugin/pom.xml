@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mojo.jsframework</groupId>
+  <artifactId>dependency-overlay-plugin</artifactId>
+  <version>1.0</version>
+  <packaging>maven-plugin</packaging>
+
+	<dependencies>
+		<!-- Mojo Dependencies -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		
+		<!-- Commons IO -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0</version>
+		</dependency>
+	
+		<!-- Java Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>deployRelease</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<configuration>
+							<archive>
+								<addMavenDescriptor>false</addMavenDescriptor>
+							</archive>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<repository>
+					<id>pfi releases</id>
+					<name>pfi nexus</name>
+					<url>http://zeus/nexus/content/repositories/PFI_Releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>deploySnapshot</id>
+			<distributionManagement>
+				<repository>
+					<id>pfi snapshots</id>
+					<name>pfi nexus</name>
+					<url>http://zeus/nexus/content/repositories/PFI_Snapshots/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+	
+	<!-- The main repository.  If the library is not in here, it should be added (using proxy caching) -->
+	<repositories>
+		<repository>
+			<id>pfi</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>pfi</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
+</project>
