@@ -1,0 +1,36 @@
+<component-set>
+	<components>
+		<component>
+			<role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+			<role-hint>jsar</role-hint>
+			<implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+			<configuration>
+				<phases>
+					<generate-sources></generate-sources>
+					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+					<compile>org.mojo.javascript-framework:jsdependency-maven-plugin:js-dependency,org.mojo.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors</compile>
+					<test-compile>org.mojo.javascript-framework:jspreprocessor-maven-plugin:test-preprocessors</test-compile>
+					<test></test>
+					<process-classes>org.mojo.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
+					<package>org.mojo.javascript-framework:jsar-maven-plugin:jsar</package>
+					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
+					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+				</phases>
+			</configuration>
+		</component>
+		<component>
+			<role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+			<role-hint>jsar</role-hint>
+			<implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+			<configuration>
+				<!--the extension used by Maven in the repository-->
+				<extension>jsar</extension>
+				<!--the type used when specifying dependencies etc.-->
+				<type>jsar</type>
+				<!--the packaging used when declaring an implementation of 
+					  the packaging-->
+				<packaging>jsar</packaging>
+			</configuration>
+		</component>
+	</components>
+</component-set>
