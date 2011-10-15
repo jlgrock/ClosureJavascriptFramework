@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.mojo.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<artifactId>jsdependency-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -21,16 +21,33 @@
 		<dependency>
 			<groupId>org.mojo.javascript-framework</groupId>
 			<artifactId>maven-utils</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 
-		<!-- Java Testing -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
+	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
+	by the CM to the repository -->
+	<repositories>
+		<repository>
+			<id>local</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>local</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<scm>
+		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/jsdependency-maven-plugin</connection>
+		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/jsdependency-maven-plugin</developerConnection>
+		<url>https://github.com/jlgrock/JavascriptFramework</url>
+	</scm>
 </project>

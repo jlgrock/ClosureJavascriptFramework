@@ -1,17 +1,14 @@
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.mojo.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>maven-utils</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	
+
 	<dependencies>
-		
 		<!-- Mojo Dependencies -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -23,12 +20,7 @@
 			<artifactId>maven-project</artifactId>
 			<version>2.2.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-jar-plugin</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-		
+
 		<!-- Commons IO -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -40,14 +32,14 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+
 		<!-- Log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.8</version>
 		</dependency>
-		
+
 		<!-- Java Testing -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -57,4 +49,51 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>deployRelease</id>
+			<distributionManagement>
+				<repository>
+					<id>local releases</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>deploySnapshot</id>
+			<distributionManagement>
+				<repository>
+					<id>local snapshots</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/snapshots/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
+	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
+	by the CM to the repository -->
+	<repositories>
+		<repository>
+			<id>local</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>local</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<scm>
+		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/maven-utils</connection>
+		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/maven-utils</developerConnection>
+		<url>https://github.com/jlgrock/JavascriptFramework</url>
+	</scm>
 </project>

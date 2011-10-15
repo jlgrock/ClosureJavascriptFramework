@@ -3,6 +3,7 @@ package org.mojo.javascriptframework.closurecompiler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -135,6 +136,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		List<JSSourceFile> internalJSSourceFiles = extractInternalFiles();
 		List<JSSourceFile> externalJSSourceFiles = extractExternalFiles();
 		
+		for (JSSourceFile jsf: internalJSSourceFiles) {
+			logger.info("source files: " + jsf.getOriginalPath());
+		}
 		Result result = compiler.compile(externalJSSourceFiles, internalJSSourceFiles, compilerOptions);
 
 		listErrors(result);
@@ -150,14 +154,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		Files.write(compiler.toSource(), compiledFile, Charsets.UTF_8);
 	}
 	
-	private void createDepsJS(Set<File> combinedInternal) throws MojoExecutionException, IOException {
+	private List<File> createDepsJS(Set<File> src, Set<File> combinedInternal) throws MojoExecutionException, IOException {
 		File baseLocation = new File(closureLibraryLocation.getAbsoluteFile() + File.separator + "closure" 
 				+ File.separator + "goog" + File.separator + "base.js");
 		if (!baseLocation.exists()) {
 			throw new MojoExecutionException("Could not locate \"base.js\" at location \"" 
 					+ baseLocation.getParentFile().getAbsolutePath() + "\"");
 		}
-		CalcDeps.executeCalcDeps(baseLocation, combinedInternal, generatedDepsJS);
+		List<File> sortedDeps = CalcDeps.executeCalcDeps(baseLocation, src, combinedInternal, generatedDepsJS);
+		return sortedDeps;
 	}
 
 	private void listErrors(Result result) {
@@ -182,17 +187,19 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		
 		HashSet<File> combinedInternal = new HashSet<File>();
 		
-		JSSourceFile generatedBaseJSSrcFile = JSSourceFile.fromFile(generatedDepsJS);
-
 		combinedInternal.addAll(listSourceFiles);
 		combinedInternal.addAll(internalSourceFiles);
-		//combinedInternal.addAll(closureLibFiles);
+		combinedInternal.addAll(closureLibFiles);
 		
-		createDepsJS(combinedInternal);
+		List<File> sortedDeps = createDepsJS(listSourceFiles, combinedInternal);
+		if (!generatedDepsJS.exists()) {
+			logger.error("The generated dependency does not exist.  This may cause dependency order not to resolve");
+		}
+		JSSourceFile generatedDepsJSSrcFile = JSSourceFile.fromFile(generatedDepsJS);
 		
 		ArrayList<JSSourceFile> combinedJsInternal = new ArrayList<JSSourceFile>();
-		combinedJsInternal.add(generatedBaseJSSrcFile);
-		combinedJsInternal.addAll(convertToJSSourceFiles(combinedInternal));
+		combinedJsInternal.add(generatedDepsJSSrcFile);
+		combinedJsInternal.addAll(convertToJSSourceFiles(sortedDeps));
 		
 		return combinedJsInternal;
 	}
@@ -204,7 +211,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		return externalJSSourceFiles;
 	}
 	
-	private List<JSSourceFile> convertToJSSourceFiles(final Set<File> jsFiles) {
+	private List<JSSourceFile> convertToJSSourceFiles(final Collection<File> jsFiles) {
 		List<JSSourceFile> jsSourceFiles = new ArrayList<JSSourceFile>();
 		for (File f : jsFiles) {
 			jsSourceFiles.add(JSSourceFile.fromFile(f));

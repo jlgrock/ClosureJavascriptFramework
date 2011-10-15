@@ -1,43 +1,41 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-	<groupId>org.mojo.javascript-framework</groupId>
-	<artifactId>maven-javascript-framework-plugins</artifactId>
-	<version>1.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>closure-compiler-maven-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>maven-plugin</packaging>
-  
-  <dependencies>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.mojo.javascript-framework</groupId>
+		<artifactId>maven-javascript-framework-plugins</artifactId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>closure-compiler-maven-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+
+	<dependencies>
 		<!-- Mojo Dependencies -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+
 		<!-- Google minification/compiler -->
 		<dependency>
 			<groupId>com.google.javascript</groupId>
 			<artifactId>closure-compiler</artifactId>
-			<version>r1216</version>
+			<version>r1459</version>
 		</dependency>
-		
+
 		<!-- Apache ant library -->
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
 			<version>1.8.2</version>
 		</dependency>
-		
+
 		<!-- Maven Framework Utilities -->
 		<dependency>
 			<groupId>org.mojo.javascript-framework</groupId>
 			<artifactId>maven-utils</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 
 		<!-- Java Testing -->
@@ -47,9 +45,9 @@
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -61,12 +59,35 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deployRelease</id>
+			<distributionManagement>
+				<repository>
+					<id>local releases</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>deploySnapshot</id>
+			<distributionManagement>
+				<repository>
+					<id>local snapshots</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/snapshots/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 	
-	<!-- This is currently private.  Repo will be changed at a later date -->
-	<!-- The main repository.  If the library is not in here, it should be added (using proxy caching) -->
+	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
+	by the CM to the repository -->
 	<repositories>
 		<repository>
-			<id>pfi</id>
+			<id>local</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
 			<releases><enabled>true</enabled></releases>
 			<snapshots><enabled>true</enabled></snapshots>
@@ -74,10 +95,16 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>pfi</id>
+			<id>local</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
 			<releases><enabled>true</enabled></releases>
 			<snapshots><enabled>true</enabled></snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
+	<scm>
+		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/closure-compiler-maven-plugin</connection>
+		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/closure-compiler-maven-plugin</developerConnection>
+		<url>https://github.com/jlgrock/JavascriptFramework</url>
+	</scm>
 </project>

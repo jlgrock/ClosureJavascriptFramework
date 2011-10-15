@@ -1,19 +1,61 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.mojo.javascript-framework</groupId>
-  <artifactId>maven-javascript-framework-plugins</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  
-  <modules>
-	<module>maven-utils</module>
-	<module>jspreprocessor-maven-plugin</module>
-	<module>source-archive-maven-plugin</module>
-  	<module>source-overlay-maven-plugin</module>
-  	<module>jsdependency-maven-plugin</module>
-  	<module>jsar-maven-plugin</module>
-  	<module>closure-compiler-maven-plugin</module>
-  	<!--module>jsdoc-maven-plugin</module-->
-  	<!--module>jsPreparserCompiler-maven-plugin</module-->
-  </modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.mojo.javascript-framework</groupId>
+	<artifactId>maven-javascript-framework-plugins</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>maven-utils</module>
+		<module>jspreprocessor-maven-plugin</module>
+		<module>source-archive-maven-plugin</module>
+		<module>source-overlay-maven-plugin</module>
+		<module>jsdependency-maven-plugin</module>
+		<module>jsar-maven-plugin</module>
+		<module>closure-compiler-maven-plugin</module>
+	</modules>
+
+	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
+	by the CM to the repository -->
+	<repositories>
+		<repository>
+			<id>local</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>local</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	<profiles>
+		<profile>
+			<id>deployRelease</id>
+			<distributionManagement>
+				<repository>
+					<id>local releases</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>deploySnapshot</id>
+			<distributionManagement>
+				<repository>
+					<id>local snapshots</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/snapshots/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
 </project>

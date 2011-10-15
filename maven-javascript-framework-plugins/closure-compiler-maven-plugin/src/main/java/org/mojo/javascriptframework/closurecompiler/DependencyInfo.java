@@ -10,6 +10,7 @@ import org.mojo.javascriptframework.mavenutils.pathing.RelativePath;
 
 
 public class DependencyInfo implements Comparable<DependencyInfo> {
+	//private static Logger logger = Logger.getLogger( DependencyInfo.class );
 	private File file;
 	private Set<String> provides;
 	private Set<String> requires;
@@ -102,53 +103,20 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		result = prime * result
-				+ ((provides == null) ? 0 : provides.hashCode());
-		result = prime * result
-				+ ((requires == null) ? 0 : requires.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DependencyInfo other = (DependencyInfo) obj;
-		if (file == null) {
-			if (other.file != null)
-				return false;
-		} else if (!file.equals(other.file))
-			return false;
-		if (provides == null) {
-			if (other.provides != null)
-				return false;
-		} else if (!provides.equals(other.provides))
-			return false;
-		if (requires == null) {
-			if (other.requires != null)
-				return false;
-		} else if (!requires.equals(other.requires))
-			return false;
-		return true;
-	}
-
-	@Override
 	public int compareTo(DependencyInfo o) {
 		//if you require something of me, you are less than me
-		for (String provide:this.getProvides()) {
-			if (o.getRequires().contains(provide)) {
-				return -1;
+		int returnVal = 0;
+		for (String require:this.getRequires()) {
+			if (o.getProvides().contains(require)) {
+				returnVal = -1;
 			}
 		}
-		return 0;
+		for (String provide:this.getProvides()) {
+			if (o.getRequires().contains(provide)) {
+				returnVal = 1;
+			}
+		}
+		return returnVal;
 	}
 
 }
