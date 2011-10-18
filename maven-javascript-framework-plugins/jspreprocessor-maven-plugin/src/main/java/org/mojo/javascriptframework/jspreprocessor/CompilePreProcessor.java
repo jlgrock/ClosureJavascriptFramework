@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * eventually, this should do a bunch of things, but right now, it will just copy from
- * src/main/javascript to /target/javascript-generated
+ * src/main/javascript to /target/javascript-generated.
  *
  * @author <a href="mailto:grantjl@umich.edu">Justin Grant</a>
  * @requiresProject
@@ -23,12 +23,12 @@ public class CompilePreProcessor extends AbstractPreProcessorFramework {
 	private File destinationDirectory;
 
 	@Override
-	public File getSourceDirectory() {
+	public final File getSourceDirectory() {
 		return sourceDirectory;
 	}
 	
 	@Override
-	public File getDestinationDirectory() {
+	public final File getDestinationDirectory() {
 		return destinationDirectory;
 	}
 }

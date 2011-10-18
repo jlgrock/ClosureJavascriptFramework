@@ -14,6 +14,9 @@ import org.apache.maven.plugin.logging.Log;
  */
 public class MojoLogAppender extends AppenderSkeleton {
 
+	/**
+	 * The log that will be used by the entire maven project.
+	 */
 	private static Log mavenLog;
 
 	/**
@@ -31,14 +34,13 @@ public class MojoLogAppender extends AppenderSkeleton {
 	 * preferably in a finally block so that it will always output to the console,
 	 * regardless if exceptions have been thrown.
 	 * 
-	 * @param mojo The mojo to stop logging within
 	 */
 	public static void endLogging() {
 		mavenLog = null;
 	}
 
 	@Override
-	protected void append(final LoggingEvent event) {
+	protected final void append(final LoggingEvent event) {
 		if (mavenLog == null) {
 			return;
 		}
@@ -54,41 +56,45 @@ public class MojoLogAppender extends AppenderSkeleton {
 		}
 
 		if (Level.DEBUG.equals(level)) {
-			if (throwable != null)
+			if (throwable != null) {
 				mavenLog.debug(text, throwable);
-			else
+			} else {
 				mavenLog.debug(text);
+			}
 		} else if (Level.INFO.equals(level)) {
-			if (throwable != null)
+			if (throwable != null) {
 				mavenLog.info(text, throwable);
-			else
+			} else {
 				mavenLog.info(text);
+			}
 		} else if (Level.WARN.equals(level)) {
-			if (throwable != null)
+			if (throwable != null) {
 				mavenLog.warn(text, throwable);
-			else
+			} else {
 				mavenLog.warn(text);
+			}
 		} else if (Level.ERROR.equals(level) || Level.FATAL.equals(level)) {
-			if (throwable != null)
+			if (throwable != null) {
 				mavenLog.error(text, throwable);
-			else
+			} else {
 				mavenLog.error(text);
+			}
 		} else {
-			if (throwable != null)
+			if (throwable != null) {
 				mavenLog.error(text, throwable);
-			else
+			} else {
 				mavenLog.error(text);
+			}
 		}
 	}
 
 	@Override
-	public void close() {
+	public final void close() {
 		mavenLog = null;
 	}
 
 	@Override
-	public boolean requiresLayout() {
+	public final boolean requiresLayout() {
 		return true;
 	}
-
 }

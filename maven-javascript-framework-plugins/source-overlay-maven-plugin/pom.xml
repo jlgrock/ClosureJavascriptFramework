@@ -33,6 +33,61 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<!-- Build Checks -->
+			
+			
+			<!-- Site Reporting -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0-beta-2</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.7</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-surefire-report-plugin</artifactId>
+							<version>2.10</version>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>cobertura-maven-plugin</artifactId>
+							<version>2.5.1</version>
+							<configuration>
+								<check>
+									<haltOnFailure>false</haltOnFailure>
+								</check>
+								<formats>
+									<format>xml</format>
+									<format>html</format>
+								</formats>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-checkstyle-plugin</artifactId>
+							<version>2.7</version>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<profile>
 			<id>deployRelease</id>
@@ -55,26 +110,34 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
-	
-	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
-	by the CM to the repository -->
+
+	<!-- The main repository. If the library is not in this repository, it should 
+		be added (using proxy caching) by the CM to the repository -->
 	<repositories>
 		<repository>
 			<id>local</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>local</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<scm>
 		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/source-overlay-maven-plugin</connection>
 		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/source-overlay-maven-plugin</developerConnection>

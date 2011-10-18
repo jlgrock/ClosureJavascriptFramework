@@ -2,7 +2,6 @@ package org.mojo.javascriptframework.jsdependency;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.zip.ZipException;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
@@ -14,7 +13,6 @@ import org.mojo.javascriptframework.mavenutils.io.ResourceIO;
 import org.mojo.javascriptframework.mavenutils.io.ZipUtils;
 import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
 import org.mojo.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor;
-import org.mojo.javascriptframework.mavenutils.mavenobjects.ClassifierType;
 import org.mojo.javascriptframework.mavenutils.mavenobjects.PackagingType;
 import org.mojo.javascriptframework.mavenutils.mavenobjects.ScopeType;
 
@@ -26,7 +24,10 @@ import org.mojo.javascriptframework.mavenutils.mavenobjects.ScopeType;
  * @requiresDependencyResolution runtime
  */
 public class JsarDependency extends AbstractMojo {
-	private static final Logger logger = Logger.getLogger( JsarDependency.class );
+	/**
+	 * The Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger( JsarDependency.class );
 	
 	/**
 	 * The default directory to extract dependency files to.  This will do anything with a classifier that
@@ -34,7 +35,7 @@ public class JsarDependency extends AbstractMojo {
 	 * 
 	 * @parameter default-value="${project.build.directory}${file.separator}javascriptFramework${file.separator}dependencies"
 	 */
-	protected File outputDirectory;
+	private File outputDirectory;
 	
 	/**
 	 * The default directory to extract dependency files marked with classifier of "external".  
@@ -42,7 +43,7 @@ public class JsarDependency extends AbstractMojo {
 	 * 
 	 * @parameter default-value="${project.build.directory}${file.separator}javascriptFramework${file.separator}externalDependencies"
 	 */
-	protected File externalDirectory;
+	private File externalDirectory;
 	
 	/**
 	 * The default directory to extract dependency files marked with classifier of "external".  
@@ -50,7 +51,7 @@ public class JsarDependency extends AbstractMojo {
 	 * 
 	 * @parameter default-value="${project.build.directory}${file.separator}javascriptFramework"
 	 */
-	protected File closureLibExtractDirectory;
+	private File closureLibExtractDirectory;
 	
 	/**
      * The Maven Project.
@@ -61,10 +62,11 @@ public class JsarDependency extends AbstractMojo {
      */
     private MavenProject project;
     
-	public void execute() throws MojoExecutionException, MojoFailureException {
+    @Override
+    public final void execute() throws MojoExecutionException, MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
-			logger.info("Creating output directory at location \"" + outputDirectory.getAbsolutePath() + "\".");
+			LOGGER.info("Creating output directory at location \"" + outputDirectory.getAbsolutePath() + "\".");
 			DirectoryIO.createDir(outputDirectory.getParentFile());
 			
 			extractDependencies();
@@ -76,21 +78,25 @@ public class JsarDependency extends AbstractMojo {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void extractDependencies() throws ZipException, IOException {
+	/**
+	 * Extract the dependencies from the jsar.
+	 * 
+	 * @throws IOException if there is a problem with the extraction
+	 */
+	private void extractDependencies() throws IOException {
+		@SuppressWarnings("unchecked")
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(project.getArtifacts());
 		
 		//extract internal dependencies
-		logger.info("Extracting internal jsar artifacts to location \"" + outputDirectory.getAbsolutePath() + "\"");
-		extractJSArtifacts.extract(PackagingType.JSAR, ScopeType.COMPILE, ClassifierType.INTERNAL, outputDirectory);
+		LOGGER.info("Extracting internal jsar artifacts to location \"" + outputDirectory.getAbsolutePath() + "\"");
+		extractJSArtifacts.extract(PackagingType.JSAR, ScopeType.COMPILE, outputDirectory);
 
 		//extract external dependencies
-		//TODO make this get the external dependencies somehow
-		//logger.info("Extracting external jsar artifacts to location \"" + externalDirectory.getAbsolutePath() + "\"");
-		//extractJSArtifacts.extract(PackagingType.JSAR, ScopeType.COMPILE, ClassifierType.EXTERNAL, externalDirectory);
+		LOGGER.info("Extracting external fjsar artifacts to location \"" + externalDirectory.getAbsolutePath() + "\"");
+		extractJSArtifacts.extract(PackagingType.JSAR, ScopeType.TEST, externalDirectory);
 		
 		//extract google dependencies (if needed)
-		logger.info("Extracting google closure library to location \"" + closureLibExtractDirectory.getAbsolutePath() + "\"");
+		LOGGER.info("Extracting google closure library to location \"" + closureLibExtractDirectory.getAbsolutePath() + "\"");
 		ZipUtils.unzip(ResourceIO.getResourceAsZipStream("closure-library.zip"), closureLibExtractDirectory);
 	}
 

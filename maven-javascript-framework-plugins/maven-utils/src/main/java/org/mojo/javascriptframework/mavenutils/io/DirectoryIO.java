@@ -1,16 +1,3 @@
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.mojo.javascriptframework.mavenutils.io;
 
 import java.io.File;
@@ -23,22 +10,28 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.log4j.Logger;
 
-public class DirectoryIO {
-
-	private static final Logger logger = Logger.getLogger(DirectoryIO.class);
+/**
+ * A general usage class for doing Directory manipulations.
+ */
+public final class DirectoryIO {
 
 	/**
-	 * Copy a directory, including only those that are visible
+	 * The Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(DirectoryIO.class);;
+	
+	/**
+	 * Copy a directory, including only those that are visible.
 	 * 
 	 * @param srcDir
 	 *            the directory to copy from
 	 * @param destDir
 	 *            the directory to copy to
-	 * @throws IOException
+	 * @throws IOException if there are any problems copying the directory 
 	 */
-	public static void copyDirectory(File srcDir, File destDir)
+	public static void copyDirectory(final File srcDir, final File destDir)
 			throws IOException {
-		logger.debug("Begin copy of source directory \""
+		LOGGER.debug("Begin copy of source directory \""
 				+ srcDir.getAbsolutePath() + "\" to destination \""
 				+ destDir.getAbsoluteFile() + "\".");
 		if (!srcDir.exists()) {
@@ -46,28 +39,42 @@ public class DirectoryIO {
 		}
 		IOFileFilter filter = FileFileFilter.FILE;
 		filter = FileFilterUtils.or(DirectoryFileFilter.DIRECTORY, filter);
-		//filter = FileFilterUtils.and(HiddenFileFilter.VISIBLE, filter);
 		FileUtils.copyDirectory(srcDir, destDir, filter);
 	}
 
 	/**
-	 * Will do a recursive deletion of all files and folders based off of a
-	 * given directory
+	 * Create a directory.  If the directory doesn't exist, create all 
+	 * directories until you reach that directory.
 	 * 
-	 * @param dir
-	 *            The directory to start the deleting
-	 * @throws IOException
+	 * @param dir the directory that you want to create.
+	 * @throws IOException If the file exists or the system is unable to make the directories
 	 */
-	static public void recursivelyDeleteDirectory(File dir) throws IOException {
-		logger.debug("starting delete of directory \"" + dir.getAbsoluteFile()
+	public static void createDir(final File dir) throws IOException {
+		if(!dir.exists()) {
+			if (!dir.mkdirs()) {
+				throw new IOException("Can not create dir " + dir);
+			}
+		}
+	}
+
+	/**
+	 * Will do a recursive deletion of all files and folders based off of a
+	 * given directory.
+	 * 
+	 * @param dir The directory to start the deleting
+	 * @throws IOException If exception occurs during the actual delete or if it is not a directory 
+	 */
+	public static void recursivelyDeleteDirectory(final File dir) throws IOException {
+		LOGGER.debug("starting delete of directory \"" + dir.getAbsoluteFile()
 				+ "\".");
 		if (!dir.exists()) {
-			logger.debug("deletion of directory ignored as it does not exist.");
+			LOGGER.debug("deletion of directory ignored as it does not exist.");
 			return;
 		}
-		if (!dir.isDirectory())
+		if (!dir.isDirectory()) {
 			throw new IOException("The path \"" + dir.getAbsolutePath()
 					+ "\" is not a valid directory and cannot be deleted.");
+		}
 		if (dir.exists()) {
 			File[] files = dir.listFiles();
 			for (int i = 0; i < files.length; i++) {
@@ -86,11 +93,8 @@ public class DirectoryIO {
 		}
 	}
 
-	public static void createDir(File dir) throws IOException {
-		if(!dir.exists()) {
-			if (!dir.mkdirs()) {
-				throw new IOException("Can not create dir " + dir);
-			}
-		}
-	}
+	/**
+	 * Should not use constructor for utility class.
+	 */
+	private DirectoryIO(){}
 }

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
@@ -18,22 +17,32 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.mojo.javascriptframework.mavenutils.pathing.RelativeFile;
 
+/**
+ * A general usage class for doing zip file and zip stream manipulations.
+ */
 public class ZipUtils {
 
-	static final Logger logger = Logger.getLogger(ZipUtils.class);
+	/**
+	 * The Logger.
+	 */
+	static final Logger LOGGER = Logger.getLogger(ZipUtils.class);
 	
 	/**
-	 * Create an archive
-	 * @param inFolder
-	 * @param outFolder
-	 * @param outFile
-	 * @throws IOException
+	 * The default buffer size for reading.
 	 */
-	public void zipFolder(final File inFolder, final File destinationFile) throws IOException {
+	static final int BUFFER_SIZE = 1024;
+	/**
+	 * Zip up a directory and store it into a zip file.
+	 * 
+	 * @param inFolder the Folder to zip up
+	 * @param destinationFile the archive file that you would like to create
+	 * @throws IOException If unable to read files from the inFolder or write to the destinationFile
+	 */
+	public final void zipFolder(final File inFolder, final File destinationFile) throws IOException {
 		BufferedInputStream in = null;
-		byte[] data = new byte[1000];
+		byte[] data = new byte[BUFFER_SIZE];
 
-		logger.debug("starting compression of files in folder \"" + inFolder.getAbsolutePath() 
+		LOGGER.debug("starting compression of files in folder \"" + inFolder.getAbsolutePath() 
 				+ "\" to resulting file \"" + destinationFile + "\".");
 
 		//create the resulting folder structure
@@ -45,7 +54,7 @@ public class ZipUtils {
 		//loop through the files and add them to the archive
 		Collection<RelativeFile> files = buildFileList(inFolder);
 		for (RelativeFile file : files) {
-			in = new BufferedInputStream(new FileInputStream(file.getFile()), 1000);
+			in = new BufferedInputStream(new FileInputStream(file.getFile()), BUFFER_SIZE);
 			String relFileName;
 			if (file.getRelPath().equals("")) {
 				relFileName = file.getFile().getName();
@@ -54,7 +63,7 @@ public class ZipUtils {
 			}
 			out.putNextEntry(new ZipEntry(relFileName));
 			int count;
-			while ((count = in.read(data, 0, 1000)) != -1) {
+			while ((count = in.read(data, 0, BUFFER_SIZE)) != -1) {
 				out.write(data, 0, count);
 			}
 			out.closeEntry();
@@ -63,10 +72,23 @@ public class ZipUtils {
 		out.close();
 	}
 
+	/**
+	 * Read all files in a directory.
+	 * 
+	 * @param inFolder the directory to read from
+	 * @return the collection of files, relative to the inFolder
+	 */
 	private Collection<RelativeFile> buildFileList(final File inFolder) {
 		return readDirectory(inFolder, "");
 	}
 	
+	/**
+	 * Read all files in a directory.
+	 * 
+	 * @param inFolder the directory to read from
+	 * @param relativePath the collection of files, relative to the inFolder
+	 * @return the collection of relative files from reading the directory
+	 */
 	private Collection<RelativeFile> readDirectory(final File inFolder, final String relativePath) {
 		Collection<RelativeFile> returnCollection = new ArrayList<RelativeFile>();
 		File[] files = inFolder.listFiles();
@@ -81,12 +103,11 @@ public class ZipUtils {
 	}
 	
 	/**
-	 * Unzip all Zipfile contents to a directory
+	 * Unzip all Zipfile contents to a directory.
 	 * 
-	 * @param inputFile the stream of the zipFile to extract artifacts from
-	 * @param outputDirectory the location to put the artifacts from the zipfile
-	 * @throws IOException 
-	 * @throws ZipException 
+	 * @param zis the stream of the zipFile to extract artifacts from
+	 * @param outputDir the location to put the artifacts from the zipfile
+	 * @throws IOException if unable to read from the zip stream
 	 */
 	public static void unzip(final ZipInputStream zis, final File outputDir) throws IOException {
 		ZipEntry entry = null;
@@ -99,6 +120,13 @@ public class ZipUtils {
 		}
 	}
 
+	/**
+	 * Delete a directory and unzip to that directory.
+	 * 
+	 * @param zis the zipstream to unzip
+	 * @param outputDir the output directory to delete and then write to
+	 * @throws IOException if unable to delete the directory or unzip the file
+	 */
 	public static void deleteDirAndUnzip(final ZipInputStream zis, final File outputDir) throws IOException {
 		if (outputDir.exists()) {
 			FileUtils.deleteDirectory(outputDir);
@@ -106,7 +134,15 @@ public class ZipUtils {
 		unzip(zis, outputDir);
 	}
 	
-	private static void unzipEntry(ZipInputStream zis, ZipEntry entry, File outputDir) throws IOException {
+	/**
+	 * Unzip a single entry from a zipstream and write it to a directory.
+	 * 
+	 * @param zis the zipstream to read from
+	 * @param entry the entry to read
+	 * @param outputDir the directory to copy to
+	 * @throws IOException if unable to create a file,  write to a file, or read from a file
+	 */
+	private static void unzipEntry(final ZipInputStream zis, final ZipEntry entry, final File outputDir) throws IOException {
 
 		//create the directory for the entry
 		if (entry.isDirectory()) {

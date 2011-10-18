@@ -5,7 +5,7 @@ import org.apache.maven.project.MavenProject;
 
 /**
  * This Mojo will zip everything in the declared source directory into
- * a "sar" (Source Archive) file, which will be stored into the local
+ * a Source Archive file, which will be stored into the local
  * repository.
  * 
  * @author <a href="mailto:grantjl@umich.edu">Justin Grant</a>
@@ -16,9 +16,15 @@ import org.apache.maven.project.MavenProject;
  */
 public class ProcessedJavaScriptArchiveMojo extends AbstractArchiveMojo {
 
-    static Logger logger = Logger.getLogger(ProcessedJavaScriptArchiveMojo.class);
+	/**
+	 * The Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ProcessedJavaScriptArchiveMojo.class);
 
-	public static final String DESCRIPTOR_RESOURCE_NAME = "processed-js-assembly.xml";
+	/**
+	 * The resource to assemble with.
+	 */
+    public static final String DESCRIPTOR_RESOURCE_NAME = "processed-js-assembly.xml";
 	
     /**
      * @parameter default-value="${project}"
@@ -28,12 +34,12 @@ public class ProcessedJavaScriptArchiveMojo extends AbstractArchiveMojo {
     private MavenProject project;
 
     @Override
-    public MavenProject getProject()
-    {
+    public final MavenProject getProject() {
         return project;
     }
-
-    protected String getDescriptorResourceName() {
+    
+    @Override
+    protected final String getDescriptorResourceName() {
 		return DESCRIPTOR_RESOURCE_NAME;
 	}
 

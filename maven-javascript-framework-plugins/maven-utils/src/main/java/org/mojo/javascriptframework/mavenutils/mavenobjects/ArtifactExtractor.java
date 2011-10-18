@@ -16,37 +16,58 @@ import org.mojo.javascriptframework.mavenutils.io.ZipUtils;
 /**
  * This will extract the artifacts specified by the scope and packagingType
  * and will store these files in a directory that matches their artifact
- * coordinates followed by package information
+ * coordinates followed by package information.
  * 
- * @author jgrant
- *
  */
 public class ArtifactExtractor {
-	private static final Logger logger = Logger.getLogger( ArtifactExtractor.class );
-
-	final int BUFFER = 2048;
+	/**
+	 * The Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger( ArtifactExtractor.class );
 	
+	/**
+	 * The artifacts that need to be extracted.
+	 */
 	private final Set<Artifact> artifacts;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param artifacts the artifacts to extract
+	 */
 	public ArtifactExtractor(final Set<Artifact> artifacts) {
 		this.artifacts = artifacts;
 	}
 
-	public void extract(final PackagingType packagingType, 
-			final ScopeType scope, final ClassifierType classifierType, 
-			final File outputDirectory) throws ZipException, IOException {
-		logger.debug("unfiltered artifacts size (" + packagingType + ":" + scope + ":" + classifierType + ") : " + artifacts.size());
+	/**
+	 * The action to extract the artifacts that were set at the constructor.
+	 * 
+	 * @param packagingType what type of arhives to extract based on the packaging
+	 * @param scope what type of arhives to extract based on the scope
+	 * @param outputDirectory the directory to extract to
+	 * @throws IOException if there is a problem unzipping or copying files
+	 */
+	public final void extract(final PackagingType packagingType, 
+			final ScopeType scope, final File outputDirectory) throws IOException {
+		LOGGER.debug("unfiltered artifacts size (" + packagingType + ":" + scope + ") : " + artifacts.size());
 		
 		//filter artifacts
-		Set<Artifact> filteredArtifacts = filterArtifactList(packagingType, scope, classifierType);
-		logger.debug("filtered artifacts size (" + packagingType + "/" + scope + "): " + filteredArtifacts.size());
+		Set<Artifact> filteredArtifacts = filterArtifactList(packagingType, scope);
+		LOGGER.debug("filtered artifacts size (" + packagingType + "/" + scope + "): " + filteredArtifacts.size());
 		//unzip to directory
 		extractSet(filteredArtifacts, outputDirectory);
 	}
 	
-	private void extractSet(Set<Artifact> filteredArtifacts, final File outputDirectory) throws ZipException, IOException {
+	/**
+	 * Extract a set of artifacts.
+	 * 
+	 * @param filteredArtifacts the artifacts to extract
+	 * @param outputDirectory the directory to copy to
+	 * @throws IOException if there is a problem unzipping or copying the files
+	 */
+	private void extractSet(final Set<? extends Artifact> filteredArtifacts, final File outputDirectory) throws IOException {
 		for (Artifact artifact:filteredArtifacts) {
-			logger.debug("Processing artifact" + artifact.getArtifactId());
+			LOGGER.debug("Processing artifact" + artifact.getArtifactId());
 			File file = artifact.getFile();
 			InputStream is = new FileInputStream(file);
 			ZipInputStream zis = new ZipInputStream(is);
@@ -54,8 +75,15 @@ public class ArtifactExtractor {
 		}
 	}
 
+	/**
+	 * Filter an Artifact List.
+	 * 
+	 * @param packagingType the packaging type to filter by
+	 * @param scopeType the scope type to filter by
+	 * @return the filtered set of artifacts
+	 */
 	private Set<Artifact> filterArtifactList(final PackagingType packagingType, 
-			final ScopeType scopeType, final ClassifierType classifierType) {
+			final ScopeType scopeType) {
 		Set<Artifact> returnArtifacts = new LinkedHashSet<Artifact>();
 		for (Artifact a:artifacts) {
 			
@@ -67,12 +95,7 @@ public class ArtifactExtractor {
 			if (artifactPackagingType == null) {
 				artifactPackagingType = PackagingType.JAR;
 			}
-			ClassifierType artifactClassifierType = ClassifierType.getByName(a.getClassifier());
-			if (artifactClassifierType == null) {
-				artifactClassifierType = ClassifierType.INTERNAL;
-			}
-			if (scopeType.equals(artifactScopeType) && packagingType.equals(artifactPackagingType) 
-					&& artifactClassifierType.equals(artifactClassifierType)) {
+			if (scopeType.equals(artifactScopeType) && packagingType.equals(artifactPackagingType)) {
 				returnArtifacts.add(a);
 			}
 		}

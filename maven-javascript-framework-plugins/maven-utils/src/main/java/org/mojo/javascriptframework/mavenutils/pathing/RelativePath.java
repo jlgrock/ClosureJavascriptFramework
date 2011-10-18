@@ -6,8 +6,24 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class RelativePath {
-	public static String getRelPathFromBase(File from, File to) throws IOException {
+/**
+ * Find the relative path from one file to another.
+ */
+public final class RelativePath {
+	/**
+	 * Private Constructor for utility class.
+	 */
+	private RelativePath() {}
+	
+	/**
+	 * Will determine the relative path from one file to another.
+	 * 
+	 * @param from the file to start pathing from
+	 * @param to the file to end up at
+	 * @return the string representing the relative path
+	 * @throws IOException if there is a problem reading either of the files
+	 */
+	public static String getRelPathFromBase(final File from, final File to) throws IOException {
 		String normalizedTargetPath = FilenameUtils.normalizeNoEndSeparator(to.getCanonicalPath());
         String normalizedBasePath = FilenameUtils.normalizeNoEndSeparator(from.getCanonicalPath());
 

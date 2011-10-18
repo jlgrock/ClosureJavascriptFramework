@@ -14,23 +14,32 @@ import org.apache.log4j.Logger;
 import org.mojo.javascriptframework.mavenutils.io.readers.FilteredReader;
 
 /**
- * Simple file copy utility.
+ * A general usage class for doing File manipulations.
  */
-public class FileIO {
-	static final Logger logger = Logger.getLogger(FileIO.class);
+public final class FileIO {
+	/**
+	 * The Logger.
+	 */
+	static final Logger LOGGER = Logger.getLogger(FileIO.class);
 
 	/**
-	 * Will copy content from an inputstream to an output stream, closing the files when it has completed
+	 * Should not use constructor for utility class.
+	 */
+	private FileIO() {}
+	
+	/**
+	 * Will copy content from an inputstream to an output stream, closing the files when it has completed.
+	 * 
 	 * @param from The expected file to read in from
 	 * @param to The expected file to write to
-	 * @throws IOException
+	 * @throws IOException if there was any issues copying the resource
 	 */
 	public static void copyStream(final InputStream from, final OutputStream to) throws IOException {
-		logger.debug("copying stream...");
+		LOGGER.debug("copying stream...");
 		try {
 		    IOUtils.copy(from, to);
 		}  catch (IOException ioe) {
-			logger.error("There was a problem copying the resource.");
+			LOGGER.error("There was a problem copying the resource.");
 			throw ioe;
 		} finally {
 		    IOUtils.closeQuietly(from);
@@ -40,17 +49,18 @@ public class FileIO {
 
 	/**
 	 * Take a bunch of readers (files or otherwise) and concatenate 
-	 * their input together into one output file
+	 * their input together into one output file.
 	 * 
-	 * @param readers 
-	 * @param outputFile
-	 * @throws IOException
+	 * @param readers the readers to concatenate together
+	 * @param outputFile the output file to write to
+	 * @throws IOException if any problems occur during reading, writing, or concatenation
 	 */
-    public void concatenateStreams(Reader[] readers, File outputFile) throws IOException {
-    	if (outputFile == null)
+    public void concatenateStreams(final Reader[] readers, final File outputFile) throws IOException {
+    	if (outputFile == null) {
     		throw new IOException("outputFile is required for concatenation of files.");
+    	}
 
-    	logger.debug("Begining stream concatenation");
+    	LOGGER.debug("Begining stream concatenation");
     	List<Reader> readerList = Arrays.asList(readers);
     	FileWriter outWriter = null;
     	
@@ -78,13 +88,13 @@ public class FileIO {
     		try {
     			outWriter.close();
     		} catch(Exception e) {
-    			//Do nothing
+    			LOGGER.error("Unable to close file.  This should not matter");
     		}
     	}
     }
     
     /**
-     * Parses the extension of a file
+     * Parses the extension of a file.
      * 
      * @param file the file to parse
      * @return the extension of the file
@@ -96,7 +106,7 @@ public class FileIO {
     }
     
     /**
-     * Remove the extension from a file
+     * Remove the extension from a file.
      * 
      * @param file the file to parse
      * @return the filename with the extension removed
@@ -110,6 +120,13 @@ public class FileIO {
     	return name.substring(0, pos);
     }
     
+    /**
+     * Change the extension of a file, based off of the period extension notation.
+     * 
+     * @param file the file that you would like to change the extension of
+     * @param newExtension The extension that you would like to change it to
+     * @throws IOException If the system is unable to rename the file
+     */
     public static void changeExtension(final File file, final String newExtension) throws IOException {
     	String newFilename = removeFileExtension(file) + "." + newExtension;
     	File file2 = new File(newFilename);

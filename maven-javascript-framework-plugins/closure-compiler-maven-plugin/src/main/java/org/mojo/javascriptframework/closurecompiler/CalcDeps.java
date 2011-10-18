@@ -12,138 +12,179 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Represents a dependency that is used to build and walk a tree.  This is a direct
- * port from the google python script.
- *
+ * Represents a dependency that is used to build and walk a tree. This is a
+ * direct port from the google python script.
+ * 
  */
-public class CalcDeps {
-	private static final Logger logger = Logger.getLogger( CalcDeps.class );
-	
+public final class CalcDeps {
+
 	/**
-	 * Build a list of dependencies from a list of files.
-	 * Takes a list of files, extracts their provides and requires, and builds
-	 * out a list of dependency objects.
-	 * 
-	 * @param files a list of files to be parsed for goog.provides and goog.requires.
-	 * @throws IOException 
-	 * @returns A list of dependency objects, one for each file in the files argument.
+	 * Private Constructor for Utility Class.
 	 */
-	private static HashMap<File, DependencyInfo> buildDependenciesFromFiles(Collection<File> files) throws IOException {
+	private CalcDeps() {
+	}
+
+	/**
+	 * The Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(CalcDeps.class);
+
+	/**
+	 * Build a list of dependencies from a list of files. Takes a list of files,
+	 * extracts their provides and requires, and builds out a list of dependency
+	 * objects.
+	 * 
+	 * @param files
+	 *            a list of files to be parsed for goog.provides and
+	 *            goog.requires.
+	 * @return A list of dependency objects, one for each file in the files
+	 *          argument.
+	 * @throws IOException if there is a problem parsing the files for dependency info
+	 */
+	private static HashMap<File, DependencyInfo> buildDependenciesFromFiles(
+			final Collection<File> files) throws IOException {
 		HashMap<File, DependencyInfo> result = new HashMap<File, DependencyInfo>();
 		Set<File> searchedAlready = new HashSet<File>();
-		for (File file:files) {
+		for (File file : files) {
 			if (!searchedAlready.contains(file)) {
-				DependencyInfo dep = AnnotationFileReader.parseForDependencyInfo(file);
+				DependencyInfo dep = AnnotationFileReader
+						.parseForDependencyInfo(file);
 				result.put(file, dep);
 				searchedAlready.add(file);
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Calculates the dependencies for given inputs.
 	 * 
-	 * This method takes a list of paths (files, directories) and builds a 
+	 * This method takes a list of paths (files, directories) and builds a
 	 * searchable data structure based on the namespaces that each .js file
-	 * provides.  It then parses through each input, resolving dependencies
-	 * against this data structure.  The final output is a list of files,
+	 * provides. It then parses through each input, resolving dependencies
+	 * against this data structure. The final output is a list of files,
 	 * including the inputs, that represent all of the code that is needed to
 	 * compile the given inputs.
-	 *     
+	 * 
+	 * @param baseJs the base.js file that is in the closure library
 	 * @param paths the references (files, directories) that are used to build the
-	 * dependency hash.
-	 * @param inputs the inputs (files, directories, namespaces) that have dependencies
-	 * that need to be calculated.
-	 * @return A list of all files, including inputs, that are needed to compile the 
-	 * given inputs.
-	 * @throws MojoExecutionException 
-	 * @throws Exception if a provided input is invalid.
+	 *            dependency hash.
+	 * @param inputs the inputs (files, directories, namespaces) that have
+	 *            dependencies that need to be calculated.
+	 * @return A list of all files, including inputs, that are needed to compile
+	 *         the given inputs.
+	 * @throws IOException if there is a problem parsing the files
 	 */
-	private static List<DependencyInfo> calculateDependencies(final File base_js, final Set<File> inputs, final Set<File> paths) throws IOException {
+	private static List<DependencyInfo> calculateDependencies(
+			final File baseJs, final Set<File> inputs, final Set<File> paths)
+			throws IOException {
 		HashSet<File> temp = new HashSet<File>();
 		temp.addAll(inputs);
-		HashMap<File, DependencyInfo> input_hash = buildDependenciesFromFiles(inputs);
-		HashMap<File, DependencyInfo> search_hash = buildDependenciesFromFiles(paths);
-		logger.info("Dependencies Calculated.");
-    	
-		List<DependencyInfo> sortedDeps = slowSort(input_hash.values(), search_hash.values());
-		logger.info("Dependencies Sorted.");
-    	
-    	return sortedDeps;
+		HashMap<File, DependencyInfo> inputHash = buildDependenciesFromFiles(inputs);
+		HashMap<File, DependencyInfo> searchHash = buildDependenciesFromFiles(paths);
+		LOGGER.info("Dependencies Calculated.");
+
+		List<DependencyInfo> sortedDeps = slowSort(inputHash.values(),
+				searchHash.values());
+		LOGGER.info("Dependencies Sorted.");
+
+		return sortedDeps;
 	}
-	
+
 	/**
 	 * Print out a deps.js file from a list of source paths.
 	 * 
-	 * @param source_paths: Paths that we should generate dependency info for.
-	 * @param deps: Paths that provide dependency info. Their dependency info should
-	 * not appear in the deps file.
-	 * @param out: The output file.
-	 * @throws Exception 
-	 * @returns True on success, false if it was unable to find the base path 
-	 * to generate deps relative to.
+	 * @param sortedDeps The sorted list of dependencies
+	 * @param outputFile The output file.
+	 * @throws IOException if there is a problem writing the file
+	 * @return True on success, false if it was unable to find the base path to
+	 *          generate deps relative to.
 	 */
-	private static boolean outputDeps(final List<DependencyInfo> sortedDeps, final File outputFile) throws IOException {
+	private static boolean outputDeps(final List<DependencyInfo> sortedDeps,
+			final File outputFile) throws IOException {
 		FileWriter fw = new FileWriter(outputFile);
 		BufferedWriter buff = new BufferedWriter(fw);
-		
+
 		buff.append("\n// This file was autogenerated by CalcDeps.java\n");
-		for (DependencyInfo file_dep : sortedDeps) {
-			if (file_dep != null) {
-				buff.write(file_dep.toString(outputFile));
+		for (DependencyInfo fileDep : sortedDeps) {
+			if (fileDep != null) {
+				buff.write(fileDep.toString(outputFile));
 				buff.write("\n");
 				buff.flush();
 			}
 		}
-		logger.info("Deps file written.");
+		LOGGER.info("Deps file written.");
 
 		return true;
-		
+
 	}
-	
+
 	/**
-	 * Compare every element to one another.  This is significantly slower than a merge sort, but 
-	 * guarantees that deps end up in the right order
+	 * Compare every element to one another. This is significantly slower than a
+	 * merge sort, but guarantees that deps end up in the right order
 	 * 
+	 * @param inputs
+	 *            the inputs to scan
 	 * @param deps
+	 *            the external dependencies
+	 * @return the list of dependencyInfo objects
 	 */
-	private static List<DependencyInfo> slowSort(final Collection<DependencyInfo> inputs, final Collection<DependencyInfo> deps) {
-		HashMap<String, DependencyInfo> search_set = buildSearchList(deps);
+	private static List<DependencyInfo> slowSort(
+			final Collection<DependencyInfo> inputs,
+			final Collection<DependencyInfo> deps) {
+		HashMap<String, DependencyInfo> searchSet = buildSearchList(deps);
 		HashSet<File> seenList = new HashSet<File>();
-		ArrayList<DependencyInfo> result_list = new ArrayList<DependencyInfo>();
+		ArrayList<DependencyInfo> resultList = new ArrayList<DependencyInfo>();
 		for (DependencyInfo input : inputs) {
 			if (!seenList.contains(input.getFile())) {
 				seenList.add(input.getFile());
 				for (String require : input.getRequires()) {
-					orderDependenciesForNamespace(require, search_set, seenList, result_list);
+					orderDependenciesForNamespace(require, searchSet, seenList,
+							resultList);
 				}
-				result_list.add(input);
-			}			
+				resultList.add(input);
+			}
 		}
-		return result_list;
+		return resultList;
 	}
 
-	
-	private static void orderDependenciesForNamespace(String require_namespace, HashMap<String, DependencyInfo> search_set, HashSet<File> seenList, ArrayList<DependencyInfo> result_list) {
-		if (!search_set.containsKey(require_namespace)) {
-			//throw exception
-			logger.error("search set doesn't contain key '" + require_namespace + "'");
+	/**
+	 * Will order the Dependencies for a single namespace.
+	 * 
+	 * @param requireNamespace whether or not to require the namespace 
+	 * @param searchSet the set to search through
+	 * @param seenList the list of objects that have been seen already (which may be added to)
+	 * @param resultList the resulting list which will be added to
+	 */
+	private static void orderDependenciesForNamespace(
+			final String requireNamespace,
+			final HashMap<String, DependencyInfo> searchSet,
+			final HashSet<File> seenList, final ArrayList<DependencyInfo> resultList) {
+		if (!searchSet.containsKey(requireNamespace)) {
+			LOGGER.error("search set doesn't contain key '" + requireNamespace
+					+ "'");
 		}
-		DependencyInfo dep = search_set.get(require_namespace);
+		DependencyInfo dep = searchSet.get(requireNamespace);
 		if (!seenList.contains(dep.getFile())) {
 			seenList.add(dep.getFile());
-			for (String sub_require : dep.getRequires()) {
-				orderDependenciesForNamespace(sub_require, search_set, seenList, result_list);
+			for (String subRequire : dep.getRequires()) {
+				orderDependenciesForNamespace(subRequire, searchSet,
+						seenList, resultList);
 			}
-			result_list.add(dep);
+			resultList.add(dep);
 		}
 	}
 
-	private static HashMap<String, DependencyInfo> buildSearchList(Collection<DependencyInfo> deps) {
+	/**
+	 * Build the search list for seraching for dependencies.
+	 * 
+	 * @param deps the external dependencies
+	 * @return the list of external dependencies, hashed by the namespace
+	 */
+	private static HashMap<String, DependencyInfo> buildSearchList(
+			final Collection<DependencyInfo> deps) {
 		HashMap<String, DependencyInfo> returnVal = new HashMap<String, DependencyInfo>();
 		for (DependencyInfo dep : deps) {
 			for (String provide : dep.getProvides()) {
@@ -152,8 +193,14 @@ public class CalcDeps {
 		}
 		return returnVal;
 	}
-	
-	private static List<File> pullFilesFromDeps(List<DependencyInfo> sortedDeps) {
+
+	/**
+	 * convert the sortedDependency list into a list of files.
+	 * 
+	 * @param sortedDeps the sorted dependencies
+	 * @return the sorted list of files
+	 */
+	private static List<File> pullFilesFromDeps(final List<DependencyInfo> sortedDeps) {
 		ArrayList<File> returnVal = new ArrayList<File>();
 		for (DependencyInfo dep : sortedDeps) {
 			returnVal.add(dep.getFile());
@@ -161,15 +208,28 @@ public class CalcDeps {
 		return returnVal;
 	}
 
-	public static List<File> executeCalcDeps(final File googleBaseFile, final Set<File> inputs, final Set<File> paths, final File outputFile) throws IOException {
-		logger.debug("Finding Closure dependencies...");
-		List<DependencyInfo> sortedDeps = calculateDependencies(googleBaseFile, inputs, paths);
-		
-		//create deps file
-		logger.debug("Outputting Closure dependency file...");
+	/**
+	 * This will sort the list of dependencies, write a dependency file, and return the list of dependencies.
+	 * 
+	 * @param googleBaseFile the base.js file that is in the google closure library
+	 * @param inputs the set of input files to parse for provides and requires
+	 * @param paths to additional resources that will have provides and requires
+	 * @param outputFile the output file to write to
+	 * @return the list of calculated dependencies, just in case it is needed
+	 * @throws IOException if there is a problem reading from any dependencies or writing the depenency file
+	 */
+	public static List<File> executeCalcDeps(final File googleBaseFile,
+			final Set<File> inputs, final Set<File> paths, final File outputFile)
+			throws IOException {
+		LOGGER.debug("Finding Closure dependencies...");
+		List<DependencyInfo> sortedDeps = calculateDependencies(googleBaseFile,
+				inputs, paths);
+
+		// create deps file
+		LOGGER.debug("Outputting Closure dependency file...");
 		outputDeps(sortedDeps, outputFile);
-		
-		logger.debug("Closure dependencies created");
+
+		LOGGER.debug("Closure dependencies created");
 		return pullFilesFromDeps(sortedDeps);
 	}
 
