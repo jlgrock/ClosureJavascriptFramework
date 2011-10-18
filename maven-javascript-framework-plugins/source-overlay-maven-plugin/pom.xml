@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.mojo.javascript-framework</groupId>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>source-overlay-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -19,9 +19,9 @@
 
 		<!-- Maven Framework Utilities -->
 		<dependency>
-			<groupId>org.mojo.javascript-framework</groupId>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
 			<artifactId>maven-utils</artifactId>
-			<version>1.0</version>
+			<version>1.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Java Testing -->
@@ -137,10 +137,13 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+	</issueManagement>
+	<name>Source Overlay Maven Plugin</name>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<description>A plugin that is used to overlay an entire source directory over another, replacing any files that are duplicated. This is similar to the War Overlay functionality provided by the Mave War Plugin, with the exception that this will do it for the entire source directory rather than just the webapp directory.</description>
 
-	<scm>
-		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/source-overlay-maven-plugin</connection>
-		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/source-overlay-maven-plugin</developerConnection>
-		<url>https://github.com/jlgrock/JavascriptFramework</url>
-	</scm>
 </project>
