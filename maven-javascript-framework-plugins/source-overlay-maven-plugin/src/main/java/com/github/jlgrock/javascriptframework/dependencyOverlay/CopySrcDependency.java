@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.dependencyOverlay;
+package com.github.jlgrock.javascriptframework.dependencyOverlay;
 
 import java.util.Set;
 
@@ -6,8 +6,9 @@ import org.apache.log4j.Logger;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
-import org.mojo.javascriptframework.mavenutils.mavenobjects.ExtractSrcAftifacts;
+
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ExtractSrcAftifacts;
 
 /**
  * Will copy the source dependency to a specified location.

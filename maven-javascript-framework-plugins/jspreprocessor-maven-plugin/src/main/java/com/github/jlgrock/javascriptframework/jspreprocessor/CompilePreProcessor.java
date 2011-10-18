@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.jspreprocessor;
+package com.github.jlgrock.javascriptframework.jspreprocessor;
 
 import java.io.File;
 

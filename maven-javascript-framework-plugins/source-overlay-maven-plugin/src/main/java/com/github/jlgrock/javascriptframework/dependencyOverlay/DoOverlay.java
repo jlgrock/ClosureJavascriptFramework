@@ -1,12 +1,13 @@
-package org.mojo.javascriptframework.dependencyOverlay;
+package com.github.jlgrock.javascriptframework.dependencyOverlay;
 
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
-import org.mojo.javascriptframework.mavenutils.mavenobjects.ExtractSrcAftifacts;
+
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ExtractSrcAftifacts;
 
 /**
  * Will overlay the files from the current source directory into the target

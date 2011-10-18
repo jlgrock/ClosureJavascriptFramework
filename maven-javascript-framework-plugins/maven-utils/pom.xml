@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>org.mojo.javascript-framework</groupId>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>maven-utils</artifactId>
@@ -91,9 +91,11 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<scm>
-		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/maven-utils</connection>
-		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/maven-utils</developerConnection>
-		<url>https://github.com/jlgrock/JavascriptFramework</url>
-	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+	</issueManagement>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<name>Maven Utils</name>
+	<description>Although this is technically not a plugin, this is a bunch of tools that all of the plugins use. This is very useful for anyone doing maven plugin development.</description>
 </project>

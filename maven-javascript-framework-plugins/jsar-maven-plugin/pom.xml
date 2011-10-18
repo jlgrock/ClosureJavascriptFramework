@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.mojo.javascript-framework</groupId>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>jsar-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -24,9 +24,9 @@
 		
 		<!-- Maven Framework Utilities -->
 		<dependency>
-			<groupId>org.mojo.javascript-framework</groupId>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
 			<artifactId>maven-utils</artifactId>
-			<version>1.0</version>
+			<version>1.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Java Testing -->
@@ -80,9 +80,11 @@
 		</pluginRepository>
 	</pluginRepositories>
 	
-	<scm>
-		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/jsar-maven-plugin</connection>
-		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/jsar-maven-plugin</developerConnection>
-		<url>https://github.com/jlgrock/JavascriptFramework</url>
-	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+	</issueManagement>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<name>jsar Maven Plugin</name>
+	<description>The plugin that creates an archive out of your source and compiled files</description>
 </project>

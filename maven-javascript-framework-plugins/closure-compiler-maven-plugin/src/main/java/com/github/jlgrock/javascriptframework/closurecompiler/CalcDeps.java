@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.closurecompiler;
+package com.github.jlgrock.javascriptframework.closurecompiler;
 
 import java.io.BufferedWriter;
 import java.io.File;

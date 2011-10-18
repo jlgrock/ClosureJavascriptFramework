@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.jspreprocessor;
+package com.github.jlgrock.javascriptframework.jspreprocessor;
 
 import java.io.File;
 
@@ -23,12 +23,12 @@ public class TestPreProcessor extends AbstractPreProcessorFramework {
 	private File destinationDirectory;
 
 	@Override
-	public File getSourceDirectory() {
+	public final File getSourceDirectory() {
 		return sourceDirectory;
 	}
 
 	@Override
-	public File getDestinationDirectory() {
+	public final File getDestinationDirectory() {
 		return destinationDirectory;
 	}
 }

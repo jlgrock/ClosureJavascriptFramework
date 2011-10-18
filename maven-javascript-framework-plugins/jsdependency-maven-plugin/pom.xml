@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.mojo.javascript-framework</groupId>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>jsdependency-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -19,9 +19,9 @@
 
 		<!-- Maven Framework Utilities -->
 		<dependency>
-			<groupId>org.mojo.javascript-framework</groupId>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
 			<artifactId>maven-utils</artifactId>
-			<version>1.0</version>
+			<version>1.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
@@ -45,9 +45,11 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<scm>
-		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/jsdependency-maven-plugin</connection>
-		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/jsdependency-maven-plugin</developerConnection>
-		<url>https://github.com/jlgrock/JavascriptFramework</url>
-	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+	</issueManagement>
+	<description>The plugin that can reference archives created using the jsar plugin and use them as test dependencies or source code for inclusion in the compiling/minification</description>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<name>JS Dependency Plugin</name>
 </project>

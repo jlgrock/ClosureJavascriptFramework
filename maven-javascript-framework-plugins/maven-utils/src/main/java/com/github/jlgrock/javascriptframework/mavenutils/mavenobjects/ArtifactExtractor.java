@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.mavenobjects;
+package com.github.jlgrock.javascriptframework.mavenutils.mavenobjects;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.Artifact;
-import org.mojo.javascriptframework.mavenutils.io.ZipUtils;
+
+import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
 
 /**
  * This will extract the artifacts specified by the scope and packagingType

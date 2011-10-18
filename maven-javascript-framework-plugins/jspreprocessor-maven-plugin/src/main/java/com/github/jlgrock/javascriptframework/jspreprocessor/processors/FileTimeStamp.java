@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.jspreprocessor.processors;
+package com.github.jlgrock.javascriptframework.jspreprocessor.processors;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.project.MavenProject;

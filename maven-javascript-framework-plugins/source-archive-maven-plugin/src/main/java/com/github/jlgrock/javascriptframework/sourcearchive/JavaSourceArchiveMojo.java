@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.sourcearchive;
+package com.github.jlgrock.javascriptframework.sourcearchive;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.project.MavenProject;

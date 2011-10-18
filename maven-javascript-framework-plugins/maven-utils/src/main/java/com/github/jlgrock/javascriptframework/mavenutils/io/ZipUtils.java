@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.io;
+package com.github.jlgrock.javascriptframework.mavenutils.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,7 +15,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.mojo.javascriptframework.mavenutils.pathing.RelativeFile;
+
+import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativeFile;
 
 /**
  * A general usage class for doing zip file and zip stream manipulations.

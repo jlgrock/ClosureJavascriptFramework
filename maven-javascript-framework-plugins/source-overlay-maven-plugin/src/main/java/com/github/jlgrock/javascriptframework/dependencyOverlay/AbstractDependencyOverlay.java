@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.dependencyOverlay;
+package com.github.jlgrock.javascriptframework.dependencyOverlay;
 
 import java.io.File;
 

@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.mojo.javascript-framework</groupId>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>jspreprocessor-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -12,9 +12,9 @@
 	<dependencies>
 		<!-- Maven Framework Utilities -->
 		<dependency>
-			<groupId>org.mojo.javascript-framework</groupId>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
 			<artifactId>maven-utils</artifactId>
-			<version>1.0</version>
+			<version>1.1-SNAPSHOT</version>
 		</dependency>
 		
 		<!-- Log4j -->
@@ -72,4 +72,11 @@
 		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/jspreprocessor-maven-plugin</developerConnection>
 		<url>https://github.com/jlgrock/JavascriptFramework</url>
 	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+	</issueManagement>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<description>A framework for running additional preprocessing on files before compiling.</description>
+	<name>JS Preprocessor</name>
 </project>  

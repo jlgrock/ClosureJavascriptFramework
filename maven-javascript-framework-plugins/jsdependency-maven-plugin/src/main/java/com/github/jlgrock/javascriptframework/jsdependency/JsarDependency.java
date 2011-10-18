@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.jsdependency;
+package com.github.jlgrock.javascriptframework.jsdependency;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,13 +8,14 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.mojo.javascriptframework.mavenutils.io.DirectoryIO;
-import org.mojo.javascriptframework.mavenutils.io.ResourceIO;
-import org.mojo.javascriptframework.mavenutils.io.ZipUtils;
-import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
-import org.mojo.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor;
-import org.mojo.javascriptframework.mavenutils.mavenobjects.PackagingType;
-import org.mojo.javascriptframework.mavenutils.mavenobjects.ScopeType;
+
+import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
+import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
+import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.PackagingType;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType;
 
 /**
  * Get files.

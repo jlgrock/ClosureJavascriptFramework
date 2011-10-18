@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.io;
+package com.github.jlgrock.javascriptframework.mavenutils.io;
 
 import java.io.BufferedInputStream;
 import java.io.File;

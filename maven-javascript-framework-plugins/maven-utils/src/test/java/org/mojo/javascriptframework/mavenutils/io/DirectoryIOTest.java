@@ -1,6 +1,5 @@
 package org.mojo.javascriptframework.mavenutils.io;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;

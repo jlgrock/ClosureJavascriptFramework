@@ -1,11 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.mojo.javascript-framework</groupId>
+	<groupId>com.github.jlgrock.javascript-framework</groupId>
 	<artifactId>maven-javascript-framework-plugins</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
+	<name>JavaScript Framework</name>
+	<description>A compilation of javascript plugins written for the explicit purpose to work well with the Google Closure Compiler and the Google Closure Library</description>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	
 	<modules>
 		<module>maven-utils</module>
 		<module>jspreprocessor-maven-plugin</module>
@@ -74,25 +77,46 @@
 		</plugins>
 	</build>
 
-	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
-	by the CM to the repository -->
+	<issueManagement>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- The main repository. If the library is not in this repository, it should 
+		be added (using proxy caching) by the CM to the repository -->
 	<repositories>
 		<repository>
 			<id>local</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>local</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<profiles>
 		<profile>
 			<id>deployRelease</id>
@@ -115,5 +139,12 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
-
+	<scm>
+		<url>https://github.com/jlgrock/JavascriptFramework</url>
+		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework.git</connection>
+		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework.git</developerConnection>
+	</scm>
+	<ciManagement>
+		<system>Jenkins</system>
+	</ciManagement>
 </project>

@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.jspreprocessor;
+package com.github.jlgrock.javascriptframework.jspreprocessor;
 
 import java.io.File;
 
@@ -6,8 +6,9 @@ import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.mojo.javascriptframework.mavenutils.io.DirectoryIO;
-import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
+
+import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 
 /**
  * eventually, this should do a bunch of things, but right now, it will just copy from

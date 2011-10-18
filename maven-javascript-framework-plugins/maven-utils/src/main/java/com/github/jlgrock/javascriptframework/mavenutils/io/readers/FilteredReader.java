@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.io.readers;
+package com.github.jlgrock.javascriptframework.mavenutils.io.readers;
 
 import java.io.BufferedReader;
 import java.io.IOException;

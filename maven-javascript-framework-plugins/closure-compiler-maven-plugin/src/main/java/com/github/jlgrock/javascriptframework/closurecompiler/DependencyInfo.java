@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.closurecompiler;
+package com.github.jlgrock.javascriptframework.closurecompiler;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.mojo.javascriptframework.mavenutils.pathing.RelativePath;
+
+import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
 
 /**
  * A file that has been scanned for dependency information. This will keep

@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.pathing;
+package com.github.jlgrock.javascriptframework.mavenutils.pathing;
 
 import java.io.File;
 

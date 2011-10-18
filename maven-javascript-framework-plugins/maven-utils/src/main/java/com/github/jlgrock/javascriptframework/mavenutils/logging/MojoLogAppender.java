@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.logging;
+package com.github.jlgrock.javascriptframework.mavenutils.logging;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;

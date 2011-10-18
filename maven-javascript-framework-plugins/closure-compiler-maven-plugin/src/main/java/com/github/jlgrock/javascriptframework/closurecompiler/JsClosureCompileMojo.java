@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.closurecompiler;
+package com.github.jlgrock.javascriptframework.closurecompiler;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
-import org.mojo.javascriptframework.mavenutils.pathing.FileListBuilder;
 
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.javascript.jscomp.CompilationLevel;

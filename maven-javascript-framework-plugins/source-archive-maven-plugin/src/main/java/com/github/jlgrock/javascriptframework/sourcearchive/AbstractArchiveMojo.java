@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.sourcearchive;
+package com.github.jlgrock.javascriptframework.sourcearchive;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,9 +26,10 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.mojo.javascriptframework.mavenutils.io.DirectoryIO;
-import org.mojo.javascriptframework.mavenutils.io.ResourceIO;
-import org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender;
+
+import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
+import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 
 /**
  * Essentially the same as the Assembly Plugin Mojo, with a convenience function

@@ -1,4 +1,4 @@
-package org.mojo.javascriptframework.mavenutils.io;
+package com.github.jlgrock.javascriptframework.mavenutils.io;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,7 +11,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.mojo.javascriptframework.mavenutils.io.readers.FilteredReader;
+
+import com.github.jlgrock.javascriptframework.mavenutils.io.readers.FilteredReader;
 
 /**
  * A general usage class for doing File manipulations.
