@@ -8,11 +8,11 @@
 				<phases>
 					<generate-sources></generate-sources>
 					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
-					<compile>org.mojo.javascript-framework:jsdependency-maven-plugin:js-dependency,org.mojo.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors</compile>
-					<test-compile>org.mojo.javascript-framework:jspreprocessor-maven-plugin:test-preprocessors</test-compile>
+					<compile>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency,com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors</compile>
+					<test-compile>com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:test-preprocessors</test-compile>
 					<test></test>
-					<process-classes>org.mojo.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
-					<package>org.mojo.javascript-framework:jsar-maven-plugin:jsar</package>
+					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
+					<package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:jsar</package>
 					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
 					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
 				</phases>
