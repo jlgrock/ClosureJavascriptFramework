@@ -1,0 +1,887 @@
+<?xml version="1.0"?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+
+<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="187" branches-covered="0" branches-valid="44" complexity="1.5070422535211268" version="1.9.4.1" timestamp="1319130154854">
+	<sources>
+		<source>C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/source-archive-maven-plugin/src/main/java</source>
+		<source>--source</source>
+	</sources>
+	<packages>
+		<package name="com.github.jlgrock.javascriptframework.sourcearchive" line-rate="0.0" branch-rate="0.0" complexity="1.5070422535211268">
+			<classes>
+				<class name="com.github.jlgrock.javascriptframework.sourcearchive.AbstractArchiveMojo" filename="com/github/jlgrock/javascriptframework/sourcearchive/AbstractArchiveMojo.java" line-rate="0.0" branch-rate="0.0" complexity="1.5714285714285714">
+					<methods>
+						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="50" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="44" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="cleanup" signature="()V" line-rate="0.0" branch-rate="0.0">
+							<lines>
+								<line number="67" hits="0" branch="false"/>
+								<line number="68" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="69" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="70" hits="0" branch="false"/>
+								<line number="72" hits="0" branch="false"/>
+								<line number="75" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="copyDescriptorResource" signature="()V" line-rate="0.0" branch-rate="0.0">
+							<lines>
+								<line number="83" hits="0" branch="false"/>
+								<line number="85" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="86" hits="0" branch="false"/>
+								<line number="88" hits="0" branch="false"/>
+								<line number="89" hits="0" branch="false"/>
+								<line number="90" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="execute" signature="()V" line-rate="0.0" branch-rate="0.0">
+							<lines>
+								<line number="435" hits="0" branch="false"/>
+								<line number="444" hits="0" branch="false"/>
+								<line number="445" hits="0" branch="false"/>
+								<line number="446" hits="0" branch="false"/>
+								<line number="447" hits="0" branch="false"/>
+								<line number="448" hits="0" branch="false"/>
+								<line number="449" hits="0" branch="false"/>
+								<line number="450" hits="0" branch="false"/>
+								<line number="455" hits="0" branch="false"/>
+								<line number="461" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="462" hits="0" branch="false"/>
+								<line number="467" hits="0" branch="true" condition-coverage="0% (0/4)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+										<condition number="1" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="468" hits="0" branch="false"/>
+								<line number="474" hits="0" branch="false"/>
+								<line number="475" hits="0" branch="false"/>
+								<line number="476" hits="0" branch="false"/>
+								<line number="478" hits="0" branch="false"/>
+								<line number="479" hits="0" branch="false"/>
+								<line number="481" hits="0" branch="false"/>
+								<line number="487" hits="0" branch="false"/>
+								<line number="488" hits="0" branch="false"/>
+								<line number="489" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="490" hits="0" branch="false"/>
+								<line number="493" hits="0" branch="false"/>
+								<line number="496" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="497" hits="0" branch="false"/>
+								<line number="500" hits="0" branch="false"/>
+								<line number="501" hits="0" branch="false"/>
+								<line number="502" hits="0" branch="false"/>
+								<line number="504" hits="0" branch="true" condition-coverage="0% (0/4)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+										<condition number="1" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="505" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="506" hits="0" branch="false"/>
+								<line number="508" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="509" hits="0" branch="false"/>
+								<line number="511" hits="0" branch="true" condition-coverage="0% (0/4)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+										<condition number="1" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="513" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="514" hits="0" branch="false"/>
+								<line number="516" hits="0" branch="false"/>
+								<line number="517" hits="0" branch="false"/>
+								<line number="521" hits="0" branch="false"/>
+								<line number="523" hits="0" branch="false"/>
+								<line number="524" hits="0" branch="false"/>
+								<line number="527" hits="0" branch="false"/>
+								<line number="529" hits="0" branch="true" condition-coverage="0% (0/4)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+										<condition number="1" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="531" hits="0" branch="false"/>
+								<line number="537" hits="0" branch="false"/>
+								<line number="538" hits="0" branch="false"/>
+								<line number="539" hits="0" branch="false"/>
+								<line number="542" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="543" hits="0" branch="false"/>
+								<line number="547" hits="0" branch="false"/>
+								<line number="552" hits="0" branch="false"/>
+								<line number="553" hits="0" branch="false"/>
+								<line number="555" hits="0" branch="false"/>
+								<line number="556" hits="0" branch="false"/>
+								<line number="558" hits="0" branch="false"/>
+								<line number="559" hits="0" branch="false"/>
+								<line number="565" hits="0" branch="false"/>
+								<line number="566" hits="0" branch="false"/>
+								<line number="567" hits="0" branch="false"/>
+								<line number="568" hits="0" branch="false"/>
+								<line number="571" hits="0" branch="false"/>
+								<line number="573" hits="0" branch="false"/>
+								<line number="574" hits="0" branch="false"/>
+								<line number="575" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getArchiveBaseDirectory" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="774" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getArchiverConfig" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="0.0">
+							<lines>
+								<line number="1091" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+							</lines>
+						</method>
+						<method name="getAssemblyArchiver" signature="()Lorg/apache/maven/plugin/assembly/archive/AssemblyArchiver;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="603" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getAssemblyReader" signature="()Lorg/apache/maven/plugin/assembly/io/AssemblyReader;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="612" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getBasedir" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="621" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getClassifier" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="808" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptor" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="631" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorId" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="641" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorReferences" signature="()[Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="650" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorSourceDirectory" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="659" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptors" signature="()[Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="668" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getFilters" signature="()Ljava/util/List;" line-rate="0.0" branch-rate="0.0">
+							<lines>
+								<line number="783" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="784" hits="0" branch="false"/>
+								<line number="785" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="786" hits="0" branch="false"/>
+								<line number="789" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getFinalName" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="702" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getJarArchiveConfiguration" signature="()Lorg/apache/maven/archiver/MavenArchiveConfiguration;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="738" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getLocalRepository" signature="()Lorg/apache/maven/artifact/repository/ArtifactRepository;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="756" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getMavenFileFilter" signature="()Lorg/apache/maven/shared/filtering/MavenFileFilter;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1100" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getMavenSession" signature="()Lorg/apache/maven/execution/MavenSession;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1082" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getOutputDirectory" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="729" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getProjectHelper" signature="()Lorg/apache/maven/project/MavenProjectHelper;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="817" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getReactorProjects" signature="()Ljava/util/List;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="798" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getRemoteRepositories" signature="()Ljava/util/List;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1037" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getSiteDirectory" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="684" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getTarLongFileMode" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="720" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getTemporaryRootDirectory" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="765" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getWorkingDirectory" signature="()Ljava/io/File;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="747" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isAssemblyIdAppended" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="711" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isDryRun" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1046" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isIgnoreDirFormatExtensions" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1055" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isIgnoreMissingDescriptor" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1064" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isIgnorePermissions" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1127" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isSiteIncluded" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="693" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isThisTheExecutionRoot" signature="()Z" line-rate="0.0" branch-rate="0.0">
+							<lines>
+								<line number="584" hits="0" branch="false"/>
+								<line number="585" hits="0" branch="false"/>
+								<line number="586" hits="0" branch="false"/>
+								<line number="588" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="589" hits="0" branch="false"/>
+								<line number="591" hits="0" branch="false"/>
+								<line number="594" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isUpdateOnly" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1109" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="isUseJvmChmod" signature="()Z" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1118" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setAppendAssemblyId" signature="(Z)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="826" hits="0" branch="false"/>
+								<line number="827" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setArchive" signature="(Lorg/apache/maven/archiver/MavenArchiveConfiguration;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="835" hits="0" branch="false"/>
+								<line number="836" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setArchiveBaseDirectory" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="844" hits="0" branch="false"/>
+								<line number="845" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setAssemblyArchiver" signature="(Lorg/apache/maven/plugin/assembly/archive/AssemblyArchiver;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="853" hits="0" branch="false"/>
+								<line number="854" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setAssemblyReader" signature="(Lorg/apache/maven/plugin/assembly/io/AssemblyReader;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="862" hits="0" branch="false"/>
+								<line number="863" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setBasedir" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="871" hits="0" branch="false"/>
+								<line number="872" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setClassifier" signature="(Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="880" hits="0" branch="false"/>
+								<line number="881" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setDescriptor" signature="(Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="890" hits="0" branch="false"/>
+								<line number="891" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setDescriptorId" signature="(Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="901" hits="0" branch="false"/>
+								<line number="902" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setDescriptorRefs" signature="([Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="910" hits="0" branch="false"/>
+								<line number="911" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setDescriptorSourceDirectory" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="929" hits="0" branch="false"/>
+								<line number="930" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setDescriptors" signature="([Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="919" hits="0" branch="false"/>
+								<line number="920" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setFilters" signature="(Ljava/util/List;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="938" hits="0" branch="false"/>
+								<line number="939" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setFinalName" signature="(Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="947" hits="0" branch="false"/>
+								<line number="948" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setIgnoreMissingDescriptor" signature="(Z)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1073" hits="0" branch="false"/>
+								<line number="1074" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setIncludeSite" signature="(Z)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="956" hits="0" branch="false"/>
+								<line number="957" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setLocalRepository" signature="(Lorg/apache/maven/artifact/repository/ArtifactRepository;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="965" hits="0" branch="false"/>
+								<line number="966" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setOutputDirectory" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="974" hits="0" branch="false"/>
+								<line number="975" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setProjectHelper" signature="(Lorg/apache/maven/project/MavenProjectHelper;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="983" hits="0" branch="false"/>
+								<line number="984" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setReactorProjects" signature="(Ljava/util/List;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="992" hits="0" branch="false"/>
+								<line number="993" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setSiteDirectory" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1001" hits="0" branch="false"/>
+								<line number="1002" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setTarLongFileMode" signature="(Ljava/lang/String;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1010" hits="0" branch="false"/>
+								<line number="1011" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setTempRoot" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1019" hits="0" branch="false"/>
+								<line number="1020" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="setWorkDirectory" signature="(Ljava/io/File;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="1028" hits="0" branch="false"/>
+								<line number="1029" hits="0" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="44" hits="0" branch="false"/>
+						<line number="50" hits="0" branch="false"/>
+						<line number="67" hits="0" branch="false"/>
+						<line number="68" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="69" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="70" hits="0" branch="false"/>
+						<line number="72" hits="0" branch="false"/>
+						<line number="75" hits="0" branch="false"/>
+						<line number="83" hits="0" branch="false"/>
+						<line number="85" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="86" hits="0" branch="false"/>
+						<line number="88" hits="0" branch="false"/>
+						<line number="89" hits="0" branch="false"/>
+						<line number="90" hits="0" branch="false"/>
+						<line number="435" hits="0" branch="false"/>
+						<line number="444" hits="0" branch="false"/>
+						<line number="445" hits="0" branch="false"/>
+						<line number="446" hits="0" branch="false"/>
+						<line number="447" hits="0" branch="false"/>
+						<line number="448" hits="0" branch="false"/>
+						<line number="449" hits="0" branch="false"/>
+						<line number="450" hits="0" branch="false"/>
+						<line number="455" hits="0" branch="false"/>
+						<line number="461" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="462" hits="0" branch="false"/>
+						<line number="467" hits="0" branch="true" condition-coverage="0% (0/4)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+								<condition number="1" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="468" hits="0" branch="false"/>
+						<line number="474" hits="0" branch="false"/>
+						<line number="475" hits="0" branch="false"/>
+						<line number="476" hits="0" branch="false"/>
+						<line number="478" hits="0" branch="false"/>
+						<line number="479" hits="0" branch="false"/>
+						<line number="481" hits="0" branch="false"/>
+						<line number="487" hits="0" branch="false"/>
+						<line number="488" hits="0" branch="false"/>
+						<line number="489" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="490" hits="0" branch="false"/>
+						<line number="493" hits="0" branch="false"/>
+						<line number="496" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="497" hits="0" branch="false"/>
+						<line number="500" hits="0" branch="false"/>
+						<line number="501" hits="0" branch="false"/>
+						<line number="502" hits="0" branch="false"/>
+						<line number="504" hits="0" branch="true" condition-coverage="0% (0/4)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+								<condition number="1" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="505" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="506" hits="0" branch="false"/>
+						<line number="508" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="509" hits="0" branch="false"/>
+						<line number="511" hits="0" branch="true" condition-coverage="0% (0/4)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+								<condition number="1" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="513" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="514" hits="0" branch="false"/>
+						<line number="516" hits="0" branch="false"/>
+						<line number="517" hits="0" branch="false"/>
+						<line number="521" hits="0" branch="false"/>
+						<line number="523" hits="0" branch="false"/>
+						<line number="524" hits="0" branch="false"/>
+						<line number="527" hits="0" branch="false"/>
+						<line number="529" hits="0" branch="true" condition-coverage="0% (0/4)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+								<condition number="1" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="531" hits="0" branch="false"/>
+						<line number="537" hits="0" branch="false"/>
+						<line number="538" hits="0" branch="false"/>
+						<line number="539" hits="0" branch="false"/>
+						<line number="542" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="543" hits="0" branch="false"/>
+						<line number="547" hits="0" branch="false"/>
+						<line number="552" hits="0" branch="false"/>
+						<line number="553" hits="0" branch="false"/>
+						<line number="555" hits="0" branch="false"/>
+						<line number="556" hits="0" branch="false"/>
+						<line number="558" hits="0" branch="false"/>
+						<line number="559" hits="0" branch="false"/>
+						<line number="565" hits="0" branch="false"/>
+						<line number="566" hits="0" branch="false"/>
+						<line number="567" hits="0" branch="false"/>
+						<line number="568" hits="0" branch="false"/>
+						<line number="571" hits="0" branch="false"/>
+						<line number="573" hits="0" branch="false"/>
+						<line number="574" hits="0" branch="false"/>
+						<line number="575" hits="0" branch="false"/>
+						<line number="584" hits="0" branch="false"/>
+						<line number="585" hits="0" branch="false"/>
+						<line number="586" hits="0" branch="false"/>
+						<line number="588" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="589" hits="0" branch="false"/>
+						<line number="591" hits="0" branch="false"/>
+						<line number="594" hits="0" branch="false"/>
+						<line number="603" hits="0" branch="false"/>
+						<line number="612" hits="0" branch="false"/>
+						<line number="621" hits="0" branch="false"/>
+						<line number="631" hits="0" branch="false"/>
+						<line number="641" hits="0" branch="false"/>
+						<line number="650" hits="0" branch="false"/>
+						<line number="659" hits="0" branch="false"/>
+						<line number="668" hits="0" branch="false"/>
+						<line number="684" hits="0" branch="false"/>
+						<line number="693" hits="0" branch="false"/>
+						<line number="702" hits="0" branch="false"/>
+						<line number="711" hits="0" branch="false"/>
+						<line number="720" hits="0" branch="false"/>
+						<line number="729" hits="0" branch="false"/>
+						<line number="738" hits="0" branch="false"/>
+						<line number="747" hits="0" branch="false"/>
+						<line number="756" hits="0" branch="false"/>
+						<line number="765" hits="0" branch="false"/>
+						<line number="774" hits="0" branch="false"/>
+						<line number="783" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="784" hits="0" branch="false"/>
+						<line number="785" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="786" hits="0" branch="false"/>
+						<line number="789" hits="0" branch="false"/>
+						<line number="798" hits="0" branch="false"/>
+						<line number="808" hits="0" branch="false"/>
+						<line number="817" hits="0" branch="false"/>
+						<line number="826" hits="0" branch="false"/>
+						<line number="827" hits="0" branch="false"/>
+						<line number="835" hits="0" branch="false"/>
+						<line number="836" hits="0" branch="false"/>
+						<line number="844" hits="0" branch="false"/>
+						<line number="845" hits="0" branch="false"/>
+						<line number="853" hits="0" branch="false"/>
+						<line number="854" hits="0" branch="false"/>
+						<line number="862" hits="0" branch="false"/>
+						<line number="863" hits="0" branch="false"/>
+						<line number="871" hits="0" branch="false"/>
+						<line number="872" hits="0" branch="false"/>
+						<line number="880" hits="0" branch="false"/>
+						<line number="881" hits="0" branch="false"/>
+						<line number="890" hits="0" branch="false"/>
+						<line number="891" hits="0" branch="false"/>
+						<line number="901" hits="0" branch="false"/>
+						<line number="902" hits="0" branch="false"/>
+						<line number="910" hits="0" branch="false"/>
+						<line number="911" hits="0" branch="false"/>
+						<line number="919" hits="0" branch="false"/>
+						<line number="920" hits="0" branch="false"/>
+						<line number="929" hits="0" branch="false"/>
+						<line number="930" hits="0" branch="false"/>
+						<line number="938" hits="0" branch="false"/>
+						<line number="939" hits="0" branch="false"/>
+						<line number="947" hits="0" branch="false"/>
+						<line number="948" hits="0" branch="false"/>
+						<line number="956" hits="0" branch="false"/>
+						<line number="957" hits="0" branch="false"/>
+						<line number="965" hits="0" branch="false"/>
+						<line number="966" hits="0" branch="false"/>
+						<line number="974" hits="0" branch="false"/>
+						<line number="975" hits="0" branch="false"/>
+						<line number="983" hits="0" branch="false"/>
+						<line number="984" hits="0" branch="false"/>
+						<line number="992" hits="0" branch="false"/>
+						<line number="993" hits="0" branch="false"/>
+						<line number="1001" hits="0" branch="false"/>
+						<line number="1002" hits="0" branch="false"/>
+						<line number="1010" hits="0" branch="false"/>
+						<line number="1011" hits="0" branch="false"/>
+						<line number="1019" hits="0" branch="false"/>
+						<line number="1020" hits="0" branch="false"/>
+						<line number="1028" hits="0" branch="false"/>
+						<line number="1029" hits="0" branch="false"/>
+						<line number="1037" hits="0" branch="false"/>
+						<line number="1046" hits="0" branch="false"/>
+						<line number="1055" hits="0" branch="false"/>
+						<line number="1064" hits="0" branch="false"/>
+						<line number="1073" hits="0" branch="false"/>
+						<line number="1074" hits="0" branch="false"/>
+						<line number="1082" hits="0" branch="false"/>
+						<line number="1091" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="1100" hits="0" branch="false"/>
+						<line number="1109" hits="0" branch="false"/>
+						<line number="1118" hits="0" branch="false"/>
+						<line number="1127" hits="0" branch="false"/>
+					</lines>
+				</class>
+				<class name="com.github.jlgrock.javascriptframework.sourcearchive.FullSourceArchiveMojo" filename="com/github/jlgrock/javascriptframework/sourcearchive/FullSourceArchiveMojo.java" line-rate="0.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="22" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="17" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorResourceName" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="43" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getProject" signature="()Lorg/apache/maven/project/MavenProject;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="38" hits="0" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="17" hits="0" branch="false"/>
+						<line number="22" hits="0" branch="false"/>
+						<line number="38" hits="0" branch="false"/>
+						<line number="43" hits="0" branch="false"/>
+					</lines>
+				</class>
+				<class name="com.github.jlgrock.javascriptframework.sourcearchive.JavaScriptSourceArchiveMojo" filename="com/github/jlgrock/javascriptframework/sourcearchive/JavaScriptSourceArchiveMojo.java" line-rate="0.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="22" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="17" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorResourceName" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="43" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getProject" signature="()Lorg/apache/maven/project/MavenProject;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="38" hits="0" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="17" hits="0" branch="false"/>
+						<line number="22" hits="0" branch="false"/>
+						<line number="38" hits="0" branch="false"/>
+						<line number="43" hits="0" branch="false"/>
+					</lines>
+				</class>
+				<class name="com.github.jlgrock.javascriptframework.sourcearchive.JavaSourceArchiveMojo" filename="com/github/jlgrock/javascriptframework/sourcearchive/JavaSourceArchiveMojo.java" line-rate="0.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="22" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="17" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorResourceName" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="43" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getProject" signature="()Lorg/apache/maven/project/MavenProject;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="38" hits="0" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="17" hits="0" branch="false"/>
+						<line number="22" hits="0" branch="false"/>
+						<line number="38" hits="0" branch="false"/>
+						<line number="43" hits="0" branch="false"/>
+					</lines>
+				</class>
+				<class name="com.github.jlgrock.javascriptframework.sourcearchive.ProcessedJavaScriptArchiveMojo" filename="com/github/jlgrock/javascriptframework/sourcearchive/ProcessedJavaScriptArchiveMojo.java" line-rate="0.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="22" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="17" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getDescriptorResourceName" signature="()Ljava/lang/String;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="43" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getProject" signature="()Lorg/apache/maven/project/MavenProject;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="38" hits="0" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="17" hits="0" branch="false"/>
+						<line number="22" hits="0" branch="false"/>
+						<line number="38" hits="0" branch="false"/>
+						<line number="43" hits="0" branch="false"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+	</packages>
+</coverage>
