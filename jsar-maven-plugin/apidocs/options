@@ -1,0 +1,24 @@
+-classpath
+'C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/target/classes;C:/Users/jgrant/.m2/repository/log4j/log4j/1.2.8/log4j-1.2.8.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-profile/2.0.6/maven-profile-2.0.6.jar;C:/Users/jgrant/.m2/repository/com/github/jlgrock/javascript-framework/maven-utils/1.1-SNAPSHOT/maven-utils-1.1-SNAPSHOT.jar;C:/Users/jgrant/.m2/repository/commons-lang/commons-lang/2.1/commons-lang-2.1.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-io/1.0/plexus-io-1.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-archiver/2.4.1/maven-archiver-2.4.1.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/plugins/maven-jar-plugin/2.3.1/maven-jar-plugin-2.3.1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-repository-metadata/2.0.6/maven-repository-metadata-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-artifact-manager/2.0.6/maven-artifact-manager-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-plugin-registry/2.0.6/maven-plugin-registry-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.13/plexus-interpolation-1.13.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-project/2.0.6/maven-project-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-settings/2.0.6/maven-settings-2.0.6.jar;C:/Users/jgrant/.m2/repository/commons-io/commons-io/2.0/commons-io-2.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-artifact/2.0.6/maven-artifact-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar;C:/Users/jgrant/.m2/repository/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-archiver/1.0/plexus-archiver-1.0.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-utils/2.0.5/plexus-utils-2.0.5.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-model/2.0.6/maven-model-2.0.6.jar'
+-encoding
+'Cp1252'
+-protected
+-sourcepath
+'C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2011. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'jsar Maven Plugin 1.1-SNAPSHOT API'
+-linkoffline
+'http://download.oracle.com/javase/6/docs/api' 'C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'jsar Maven Plugin 1.1-SNAPSHOT API'

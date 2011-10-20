@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.5" timestamp="2011-10-20T12:52:07.861">
+<file name="C:\Users\jgrant\git\JavascriptFramework\maven-javascript-framework-plugins\jsar-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jsar\JsarArchiver.java">
+<violation beginline="360" endline="367" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="com.github.jlgrock.javascriptframework.jsar" class="JsarArchiver" method="getManifest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+<violation beginline="520" endline="523" begincolumn="9" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="com.github.jlgrock.javascriptframework.jsar" class="JsarArchiver" method="createArchive" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+Avoid empty if statements
+</violation>
+<violation beginline="538" endline="541" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="com.github.jlgrock.javascriptframework.jsar" class="JsarArchiver" method="findArtifactWithFile" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+</pmd>
