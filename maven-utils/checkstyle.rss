@@ -8,8 +8,8 @@
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
-      <title>File: 20,
-             Errors: 1198,
+      <title>File: 22,
+             Errors: 1324,
              Warnings: 0,
              Infos: 0
       </title>
@@ -52,7 +52,7 @@
                   0
                 </td>
                 <td>
-                  104
+                  112
                 </td>
               </tr>
                           <tr>
@@ -207,6 +207,34 @@
                 </td>
                 <td>
                   0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.parsing.ParseUtils.java">com/github/jlgrock/javascriptframework/mavenutils/parsing/ParseUtils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  29
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.FileNameSeparator.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/FileNameSeparator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  89
                 </td>
               </tr>
                           <tr>

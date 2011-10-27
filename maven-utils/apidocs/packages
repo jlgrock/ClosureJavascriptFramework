@@ -3,4 +3,5 @@ com.github.jlgrock.javascriptframework.mavenutils.io.readers
 com.github.jlgrock.javascriptframework.mavenutils.logging
 com.github.jlgrock.javascriptframework.mavenutils.mavenobjects
 com.github.jlgrock.javascriptframework.mavenutils
+com.github.jlgrock.javascriptframework.mavenutils.parsing
 com.github.jlgrock.javascriptframework.mavenutils.pathing
