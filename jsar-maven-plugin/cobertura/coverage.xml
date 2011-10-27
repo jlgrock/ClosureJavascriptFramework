@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="287" branches-covered="0" branches-valid="156" complexity="4.916666666666667" version="1.9.4.1" timestamp="1319129530272">
+<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="287" branches-covered="0" branches-valid="156" complexity="4.916666666666667" version="1.9.4.1" timestamp="1319716543431">
 	<sources>
 		<source>C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/src/main/java</source>
 		<source>--source</source>

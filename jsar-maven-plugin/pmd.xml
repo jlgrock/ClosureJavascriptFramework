@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.5" timestamp="2011-10-20T12:52:07.861">
+<pmd version="4.2.5" timestamp="2011-10-27T07:55:41.372">
 <file name="C:\Users\jgrant\git\JavascriptFramework\maven-javascript-framework-plugins\jsar-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jsar\JsarArchiver.java">
 <violation beginline="360" endline="367" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="com.github.jlgrock.javascriptframework.jsar" class="JsarArchiver" method="getManifest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
