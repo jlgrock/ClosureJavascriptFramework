@@ -89,6 +89,8 @@ public final class RelativePath {
             }
         }
         relative.append(normalizedTargetPath.substring(common.length()-1));
-        return relative.toString().replace(File.separator + File.separator, File.separator);
+        String outputString = relative.toString().replace(File.separator + File.separator, File.separator);
+        String outputStringReplaced = outputString.replace(File.separator, "/");
+        return outputStringReplaced;
 	}
 }

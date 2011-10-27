@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-  <name>source-overlay-maven-plugin</name>
-  <description></description>
-  <groupId>org.mojo.javascript-framework</groupId>
+  <name>Source Overlay Maven Plugin</name>
+  <description>A plugin that is used to overlay an entire source directory over another, replacing any files that are duplicated. This is similar to the War Overlay functionality provided by the Mave War Plugin, with the exception that this will do it for the entire source directory rather than just the webapp directory.</description>
+  <groupId>com.github.jlgrock.javascript-framework</groupId>
   <artifactId>source-overlay-maven-plugin</artifactId>
-  <version>1.0</version>
+  <version>1.3</version>
   <goalPrefix>source-overlay</goalPrefix>
   <isolatedRealm>false</isolatedRealm>
   <inheritedByDefault>true</inheritedByDefault>
   <mojos>
     <mojo>
-      <goal>Overlay</goal>
-      <description>Will overlay the files from the current source directory into the target
-directory specified. If a duplicate file is encountered, it will overwrite
-it.</description>
+      <goal>copySrcDependency</goal>
+      <description>Will copy the source dependency to a specified location.</description>
       <requiresDependencyResolution>runtime</requiresDependencyResolution>
       <requiresDirectInvocation>false</requiresDirectInvocation>
       <requiresProject>true</requiresProject>
@@ -21,7 +19,7 @@ it.</description>
       <aggregator>false</aggregator>
       <requiresOnline>false</requiresOnline>
       <inheritedByDefault>true</inheritedByDefault>
-      <implementation>org.mojo.javascriptframework.dependencyOverlay.DoOverlay</implementation>
+      <implementation>com.github.jlgrock.javascriptframework.dependencyOverlay.CopySrcDependency</implementation>
       <language>java</language>
       <instantiationStrategy>per-lookup</instantiationStrategy>
       <executionStrategy>once-per-session</executionStrategy>
@@ -64,8 +62,10 @@ it.</description>
       </configuration>
     </mojo>
     <mojo>
-      <goal>copySrcDependency</goal>
-      <description>Will copy the source dependency to a specified location.</description>
+      <goal>Overlay</goal>
+      <description>Will overlay the files from the current source directory into the target
+directory specified. If a duplicate file is encountered, it will overwrite
+it.</description>
       <requiresDependencyResolution>runtime</requiresDependencyResolution>
       <requiresDirectInvocation>false</requiresDirectInvocation>
       <requiresProject>true</requiresProject>
@@ -73,7 +73,7 @@ it.</description>
       <aggregator>false</aggregator>
       <requiresOnline>false</requiresOnline>
       <inheritedByDefault>true</inheritedByDefault>
-      <implementation>org.mojo.javascriptframework.dependencyOverlay.CopySrcDependency</implementation>
+      <implementation>com.github.jlgrock.javascriptframework.dependencyOverlay.DoOverlay</implementation>
       <language>java</language>
       <instantiationStrategy>per-lookup</instantiationStrategy>
       <executionStrategy>once-per-session</executionStrategy>
@@ -124,10 +124,10 @@ it.</description>
       <version>2.0</version>
     </dependency>
     <dependency>
-      <groupId>org.mojo.javascript-framework</groupId>
+      <groupId>com.github.jlgrock.javascript-framework</groupId>
       <artifactId>maven-utils</artifactId>
       <type>jar</type>
-      <version>1.0</version>
+      <version>1.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>

@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration PUBLIC "-//log4j//DTD//EN" "http://logging.apache.org/log4j/docs/api/org/apache/log4j/xml/log4j.dtd">
 <log4j:configuration>
 
-    <appender name="MojoLogAppender" class="org.mojo.javascriptframework.mavenutils.logging.MojoLogAppender">
+    <appender name="MojoLogAppender" class="com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="(%F:%L) %m" />
         </layout>

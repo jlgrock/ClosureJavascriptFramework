@@ -127,7 +127,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	public final void execute() throws MojoExecutionException, MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
-			LOGGER.info("Creating base.js");
+			LOGGER.info("Creating deps.js");
 
 			LOGGER.info("Compiling source files and internal dependencies to file \""
 					+ compiledFile.getAbsolutePath() + "\".");

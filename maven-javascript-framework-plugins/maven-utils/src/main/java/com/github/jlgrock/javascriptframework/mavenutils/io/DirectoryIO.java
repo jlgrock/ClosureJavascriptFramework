@@ -19,7 +19,7 @@ public final class DirectoryIO {
 	 * The Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(DirectoryIO.class);;
-	
+
 	/**
 	 * Copy a directory, including only those that are visible.
 	 * 
@@ -27,7 +27,8 @@ public final class DirectoryIO {
 	 *            the directory to copy from
 	 * @param destDir
 	 *            the directory to copy to
-	 * @throws IOException if there are any problems copying the directory 
+	 * @throws IOException
+	 *             if there are any problems copying the directory
 	 */
 	public static void copyDirectory(final File srcDir, final File destDir)
 			throws IOException {
@@ -35,7 +36,8 @@ public final class DirectoryIO {
 				+ srcDir.getAbsolutePath() + "\" to destination \""
 				+ destDir.getAbsoluteFile() + "\".");
 		if (!srcDir.exists()) {
-			throw new IOException("Directory at location \"" + srcDir.getAbsolutePath() + "\" does not exist.");
+			throw new IOException("Directory at location \""
+					+ srcDir.getAbsolutePath() + "\" does not exist.");
 		}
 		IOFileFilter filter = FileFileFilter.FILE;
 		filter = FileFilterUtils.or(DirectoryFileFilter.DIRECTORY, filter);
@@ -43,14 +45,22 @@ public final class DirectoryIO {
 	}
 
 	/**
-	 * Create a directory.  If the directory doesn't exist, create all 
-	 * directories until you reach that directory.
+	 * Create a directory. If it is a file, it creates the parent directory. If
+	 * the directory doesn't exist, create all directories until you reach that
+	 * directory.
 	 * 
-	 * @param dir the directory that you want to create.
-	 * @throws IOException If the file exists or the system is unable to make the directories
+	 * @param dir
+	 *            the directory that you want to create.
+	 * @throws IOException
+	 *             If the file exists or the system is unable to make the
+	 *             directories
 	 */
 	public static void createDir(final File dir) throws IOException {
-		if(!dir.exists()) {
+		if (dir.isFile()) {
+			throw new IOException("Cannot create directory because the following is a file: " + dir);
+		}
+		
+		if (!dir.exists()) {
 			if (!dir.mkdirs()) {
 				throw new IOException("Can not create dir " + dir);
 			}
@@ -61,10 +71,14 @@ public final class DirectoryIO {
 	 * Will do a recursive deletion of all files and folders based off of a
 	 * given directory.
 	 * 
-	 * @param dir The directory to start the deleting
-	 * @throws IOException If exception occurs during the actual delete or if it is not a directory 
+	 * @param dir
+	 *            The directory to start the deleting
+	 * @throws IOException
+	 *             If exception occurs during the actual delete or if it is not
+	 *             a directory
 	 */
-	public static void recursivelyDeleteDirectory(final File dir) throws IOException {
+	public static void recursivelyDeleteDirectory(final File dir)
+			throws IOException {
 		LOGGER.debug("starting delete of directory \"" + dir.getAbsoluteFile()
 				+ "\".");
 		if (!dir.exists()) {
@@ -96,5 +110,6 @@ public final class DirectoryIO {
 	/**
 	 * Should not use constructor for utility class.
 	 */
-	private DirectoryIO(){}
+	private DirectoryIO() {
+	}
 }

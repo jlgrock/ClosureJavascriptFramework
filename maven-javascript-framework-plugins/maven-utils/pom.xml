@@ -3,10 +3,13 @@
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.3</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>maven-utils</artifactId>
+	<properties>
+		<log4j.version>1.2.16</log4j.version>
+	</properties>
 
 	<dependencies>
 		<!-- Mojo Dependencies -->
@@ -21,6 +24,13 @@
 			<version>2.2.1</version>
 		</dependency>
 
+		<!-- Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
 		<!-- Commons IO -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -31,21 +41,6 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.0</version>
-		</dependency>
-
-		<!-- Log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.8</version>
-		</dependency>
-
-		<!-- Java Testing -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -72,22 +67,30 @@
 		</profile>
 	</profiles>
 
-	<!-- The main repository.  If the library is not in this repository, it should be added (using proxy caching) 
-	by the CM to the repository -->
+	<!-- The main repository. If the library is not in this repository, it should 
+		be added (using proxy caching) by the CM to the repository -->
 	<repositories>
 		<repository>
-			<id>local</id>
+			<id>localNexus</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>local</id>
+			<id>localNexus</id>
 			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 

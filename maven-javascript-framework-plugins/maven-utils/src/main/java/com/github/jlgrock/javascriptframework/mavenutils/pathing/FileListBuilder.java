@@ -72,20 +72,20 @@ public final class FileListBuilder {
 	private static Set<File> recursivelyAnalyze(final File root,
 			final String extension) {
 		Set<File> fileList = new HashSet<File>();
-		File[] list = root.listFiles();
-		if (list != null && list.length != 0) {
-			for (File f : list) {
-				if (f.isDirectory()) {
-					fileList.addAll(recursivelyAnalyze(f.getAbsoluteFile(),
-							extension));
-				} else {
-					String filename = f.getName();
-					if (filename != null
-							&& (extension == null || filename.endsWith("."
-									+ extension))) {
-						logger.debug("In buildlist, adding file to list : \""
-								+ f.getAbsolutePath() + "\"");
-						fileList.add(f);
+		if (root != null) {
+			File[] list = root.listFiles();
+			if (list != null && list.length != 0) {
+				for (File f : list) {
+					if (f.isDirectory()) {
+						fileList.addAll(recursivelyAnalyze(f.getAbsoluteFile(),
+								extension));
+					} else {
+						FileNameSeparator fns = new FileNameSeparator(f);
+						if (extension == null || fns.getExtension().equalsIgnoreCase(extension)) {
+							logger.debug("In buildlist, adding file to list : \""
+									+ f.getAbsolutePath() + "\"");
+							fileList.add(f);
+						}
 					}
 				}
 			}

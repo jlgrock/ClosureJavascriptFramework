@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
+		<artifactId>maven-javascript-framework-plugins</artifactId>
+		<version>1.3</version>
+	</parent>
+	<artifactId>closure-testing-report-maven-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+	<name>Closure Testing Report Maven Plugin</name>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<description>The plugin that will run the google test suite on your source code.</description>
+	<properties>
+		<doxia.version>1.1</doxia.version>
+	</properties>
+
+	<dependencies>
+		<!-- Mojo Dependencies -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>${maven-plugin-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>${maven.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.reporting</groupId>
+			<artifactId>maven-reporting-api</artifactId>
+			<version>${maven-report-plugin-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.reporting</groupId>
+			<artifactId>maven-reporting-impl</artifactId>
+			<version>${maven-report-plugin-impl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>${plexus.utils.version}</version>
+		</dependency>
+
+		<!-- Doxia -->
+		<dependency>
+			<groupId>org.apache.maven.doxia</groupId>
+			<artifactId>doxia-sink-api</artifactId>
+			<version>${doxia.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.doxia</groupId>
+			<artifactId>doxia-decoration-model</artifactId>
+			<version>${doxia.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.doxia</groupId>
+			<artifactId>doxia-site-renderer</artifactId>
+			<version>${doxia.version}</version>
+		</dependency>
+
+		<!-- Maven Framework Utilities -->
+		<dependency>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
+			<artifactId>maven-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
+			<artifactId>closure-testing-library</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- Java Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-maven-plugin.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>deployRelease</id>
+			<distributionManagement>
+				<repository>
+					<id>local releases</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>deploySnapshot</id>
+			<distributionManagement>
+				<repository>
+					<id>local snapshots</id>
+					<name>local nexus</name>
+					<url>http://zeus/nexus/content/repositories/snapshots/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
+	<!-- The main repository. If the library is not in this repository, it should 
+		be added (using proxy caching) by the CM to the repository -->
+	<repositories>
+		<repository>
+			<id>localNexus</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>localNexus</id>
+			<url>http://zeus/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>

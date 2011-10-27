@@ -89,11 +89,11 @@ public class JsarDependency extends AbstractMojo {
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(project.getArtifacts());
 		
 		//extract internal dependencies
-		LOGGER.info("Extracting internal jsar artifacts to location \"" + outputDirectory.getAbsolutePath() + "\"");
+		LOGGER.info("Extracting internal jsar (scope=compile) artifacts to location \"" + outputDirectory.getAbsolutePath() + "\"");
 		extractJSArtifacts.extract(PackagingType.JSAR, ScopeType.COMPILE, outputDirectory);
 
 		//extract external dependencies
-		LOGGER.info("Extracting external fjsar artifacts to location \"" + externalDirectory.getAbsolutePath() + "\"");
+		LOGGER.info("Extracting external (scope=test) jsar artifacts to location \"" + externalDirectory.getAbsolutePath() + "\"");
 		extractJSArtifacts.extract(PackagingType.JSAR, ScopeType.TEST, externalDirectory);
 		
 		//extract google dependencies (if needed)

@@ -1,0 +1,60 @@
+<!--plugin>
+    <description></description>
+    <groupId>com.training.plugins</groupId>
+    <artifactId>maven-zip-plugin</artifactId>
+    <version>1-SNAPSHOT</version>
+    <goalPrefix>zip</goalPrefix>
+    <isolatedRealm>false</isolatedRealm>
+    <inheritedByDefault>true</inheritedByDefault>
+    <mojos>
+        <mojo>
+            <goal>zip</goal>
+            <description>Zips up the output directory.</description>
+            <requiresDirectInvocation>false</requiresDirectInvocation>
+            <requiresProject>true</requiresProject>
+            <requiresReports>false</requiresReports>
+            <aggregator>false</aggregator>
+            <requiresOnline>false</requiresOnline>
+            <inheritedByDefault>true</inheritedByDefault>
+            <phase>package</phase>
+            <implementation>com.training.plugins.ZipMojo</implementation>
+            <language>java</language>
+            <instantiationStrategy>per-lookup</instantiationStrategy>
+            <executionStrategy>once-per-session</executionStrategy>
+            <parameters>
+                <parameter>
+                    <name>baseDirectory</name>
+                    <type>java.io.File</type>
+                    <required>false</required>
+                    <editable>true</editable>
+                    <description>Base directory of the project.</description>
+                </parameter>
+                <parameter>
+                    <name>buildDirectory</name>
+                    <type>java.io.File</type>
+                    <required>false</required>
+                    <editable>true</editable>
+                    <description>Directory containing the build files.</description>
+                </parameter>
+            </parameters>
+            <configuration>
+                <buildDirectory implementation="java.io.File">
+                    ${project.build.directory}</buildDirectory>
+                <baseDirectory implementation="java.io.File">
+                    ${basedir}</baseDirectory>
+            </configuration>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.archiver.Archiver</role>
+                    <role-hint>zip</role-hint>
+                    <field-name>zipArchiver</field-name>
+                </requirement>
+            </requirements>
+        </mojo>
+    </mojos>
+    <dependencies>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>1.3.2</version>
+    </dependencies>
+</plugin-->
