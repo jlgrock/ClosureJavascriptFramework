@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="187" branches-covered="0" branches-valid="44" complexity="1.5070422535211268" version="1.9.4.1" timestamp="1319130154854">
+<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="187" branches-covered="0" branches-valid="44" complexity="1.5070422535211268" version="1.9.4.1" timestamp="1319716343211">
 	<sources>
 		<source>C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/source-archive-maven-plugin/src/main/java</source>
 		<source>--source</source>
