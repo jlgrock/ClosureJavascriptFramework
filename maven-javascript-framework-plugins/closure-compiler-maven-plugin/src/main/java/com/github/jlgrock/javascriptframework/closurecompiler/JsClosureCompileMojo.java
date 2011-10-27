@@ -162,22 +162,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		CompilerOptions compilerOptions = new CompilerOptions();
+		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
-
-		// TODO: Add all of the compiler options, just in case
-		// compilerOptions.setCheckFunctions(level);
-		// compilerOptions.setCheckGlobalNamesLevel(level);
-		// compilerOptions.setChainCalls(value);
-		// compilerOptions.setAcceptConstKeyword(value);
-		// compilerOptions.setAggressiveVarCheck(level);
-		// compilerOptions.setAliasTransformationHandler(changes);
-		// compilerOptions.setAssumeClosuresOnlyCaptureReferences(enable);
-		// compilerOptions.setAssumeStrictThis(enable);
-		// compilerOptions.setBrokenClosureRequiresLevel(level);
-		// compilerOptions.setChainCalls(value);
-		// compilerOptions.setCheckGlobalThisLevel(level);
-		// compilerOptions.set
-		// compilationLevel.setOptionsForCompilationLevel(compilerOptions);
+		//TODO add more of the compiler options at a later point?
 
 		Compiler compiler = new Compiler();
 		List<JSSourceFile> internalJSSourceFiles = extractInternalFiles();
