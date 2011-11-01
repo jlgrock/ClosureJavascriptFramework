@@ -18,7 +18,7 @@ public class CompilePreProcessor extends AbstractPreProcessorFramework {
 	private File sourceDirectory;
 
 	/**
-	 * @parameter default-value="${project.build.directory}${file.separator}javascriptframework${file.separator}processedJavascript"
+	 * @parameter default-value="${project.build.directory}${file.separator}javascriptFramework${file.separator}processedJavascript"
 	 */
 	private File destinationDirectory;
 

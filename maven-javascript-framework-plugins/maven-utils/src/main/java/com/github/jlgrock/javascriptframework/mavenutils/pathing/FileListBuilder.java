@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
  * Simple class for building a file list.
@@ -19,7 +20,7 @@ public final class FileListBuilder {
 	/**
 	 * The Logger.
 	 */
-	private static Logger logger = Logger.getLogger(FileListBuilder.class);
+	private final static Logger LOGGER = Logger.getLogger(FileListBuilder.class);
 
 	/**
 	 * Build a list of all files within a given root. If the root that is given
@@ -50,46 +51,42 @@ public final class FileListBuilder {
 	public static Set<File> buildFilteredList(final File root,
 			final String extension) {
 		if (extension == null) {
-			logger.debug("building list with no filters...");
+			LOGGER.debug("building list with no extension filters...");
 		} else {
-			logger.debug("building list with filter \"" + extension + "\"");
+			LOGGER.debug("building list with by extension filter \"" + extension + "\"");
 		}
-		Set<File> fileList = recursivelyAnalyze(root, extension);
+		Set<File> fileList = null;
+		if (root.exists()) {
+			DirectoryScanner ds = new DirectoryScanner();
+			ds.setBasedir(root);
+			String includes = "**/*";
+			if (extension != null) {
+				includes += "." + extension;
+			}
+			ds.setIncludes(includes.split(" "));
+			//TODO can add exclude functionality later...
+			// excludes
+			//ds.setExcludes(this.excludes.split(" "));
+			//ds.addDefaultExcludes();
+			ds.setCaseSensitive(true);
+			ds.scan();
+			
+			String[] relPaths = ds.getIncludedFiles();
+			
+			fileList = turnRelativeIntoFiles(root, relPaths);
+		} else {
+			fileList = new HashSet<File>();
+		}
+		LOGGER.debug("fileList result:" + fileList);
 		return fileList;
 	}
 
-	/**
-	 * Recursively analyze all files and directories to check whether it matches.
-	 * the extension
-	 * 
-	 * @param root
-	 *            where to start from
-	 * @param extension
-	 *            the extension of the files that you want in the set
-	 * @return the set of files with the extension specified from the root
-	 *         specified
-	 */
-	private static Set<File> recursivelyAnalyze(final File root,
-			final String extension) {
-		Set<File> fileList = new HashSet<File>();
-		if (root != null) {
-			File[] list = root.listFiles();
-			if (list != null && list.length != 0) {
-				for (File f : list) {
-					if (f.isDirectory()) {
-						fileList.addAll(recursivelyAnalyze(f.getAbsoluteFile(),
-								extension));
-					} else {
-						FileNameSeparator fns = new FileNameSeparator(f);
-						if (extension == null || fns.getExtension().equalsIgnoreCase(extension)) {
-							logger.debug("In buildlist, adding file to list : \""
-									+ f.getAbsolutePath() + "\"");
-							fileList.add(f);
-						}
-					}
-				}
-			}
+	public static Set<File> turnRelativeIntoFiles(final File root, final String[] relativePaths) {
+		Set<File> files = new HashSet<File>();
+		for (int i = 0; i < relativePaths.length; i++) {
+			File file = new File(root, relativePaths[i]);
+			files.add(file);
 		}
-		return fileList;
+		return files;
 	}
 }

@@ -31,7 +31,7 @@ public class ZipUtils {
 	/**
 	 * The default buffer size for reading.
 	 */
-	static final int BUFFER_SIZE = 1024;
+	private static final int BUFFER_SIZE = 1024;
 	/**
 	 * Zip up a directory and store it into a zip file.
 	 * 
@@ -39,7 +39,7 @@ public class ZipUtils {
 	 * @param destinationFile the archive file that you would like to create
 	 * @throws IOException If unable to read files from the inFolder or write to the destinationFile
 	 */
-	public final void zipFolder(final File inFolder, final File destinationFile) throws IOException {
+	public final static void zipFolder(final File inFolder, final File destinationFile) throws IOException {
 		BufferedInputStream in = null;
 		byte[] data = new byte[BUFFER_SIZE];
 
@@ -79,7 +79,7 @@ public class ZipUtils {
 	 * @param inFolder the directory to read from
 	 * @return the collection of files, relative to the inFolder
 	 */
-	private Collection<RelativeFile> buildFileList(final File inFolder) {
+	private static Collection<RelativeFile> buildFileList(final File inFolder) {
 		return readDirectory(inFolder, "");
 	}
 	
@@ -90,7 +90,7 @@ public class ZipUtils {
 	 * @param relativePath the collection of files, relative to the inFolder
 	 * @return the collection of relative files from reading the directory
 	 */
-	private Collection<RelativeFile> readDirectory(final File inFolder, final String relativePath) {
+	private static Collection<RelativeFile> readDirectory(final File inFolder, final String relativePath) {
 		Collection<RelativeFile> returnCollection = new ArrayList<RelativeFile>();
 		File[] files = inFolder.listFiles();
 		for (int i=0; i < files.length; i++) {

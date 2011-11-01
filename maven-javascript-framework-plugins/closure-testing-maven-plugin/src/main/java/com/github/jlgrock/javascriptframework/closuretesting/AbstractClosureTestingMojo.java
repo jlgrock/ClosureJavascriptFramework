@@ -45,7 +45,7 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 * The location of generated dependency javascript file.
 	 * 
 	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}deps.js"
+	 *            "${project.build.directory}${file.separator}${project.build.finalName}-debug.js"
 	 */
 	private File dependencyLocation;
 

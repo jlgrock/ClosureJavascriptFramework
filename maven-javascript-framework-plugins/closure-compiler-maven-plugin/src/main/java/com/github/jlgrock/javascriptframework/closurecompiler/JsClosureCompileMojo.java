@@ -2,27 +2,32 @@ package com.github.jlgrock.javascriptframework.closurecompiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStream;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.google.javascript.jscomp.CommandLineRunner;
 import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.Compiler;
 import com.google.javascript.jscomp.CompilerOptions;
 import com.google.javascript.jscomp.JSError;
 import com.google.javascript.jscomp.JSSourceFile;
 import com.google.javascript.jscomp.Result;
+import com.google.javascript.jscomp.WarningLevel;
 
 /**
  * 
@@ -51,7 +56,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * compiler.
 	 * 
 	 * @parameter 
-	 *            default-value="${project.build.directory}${file.separator}deps.js"
+	 *            default-value="${project.build.directory}${file.separator}${project.build.finalName}-debug.js"
 	 * @required
 	 */
 	private File generatedDepsJS;
@@ -124,7 +129,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private String compileLevel;
 
 	@Override
-	public final void execute() throws MojoExecutionException, MojoFailureException {
+	public final void execute() throws MojoExecutionException,
+			MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
 			LOGGER.info("Creating deps.js");
@@ -142,18 +148,23 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Run the compiler on the calculated dependencies, input files, and external files.
+	 * Run the compiler on the calculated dependencies, input files, and
+	 * external files.
 	 * 
-	 * @throws MojoExecutionException if the options are set incorrectly for the compiler
-	 * @throws MojoFailureException if there is a problem executing the dependency creation or the compiler
-	 * @throws IOException if there is a problem reading or writing to the files
+	 * @throws MojoExecutionException
+	 *             if the options are set incorrectly for the compiler
+	 * @throws MojoFailureException
+	 *             if there is a problem executing the dependency creation or
+	 *             the compiler
+	 * @throws IOException
+	 *             if there is a problem reading or writing to the files
 	 */
 	private void compile() throws MojoExecutionException, MojoFailureException,
 			IOException {
 		CompilationLevel compilationLevel = null;
 		try {
 			compilationLevel = CompilationLevel.valueOf(compileLevel);
-			LOGGER.info("Compler set to optimization level \"" + compileLevel
+			LOGGER.info("Compiler set to optimization level \"" + compileLevel
 					+ "\".");
 		} catch (IllegalArgumentException e) {
 			LOGGER.error("Compilation level invalid.  Aborting.");
@@ -162,19 +173,85 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		CompilerOptions compilerOptions = new CompilerOptions();
+		WarningLevel wLevel = WarningLevel.VERBOSE;
+		wLevel.setOptionsForWarningLevel(compilerOptions);
+		// WarningLevel.QUIET.setOptionsForWarningLevel(options)
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
-		//TODO add more of the compiler options at a later point?
+		// compilerOptions.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_REGEXP,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_TYPES,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.CONST,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.CONSTANT_PROPERTY,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.DEPRECATED,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.DUPLICATE_VARS,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.ES5_STRICT,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.EXTERNS_VALIDATION,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.FILEOVERVIEW_JSDOC,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.GLOBAL_THIS,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.INTERNET_EXPLORER_CHECKS,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.INVALID_CASTS,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.STRICT_MODULE_DEP_CHECK,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.TWEAKS,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.TYPE_INVALIDATION,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.UNDEFINED_VARIABLES,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.UNKNOWN_DEFINES,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE,
+		// CheckLevel.ERROR);
+		// compilerOptions.setWarningLevel(DiagnosticGroups.VISIBILITY,
+		// CheckLevel.ERROR);
+		// compilerOptions.setGenerateExports(true);
 
-		Compiler compiler = new Compiler();
+		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
+				Level.DEBUG));
+		Compiler compiler = new Compiler(ps);
 		List<JSSourceFile> internalJSSourceFiles = extractInternalFiles();
 		List<JSSourceFile> externalJSSourceFiles = extractExternalFiles();
 
 		for (JSSourceFile jsf : internalJSSourceFiles) {
-			LOGGER.info("source files: " + jsf.getOriginalPath());
+			LOGGER.debug("source files: " + jsf.getOriginalPath());
 		}
-		Result result = compiler.compile(externalJSSourceFiles,
-				internalJSSourceFiles, compilerOptions);
+
+		Result result = null;
+		try {
+			result = compiler.compile(externalJSSourceFiles,
+					internalJSSourceFiles, compilerOptions);
+		} catch (Exception e) {
+			LOGGER.error("There was a problem with the compile.  Please review input.");
+			LOGGER.error("externalJSSourceFiles: " + externalJSSourceFiles);
+			LOGGER.error("internalJSSourceFiles: " + internalJSSourceFiles);
+			LOGGER.error("compilerOptions: " + compilerOptions); // TODO make
+																	// this a
+																	// string?
+			e.printStackTrace();
+			throw new MojoExecutionException(e.getMessage(), e);
+		}
 
 		listErrors(result);
 
@@ -192,14 +269,28 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * Create the dependencies JS file.
 	 * 
-	 * @param src the location of the source files
-	 * @param combinedInternal the set of combined internal files (internal maven dependencies, closure library, and source files)
+	 * @param src
+	 *            the location of the source files
+	 * @param combinedInternal
+	 *            the set of combined internal files (internal maven
+	 *            dependencies, closure library, and source files)
 	 * @return the list of dependencies, in dependency order
-	 * @throws MojoExecutionException if the dependency generator is not able to make a file
-	 * @throws IOException if there is a problem reading or writing to any of the files
+	 * @throws MojoExecutionException
+	 *             if the dependency generator is not able to make a file
+	 * @throws IOException
+	 *             if there is a problem reading or writing to any of the files
 	 */
-	private List<File> createDepsJS(final Set<File> src, final Set<File> combinedInternal)
-			throws MojoExecutionException, IOException {
+	private List<File> createDepsJS(final Set<File> src,
+			final Set<File> combinedInternal) throws MojoExecutionException,
+			IOException {
+		File baseLocation = getBaseLocation();
+
+		List<File> sortedDeps = CalcDeps.executeCalcDeps(baseLocation, src,
+				combinedInternal, generatedDepsJS);
+		return sortedDeps;
+	}
+
+	private File getBaseLocation() throws MojoExecutionException {
 		File baseLocation = new File(closureLibraryLocation.getAbsoluteFile()
 				+ File.separator + "closure" + File.separator + "goog"
 				+ File.separator + "base.js");
@@ -209,15 +300,14 @@ public class JsClosureCompileMojo extends AbstractMojo {
 							+ baseLocation.getParentFile().getAbsolutePath()
 							+ "\"");
 		}
-		List<File> sortedDeps = CalcDeps.executeCalcDeps(baseLocation, src,
-				combinedInternal, generatedDepsJS);
-		return sortedDeps;
+		return baseLocation;
 	}
-	
+
 	/**
 	 * List the errors that google is providing from the compiler output.
 	 * 
-	 * @param result the results from the compiler
+	 * @param result
+	 *            the results from the compiler
 	 */
 	private void listErrors(final Result result) {
 		for (JSError warning : result.warnings) {
@@ -230,15 +320,20 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Extract internal dependency libraries, source to the location specified in the settings.  
-	 * Then create the deps to be loaded first.
+	 * Extract internal dependency libraries, source to the location specified
+	 * in the settings. Then create the deps to be loaded first.
 	 * 
-	 * @return the list of the files that are extracted (plus the generated deps file)
-	 * @throws MojoExecutionException if there is a problem generating the dependency file
-	 * @throws IOException if there is a problem reading or extracting the files
+	 * @return the list of the files that are extracted (plus the generated deps
+	 *         file)
+	 * @throws MojoExecutionException
+	 *             if there is a problem generating the dependency file
+	 * @throws IOException
+	 *             if there is a problem reading or extracting the files
 	 */
 	private List<JSSourceFile> extractInternalFiles()
 			throws MojoExecutionException, IOException {
+		File baseFile = getBaseLocation();
+		
 		Set<File> listSourceFiles = listFiles(sourceDirectory);
 		LOGGER.debug("number of source files:" + listSourceFiles.size());
 
@@ -250,10 +345,10 @@ public class JsClosureCompileMojo extends AbstractMojo {
 
 		HashSet<File> combinedInternal = new HashSet<File>();
 
+		combinedInternal.add(baseFile);
 		combinedInternal.addAll(listSourceFiles);
 		combinedInternal.addAll(internalSourceFiles);
 		combinedInternal.addAll(closureLibFiles);
-
 		List<File> sortedDeps = createDepsJS(listSourceFiles, combinedInternal);
 		if (!generatedDepsJS.exists()) {
 			LOGGER.error("The generated dependency does not exist.  This may cause dependency order not to resolve");
@@ -262,6 +357,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				.fromFile(generatedDepsJS);
 
 		ArrayList<JSSourceFile> combinedJsInternal = new ArrayList<JSSourceFile>();
+		combinedJsInternal.add(JSSourceFile.fromFile(baseFile));
 		combinedJsInternal.add(generatedDepsJSSrcFile);
 		combinedJsInternal.addAll(convertToJSSourceFiles(sortedDeps));
 
@@ -269,21 +365,27 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Extract external dependency libraries to the location specified in the settings.
+	 * Extract external dependency libraries to the location specified in the
+	 * settings.
 	 * 
 	 * @return the list of the files that are extracted
+	 * @throws IOException
+	 *             if unable to read the default externs
 	 */
-	private List<JSSourceFile> extractExternalFiles() {
+	private List<JSSourceFile> extractExternalFiles() throws IOException {
 		Set<File> externalSourceFiles = listFiles(externalDependencies);
 		List<JSSourceFile> externalJSSourceFiles = convertToJSSourceFiles(externalSourceFiles);
+		externalJSSourceFiles.addAll(CommandLineRunner.getDefaultExterns());
 		LOGGER.debug("number of external files:" + externalJSSourceFiles.size());
 		return externalJSSourceFiles;
 	}
 
 	/**
-	 * A simple util to convert a collection of files to a list of closure JSSourceFiles.
+	 * A simple util to convert a collection of files to a list of closure
+	 * JSSourceFiles.
 	 * 
-	 * @param jsFiles the collection of files to convert
+	 * @param jsFiles
+	 *            the collection of files to convert
 	 * @return the list of google formatted objects
 	 */
 	private static List<JSSourceFile> convertToJSSourceFiles(
@@ -298,7 +400,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * List the javascript files in a directory.
 	 * 
-	 * @param directory the directory to search
+	 * @param directory
+	 *            the directory to search
 	 * @return the set of files with the ".js" extension
 	 */
 	private Set<File> listFiles(final File directory) {

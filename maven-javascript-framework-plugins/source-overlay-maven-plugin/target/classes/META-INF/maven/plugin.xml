@@ -4,7 +4,7 @@
   <description>A plugin that is used to overlay an entire source directory over another, replacing any files that are duplicated. This is similar to the War Overlay functionality provided by the Mave War Plugin, with the exception that this will do it for the entire source directory rather than just the webapp directory.</description>
   <groupId>com.github.jlgrock.javascript-framework</groupId>
   <artifactId>source-overlay-maven-plugin</artifactId>
-  <version>1.3</version>
+  <version>1.4</version>
   <goalPrefix>source-overlay</goalPrefix>
   <isolatedRealm>false</isolatedRealm>
   <inheritedByDefault>true</inheritedByDefault>
@@ -127,7 +127,7 @@ it.</description>
       <groupId>com.github.jlgrock.javascript-framework</groupId>
       <artifactId>maven-utils</artifactId>
       <type>jar</type>
-      <version>1.3</version>
+      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -229,7 +229,7 @@ it.</description>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <type>jar</type>
-      <version>1.2.8</version>
+      <version>1.2.16</version>
     </dependency>
   </dependencies>
 </plugin>

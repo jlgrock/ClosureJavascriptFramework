@@ -23,7 +23,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder
  * 
  * @goal report
  * @phase site
- * @requiresDependencyResolution test
+ * @execute phase="test"
  */
 public class ClosureTestingReportMojo extends AbstractMavenReport {
 	/**
