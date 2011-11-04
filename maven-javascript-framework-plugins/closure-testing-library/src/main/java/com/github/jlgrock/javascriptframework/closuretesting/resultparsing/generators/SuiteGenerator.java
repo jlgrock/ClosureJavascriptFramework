@@ -24,7 +24,13 @@ public class SuiteGenerator {
 	/**
 	 * The location of the generated dependency file.
 	 */
-	private final File dependencyLocation;
+	private final File depsLocation;
+
+	
+	/**
+	 * The location of the generated dependency file.
+	 */
+	private final Set<File> testDependencies;
 
 	/**
 	 * Constructor.
@@ -38,10 +44,13 @@ public class SuiteGenerator {
 	 *            the location of the generated dependency file
 	 */
 	public SuiteGenerator(final Set<File> sourceFilesIn,
-			final File closureLibraryBaseLocationIn, final File dependencyLocationIn) {
-		this.sourceFiles = sourceFilesIn;
-		this.closureLibraryBaseLocation = closureLibraryBaseLocationIn;
-		this.dependencyLocation = dependencyLocationIn;
+			final File closureLibraryBaseLocationIn, 
+			final File depsLocationIn, 
+			final Set<File> testDependenciesIn) {
+		sourceFiles = sourceFilesIn;
+		closureLibraryBaseLocation = closureLibraryBaseLocationIn;
+		depsLocation = depsLocationIn;
+		testDependencies = testDependenciesIn;
 	}
 
 	/**
@@ -53,7 +62,7 @@ public class SuiteGenerator {
 		Set<TestCaseGenerator> testCaseGenerators = new HashSet<TestCaseGenerator>();
 		for (File sourceFile : sourceFiles) {
 			testCaseGenerators.add(new TestCaseGenerator(
-					closureLibraryBaseLocation, dependencyLocation, sourceFile));
+					closureLibraryBaseLocation, depsLocation, sourceFile, testDependencies));
 		}
 		return testCaseGenerators;
 	}
@@ -77,5 +86,4 @@ public class SuiteGenerator {
 		}
 		return outputFiles;
 	}
-
 }

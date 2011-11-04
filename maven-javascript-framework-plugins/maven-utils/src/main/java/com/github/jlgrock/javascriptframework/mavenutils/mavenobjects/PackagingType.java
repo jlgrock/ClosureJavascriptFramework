@@ -10,7 +10,7 @@ public enum PackagingType {
 	/**
 	 * The valid packaging types.
 	 */
-	JAR("jar"), WAR("war"), JSAR("jsar"), FJSAR("fjsar");
+	JAR("jar"), WAR("war"), JSAR("jsar"), ANY("any");
 
 	/**
 	 * The name of the packaging type.

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -30,6 +31,11 @@ public class TestCaseRef {
 	 * The location of the test file.
 	 */
 	private final File testFileLocation;
+
+	/**
+	 * A set of files that will serve as script tag includes to the test case
+	 */
+	private final Set<File> testDeps;
 
 	/**
 	 * The begin tag for html.
@@ -80,11 +86,12 @@ public class TestCaseRef {
 	 *            the file to be written
 	 */
 	public TestCaseRef(final File closureLocation, final File depsLocation,
-			final File testFile, final File testCase) {
-		this.closureBaseLocation = closureLocation;
-		this.testCaseFileLocation = testCase;
-		this.dependencyLocation = depsLocation;
-		this.testFileLocation = testFile;
+			final File testFile, final File testCase, final Set<File> testDepsIn) {
+		closureBaseLocation = closureLocation;
+		testCaseFileLocation = testCase;
+		dependencyLocation = depsLocation;
+		testFileLocation = testFile;
+		testDeps = testDepsIn;
 	}
 
 	/**
@@ -94,10 +101,10 @@ public class TestCaseRef {
 	 *             if there is a problem writing to the file
 	 */
 	public final void writeToFile() throws IOException {
-		//create the directories if they haven't been made already
-		//TODO what if this is at the root? side case to eventually handle
+		// create the directories if they haven't been made already
+		// TODO what if this is at the root? side case to eventually handle
 		testCaseFileLocation.getParentFile().mkdirs();
-		
+
 		FileWriter fileWriter = new FileWriter(testCaseFileLocation);
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		try {
@@ -113,16 +120,26 @@ public class TestCaseRef {
 
 			bufferedWriter.write(BEGIN_BODY);
 
+			// test requires
+			for (File testDep : testDeps) {
+				bufferedWriter.write(BEGIN_SCRIPT);
+				bufferedWriter.write(RelativePath.getRelPathFromBase(
+					testCaseFileLocation, testDep));
+				bufferedWriter.write(END_SCRIPT);
+			}
+			
 			// goog.base script
 			bufferedWriter.write(BEGIN_SCRIPT);
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
 					testCaseFileLocation, closureBaseLocation));
 			bufferedWriter.write(END_SCRIPT);
+			
 			// deps script
 			bufferedWriter.write(BEGIN_SCRIPT);
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
 					testCaseFileLocation, dependencyLocation));
 			bufferedWriter.write(END_SCRIPT);
+			
 			// test case
 			bufferedWriter.write(BEGIN_SCRIPT);
 			bufferedWriter.write(RelativePath.getRelPathFromBase(

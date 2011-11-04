@@ -11,16 +11,16 @@ import java.io.File;
  * @goal test-preprocessors
  * @threadSafe
  */
-public class TestPreProcessor extends AbstractPreProcessorFramework {
+public class TestPreProcessor extends AbstractPreProcessorFrameworkMojo {
 	/**
 	 * @parameter default-value="${project.basedir}${file.separator}src${file.separator}test${file.separator}javascript"
 	 */
 	private File sourceDirectory;
 
 	/**
-	 * @parameter default-value="${project.build.directory}${file.separator}javascriptframework${file.separator}processed-javascript"
+	 * @parameter default-value="${project.build.directory}${file.separator}javascriptframework"
 	 */
-	private File destinationDirectory;
+	private File frameworkTargetDirectory;
 
 	@Override
 	public final File getSourceDirectory() {
@@ -28,7 +28,7 @@ public class TestPreProcessor extends AbstractPreProcessorFramework {
 	}
 
 	@Override
-	public final File getDestinationDirectory() {
-		return destinationDirectory;
+	public final File getFrameworkTargetDirectory() {
+		return frameworkTargetDirectory;
 	}
 }

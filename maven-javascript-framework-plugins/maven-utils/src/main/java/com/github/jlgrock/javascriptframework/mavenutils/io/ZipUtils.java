@@ -111,10 +111,25 @@ public class ZipUtils {
 	 * @throws IOException if unable to read from the zip stream
 	 */
 	public static void unzip(final ZipInputStream zis, final File outputDir) throws IOException {
+		unzip(zis, null, outputDir);
+	}
+	
+	/**
+	 * Unzip Zipfile contents matching zipEntryName to a directory.
+	 * 
+	 * @param zis the stream of the zipFile to extract artifacts from
+	 * @param outputDir the location to put the artifacts from the zipfile
+	 * @throws IOException if unable to read from the zip stream
+	 */
+	public static void unzip(final ZipInputStream zis, final String zipEntryName, final File outputDir) throws IOException {
 		ZipEntry entry = null;
 		try {
 			while ((entry = zis.getNextEntry()) != null) {
-				ZipUtils.unzipEntry(zis, entry, outputDir);
+				if (zipEntryName == null || entry.getName().startsWith(zipEntryName)) {
+					if (zipEntryName != null)
+						LOGGER.info("zipEntryName: " + zipEntryName);
+					ZipUtils.unzipEntry(zis, entry, outputDir);
+				}
 			}
 		} finally {
 			zis.close();

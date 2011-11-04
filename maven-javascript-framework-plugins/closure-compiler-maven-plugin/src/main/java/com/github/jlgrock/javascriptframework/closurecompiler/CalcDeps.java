@@ -13,6 +13,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
+
 /**
  * Represents a dependency that is used to build and walk a tree. This is a
  * direct port from the google python script.
@@ -105,6 +107,7 @@ public final class CalcDeps {
 	private static boolean outputDeps(final File googleBaseFile,
 			final List<DependencyInfo> sortedDeps,
 			final File outputFile) throws IOException {
+		DirectoryIO.createDir(outputFile.getParentFile());
 		FileWriter fw = new FileWriter(outputFile);
 		BufferedWriter buff = new BufferedWriter(fw);
 

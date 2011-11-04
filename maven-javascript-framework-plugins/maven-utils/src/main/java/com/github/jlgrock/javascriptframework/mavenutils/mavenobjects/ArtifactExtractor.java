@@ -49,13 +49,30 @@ public class ArtifactExtractor {
 	 */
 	public final void extract(final PackagingType packagingType, 
 			final ScopeType scope, final File outputDirectory) throws IOException {
+		extract(null, packagingType, scope, outputDirectory);
+	}
+	
+	/**
+	 * The action to extract the artifacts that were set at the constructor.
+	 * 
+	 * @param packagingType what type of arhives to extract based on the packaging
+	 * @param scope what type of arhives to extract based on the scope
+	 * @param outputDirectory the directory to extract to
+	 * @throws IOException if there is a problem unzipping or copying files
+	 */
+	public final void extract(final String zipEntryName, final PackagingType packagingType, 
+			final ScopeType scope, final File outputDirectory) throws IOException {
 		LOGGER.debug("unfiltered artifacts size (" + packagingType + ":" + scope + ") : " + artifacts.size());
 		
 		//filter artifacts
 		Set<Artifact> filteredArtifacts = filterArtifactList(packagingType, scope);
 		LOGGER.debug("filtered artifacts size (" + packagingType + "/" + scope + "): " + filteredArtifacts.size());
 		//unzip to directory
-		extractSet(filteredArtifacts, outputDirectory);
+		if (zipEntryName != null) {
+			extractSet(zipEntryName, filteredArtifacts, outputDirectory);
+		} else {
+			extractSet(filteredArtifacts, outputDirectory);
+		}
 	}
 	
 	/**
@@ -66,14 +83,30 @@ public class ArtifactExtractor {
 	 * @throws IOException if there is a problem unzipping or copying the files
 	 */
 	private void extractSet(final Set<? extends Artifact> filteredArtifacts, final File outputDirectory) throws IOException {
+		extractSet(null, filteredArtifacts, outputDirectory);
+	}
+	
+	/**
+	 * Extract a set of artifacts.
+	 * 
+	 * @param filteredArtifacts the artifacts to extract
+	 * @param outputDirectory the directory to copy to
+	 * @throws IOException if there is a problem unzipping or copying the files
+	 */
+	private void extractSet(final String zipEntryName, final Set<? extends Artifact> filteredArtifacts, final File outputDirectory) throws IOException {
 		for (Artifact artifact:filteredArtifacts) {
 			LOGGER.debug("Processing artifact" + artifact.getArtifactId());
 			File file = artifact.getFile();
 			InputStream is = new FileInputStream(file);
 			ZipInputStream zis = new ZipInputStream(is);
-			ZipUtils.unzip(zis, outputDirectory);
+			if (zipEntryName == null) {
+				ZipUtils.unzip(zis, outputDirectory);
+			} else {
+				ZipUtils.unzip(zis, zipEntryName, outputDirectory);
+			}
 		}
 	}
+	
 
 	/**
 	 * Filter an Artifact List.
@@ -95,7 +128,8 @@ public class ArtifactExtractor {
 			if (artifactPackagingType == null) {
 				artifactPackagingType = PackagingType.JAR;
 			}
-			if (scopeType.equals(artifactScopeType) && packagingType.equals(artifactPackagingType)) {
+			if ((scopeType.equals(artifactScopeType) || scopeType.equals(ScopeType.ANY)) 
+					&& (packagingType.equals(artifactPackagingType) || packagingType.equals(PackagingType.ANY))) {
 				returnArtifacts.add(a);
 			}
 		}

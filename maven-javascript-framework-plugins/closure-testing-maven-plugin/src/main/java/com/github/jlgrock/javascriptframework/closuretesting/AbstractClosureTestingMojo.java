@@ -29,9 +29,9 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 * is not pulling in. Need to look into this.
 	 * 
 	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}testSuite"
+	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 */
-	private File testOutputDirectory;
+	private File frameworkTargetDirectory;
 
 	/**
 	 * The location of the closure library.
@@ -40,14 +40,6 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}closure-library"
 	 */
 	private File closureLibraryLocation;
-
-	/**
-	 * The location of generated dependency javascript file.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}${project.build.finalName}-debug.js"
-	 */
-	private File dependencyLocation;
 
 	/**
 	 * Set this to "true" to skip running tests, but still compile them. Its use
@@ -88,25 +80,14 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 		return testSourceDirectory;
 	}
 
-	/**
-	 * @return the testClassesDirectory
-	 */
-	public final File getTestOutputDirectory() {
-		return testOutputDirectory;
+	public final File getFrameworkTargetDirectory() {
+		return frameworkTargetDirectory;
 	}
-
 	/**
 	 * @return the closureLibrarylocation
 	 */
 	public final File getClosureLibrarylocation() {
 		return closureLibraryLocation;
-	}
-
-	/**
-	 * @return the dependencyLocation
-	 */
-	public final File getDependencyLocation() {
-		return this.dependencyLocation;
 	}
 
 	/**

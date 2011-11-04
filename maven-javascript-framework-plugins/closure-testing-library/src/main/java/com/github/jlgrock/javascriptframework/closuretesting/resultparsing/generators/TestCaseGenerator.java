@@ -2,8 +2,8 @@ package com.github.jlgrock.javascriptframework.closuretesting.resultparsing.gene
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
-import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileNameSeparator;
 
 /**
@@ -15,14 +15,21 @@ public class TestCaseGenerator {
 	 * the location of the sourcefile to generate the test off of.
 	 */
 	private final File generatorSourceFile;
+	
 	/**
 	 * the location of the closure library.
 	 */
 	private final File generatorClosureLocation;
+
 	/**
-	 * the location of the dependency file.
+	 * the location of the generated dependency file.
 	 */
 	private final File generatorDepsLocation;
+
+	/**
+	 * the location of the external dependency files.
+	 */
+	private final Set<File> testDeps;
 
 	/**
 	 * Constructor.
@@ -35,10 +42,12 @@ public class TestCaseGenerator {
 	 *            the location of the sourcefile to generate the test off of
 	 */
 	public TestCaseGenerator(final File closureLocation,
-			final File depsLocation, final File sourceFile) {
-		this.generatorClosureLocation = closureLocation;
-		this.generatorSourceFile = sourceFile;
-		this.generatorDepsLocation = depsLocation;
+			final File depsLocation, final File sourceFile,
+			final Set<File> testDepsIn) {
+		generatorClosureLocation = closureLocation;
+		generatorSourceFile = sourceFile;
+		generatorDepsLocation = depsLocation;
+		testDeps = testDepsIn;
 	}
 
 	/**
@@ -58,7 +67,7 @@ public class TestCaseGenerator {
 				+ File.separator + fns.getName() + ".html";
 		File testCase = new File(outputFilePath);
 		new TestCaseRef(generatorClosureLocation, generatorDepsLocation,
-				generatorSourceFile, testCase).writeToFile();
+				generatorSourceFile, testCase, testDeps).writeToFile();
 		return testCase;
 	}
 }

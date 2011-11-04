@@ -11,16 +11,16 @@ import java.io.File;
  * @goal compile-preprocessors
  * @threadSafe
  */
-public class CompilePreProcessor extends AbstractPreProcessorFramework {
+public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	/**
 	 * @parameter default-value="${project.basedir}${file.separator}src${file.separator}main${file.separator}javascript"
 	 */
 	private File sourceDirectory;
 
 	/**
-	 * @parameter default-value="${project.build.directory}${file.separator}javascriptFramework${file.separator}processedJavascript"
+	 * @parameter default-value="${project.build.directory}${file.separator}javascriptFramework"
 	 */
-	private File destinationDirectory;
+	private File frameworkTargetDirectory;
 
 	@Override
 	public final File getSourceDirectory() {
@@ -28,7 +28,7 @@ public class CompilePreProcessor extends AbstractPreProcessorFramework {
 	}
 	
 	@Override
-	public final File getDestinationDirectory() {
-		return destinationDirectory;
+	public final File getFrameworkTargetDirectory() {
+		return frameworkTargetDirectory;
 	}
 }

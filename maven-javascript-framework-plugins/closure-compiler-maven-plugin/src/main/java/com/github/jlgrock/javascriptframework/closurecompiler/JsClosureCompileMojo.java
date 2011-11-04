@@ -17,6 +17,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStream;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -40,45 +41,43 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(JsClosureCompileMojo.class);
-
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler.
 	 * 
 	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}${project.build.finalName}-min.js"
+	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 * @required
 	 */
-	private File compiledFile;
+	private File frameworkTargetDirectory;
 
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler.
 	 * 
-	 * @parameter 
-	 *            default-value="${project.build.directory}${file.separator}${project.build.finalName}-debug.js"
+	 * @parameter default-value="${project.build.finalName}-min.js"
 	 * @required
 	 */
-	private File generatedDepsJS;
+	private String compiledFilename;
+
+	/**
+	 * The file produced after running the dependencies and files through the
+	 * compiler.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-debug.js"
+	 * @required
+	 */
+	private String generatedDepsJS;
 
 	/**
 	 * The default directory to extract files to. This likely shouldn't be
 	 * changed unless there is a conflict with another plugin.
 	 * 
 	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}processedJavascript"
+	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}output${file.separator}processedJavascript"
 	 * @required
 	 */
 	private File sourceDirectory;
-
-	/**
-	 * The directory to place compiled files into.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}dependencies"
-	 * @required
-	 */
-	private File internalDependencies;
 
 	/**
 	 * The location of the closure library. By default, this is expected in the
@@ -128,6 +127,25 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private String compileLevel;
 
+	/**
+	 * Specifies how strict the compiler is at following the rules. The compiler
+	 * is set to parameters matching SIMPLE by default, however, if you don't
+	 * use WARNING or better, this isn't very useful. STRICT is set by default
+	 * for this mojo.
+	 * 
+	 * Possible values are:
+	 * <ul>
+	 * <li>SIMPLE
+	 * <li>WARNING
+	 * <li>STRICT
+	 * </ul>
+	 * <br/>
+	 * 
+	 * @parameter default-value="STRICT"
+	 * @required
+	 */
+	private String errorLevel;
+
 	@Override
 	public final void execute() throws MojoExecutionException,
 			MojoFailureException {
@@ -135,11 +153,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		try {
 			LOGGER.info("Creating deps.js");
 
-			LOGGER.info("Compiling source files and internal dependencies to file \""
-					+ compiledFile.getAbsolutePath() + "\".");
+			LOGGER.info("Compiling source files and internal dependencies to location \""
+					+ JsarRelativeLocations.getCompileLocation(
+							frameworkTargetDirectory).getAbsolutePath() + "\".");
 			compile();
 
 		} catch (Exception e) {
+			e.printStackTrace();
+			e.printStackTrace(new PrintStream(new Log4jOutputStream(LOGGER,
+					Level.DEBUG)));
 			throw new MojoExecutionException(
 					"Unable to closure compile files: " + e.getMessage());
 		} finally {
@@ -173,60 +195,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		CompilerOptions compilerOptions = new CompilerOptions();
-		WarningLevel wLevel = WarningLevel.VERBOSE;
-		wLevel.setOptionsForWarningLevel(compilerOptions);
-		// WarningLevel.QUIET.setOptionsForWarningLevel(options)
+		if (ErrorLevel.getCompileLevelByName(errorLevel).equals(ErrorLevel.WARNING)) {
+			WarningLevel wLevel = WarningLevel.VERBOSE;
+			wLevel.setOptionsForWarningLevel(compilerOptions);
+		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(ErrorLevel.STRICT)) {
+			StrictLevel wLevel = StrictLevel.VERBOSE;
+			wLevel.setOptionsForWarningLevel(compilerOptions);
+		}
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_REGEXP,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_TYPES,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.CONST,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.CONSTANT_PROPERTY,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.DEPRECATED,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.DUPLICATE_VARS,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.ES5_STRICT,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.EXTERNS_VALIDATION,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.FILEOVERVIEW_JSDOC,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.GLOBAL_THIS,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.INTERNET_EXPLORER_CHECKS,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.INVALID_CASTS,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.STRICT_MODULE_DEP_CHECK,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.TWEAKS,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.TYPE_INVALIDATION,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.UNDEFINED_VARIABLES,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.UNKNOWN_DEFINES,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE,
-		// CheckLevel.ERROR);
-		// compilerOptions.setWarningLevel(DiagnosticGroups.VISIBILITY,
-		// CheckLevel.ERROR);
-		// compilerOptions.setGenerateExports(true);
 
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG));
@@ -261,6 +238,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			throw new MojoFailureException(message);
 		}
 
+		File compiledFile = new File(JsarRelativeLocations.getCompileLocation(frameworkTargetDirectory), compiledFilename);
 		Files.createParentDirs(compiledFile);
 		Files.touch(compiledFile);
 		Files.write(compiler.toSource(), compiledFile, Charsets.UTF_8);
@@ -285,8 +263,12 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			IOException {
 		File baseLocation = getBaseLocation();
 
+		File depsFile = new File(
+				JsarRelativeLocations
+						.getCalcDepsLocation(frameworkTargetDirectory),
+				generatedDepsJS);
 		List<File> sortedDeps = CalcDeps.executeCalcDeps(baseLocation, src,
-				combinedInternal, generatedDepsJS);
+				combinedInternal, depsFile);
 		return sortedDeps;
 	}
 
@@ -333,12 +315,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private List<JSSourceFile> extractInternalFiles()
 			throws MojoExecutionException, IOException {
 		File baseFile = getBaseLocation();
-		
+
 		Set<File> listSourceFiles = listFiles(sourceDirectory);
 		LOGGER.debug("number of source files:" + listSourceFiles.size());
 
-		Set<File> internalSourceFiles = listFiles(internalDependencies);
-		LOGGER.debug("number of source files:" + internalSourceFiles.size());
+		Set<File> internalSourceFiles = listFiles(JsarRelativeLocations
+				.getInternsLocation(frameworkTargetDirectory));
+		LOGGER.debug("number of internal dependency files:" + internalSourceFiles.size());
 
 		Set<File> closureLibFiles = listFiles(closureLibraryLocation);
 		LOGGER.debug("number of google lib files:" + closureLibFiles.size());
@@ -350,11 +333,16 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		combinedInternal.addAll(internalSourceFiles);
 		combinedInternal.addAll(closureLibFiles);
 		List<File> sortedDeps = createDepsJS(listSourceFiles, combinedInternal);
-		if (!generatedDepsJS.exists()) {
+		File depsFile = new File(
+				JsarRelativeLocations
+						.getCalcDepsLocation(frameworkTargetDirectory),
+				generatedDepsJS);
+		if (!depsFile.exists()) {
 			LOGGER.error("The generated dependency does not exist.  This may cause dependency order not to resolve");
 		}
+
 		JSSourceFile generatedDepsJSSrcFile = JSSourceFile
-				.fromFile(generatedDepsJS);
+				.fromFile(depsFile);
 
 		ArrayList<JSSourceFile> combinedJsInternal = new ArrayList<JSSourceFile>();
 		combinedJsInternal.add(JSSourceFile.fromFile(baseFile));

@@ -17,6 +17,7 @@ import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.gener
 import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCase;
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
 
 /**
@@ -48,16 +49,18 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		MojoLogAppender.beginLogging(this);
 		try {
 			Set<File> files = generateFiles();
-			Set<TestCase> testCases = parseFiles(files);
-			boolean encounteredError = checkForFailuresInTestCases(testCases);
-			if (verbose) {
-				printAllRecords(testCases);
-			}
-			if (encounteredError && !verbose) {
-				printFailures(testCases);
-			}
-			if (encounteredError) {
-				throw new MojoFailureException("There were test case failures.");
+			if (isSkipTests()) {
+				Set<TestCase> testCases = parseFiles(files);
+				boolean encounteredError = checkForFailuresInTestCases(testCases);
+				if (verbose) {
+					printAllRecords(testCases);
+				}
+				if (encounteredError && !verbose) {
+					printFailures(testCases);
+				}
+				if (encounteredError) {
+					throw new MojoFailureException("There were test case failures.");
+				}
 			}
 		} catch (MojoFailureException mje) {
 			throw mje;
@@ -128,7 +131,11 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private Set<File> generateFiles() throws IOException {
-		DirectoryIO.recursivelyDeleteDirectory(getTestOutputDirectory());
+		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
+		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
+		File internsDir = JsarRelativeLocations.getInternsLocation(getFrameworkTargetDirectory());
+		
+		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 		File baseLocation = new File(getClosureLibrarylocation()
 				.getAbsoluteFile()
 				+ File.separator
@@ -137,15 +144,19 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 
 		LOGGER.info("Generating Test Suite");
 		Set<File> fileSet = calculateFileSet();
+		Set<File> testDeps = FileListBuilder.buildFilteredList(testDepsDir, "js");
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Files that will be included in testing:" + fileSet);
 			LOGGER.debug("Base Location:" + baseLocation);
-			LOGGER.debug("Dependency Location:" + getDependencyLocation());
+			LOGGER.debug("Internal Dependency Location:" + internsDir);
+			LOGGER.debug("Testing Dependency Location:" + testDepsDir);
 			LOGGER.debug("Testing Source Directory:" + getTestSourceDirectory());
 		}
+		
+		
 		SuiteGenerator suite = new SuiteGenerator(fileSet, baseLocation,
-				getDependencyLocation());
-		return suite.generateTestFiles(getTestOutputDirectory());
+				internsDir, testDeps);
+		return suite.generateTestFiles(testOutputDir);
 	}
 
 	/**

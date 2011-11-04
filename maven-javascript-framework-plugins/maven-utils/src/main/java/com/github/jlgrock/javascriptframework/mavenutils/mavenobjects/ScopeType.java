@@ -10,12 +10,7 @@ public enum ScopeType {
 	/**
 	 * Compile scope, used when compiling the project.
 	 */
-	COMPILE("compile"),
-
-	/**
-	 * Test scope, used when in test only mode.
-	 */
-	TEST("test");
+	COMPILE("compile"), TEST("test"), ANY(null);
 	
 	/**
 	 * The name of the Scope.

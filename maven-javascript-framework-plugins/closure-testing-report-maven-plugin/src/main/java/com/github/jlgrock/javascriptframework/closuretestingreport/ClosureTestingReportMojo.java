@@ -33,13 +33,13 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 			.getLogger(ClosureTestingReportMojo.class);
 
 	/**
-	 * The directory containing source code to parse.
+	 * The framework directory.  This allows us to get the relative pathing to the expected generated source
 	 * 
 	 * @parameter expression=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}testSuite"
+	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 * @required
 	 */
-	private File sourceDir;
+	private File frameworkTargetDirectory;
 
 	/**
 	 * Directory where reports will go.
@@ -98,8 +98,7 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 			throws MavenReportException {
 		MojoLogAppender.beginLogging(this);
 		try {
-			// TODO
-			Set<File> files = FileListBuilder.buildFilteredList(sourceDir,
+			Set<File> files = FileListBuilder.buildFilteredList(getFrameworkTargetDirectory(),
 					"html");
 			Set<TestCase> testCases = parseFiles(files);
 			ClosureTestingReportGenerator renderer = new ClosureTestingReportGenerator(
@@ -146,11 +145,12 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 	protected final Renderer getSiteRenderer() {
 		return siteRenderer;
 	}
-
-	/* if you want to skip doxia creation and use the external reports */
-	// public boolean isExternalReport()
-	// {
-	// return true;
-	// }
+	
+	/**
+	 * @return frameworkTargetDirectory
+	 */
+	protected final File getFrameworkTargetDirectory() {
+		return frameworkTargetDirectory;
+	}
 
 }

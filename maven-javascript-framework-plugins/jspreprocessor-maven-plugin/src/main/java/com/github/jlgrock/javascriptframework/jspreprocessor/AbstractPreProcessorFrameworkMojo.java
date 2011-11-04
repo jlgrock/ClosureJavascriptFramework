@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 
 /**
  * eventually, this should do a bunch of things, but right now, it will just copy from
@@ -16,12 +17,12 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender
  *
  * @author <a href="mailto:grantjl@umich.edu">Justin Grant</a>
  */
-public abstract class AbstractPreProcessorFramework extends AbstractMojo {
+public abstract class AbstractPreProcessorFrameworkMojo extends AbstractMojo {
 
 	/**
 	 * The Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AbstractPreProcessorFramework.class);
+	private static final Logger LOGGER = Logger.getLogger(AbstractPreProcessorFrameworkMojo.class);
 
 	@Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
@@ -29,11 +30,12 @@ public abstract class AbstractPreProcessorFramework extends AbstractMojo {
 		try {
 			//TODO load in a multitude of preprocessor plugins that will each act on the file and 
 			//eventually put it into the destination directory
-			DirectoryIO.recursivelyDeleteDirectory(getDestinationDirectory());
+			File topLevelProcessedDir = JsarRelativeLocations.getProcessedSourceLocation(getFrameworkTargetDirectory());
+			
+			DirectoryIO.recursivelyDeleteDirectory(topLevelProcessedDir);
 			File source = getSourceDirectory();
-			File destination = getDestinationDirectory();
 			if (source.exists()) {
-				DirectoryIO.copyDirectory(source, destination);
+				DirectoryIO.copyDirectory(source, topLevelProcessedDir);
 			} else {
 				LOGGER.info("No directory found at location \"" 
 						+ source.getAbsolutePath() + "\".  Skipping pre-processing for this phase.");
@@ -58,5 +60,5 @@ public abstract class AbstractPreProcessorFramework extends AbstractMojo {
 	 * 
 	 * @return the destination directory used for the preprocessor step.
 	 */
-	public abstract File getDestinationDirectory();
+	public abstract File getFrameworkTargetDirectory();
 }
