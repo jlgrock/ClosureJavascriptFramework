@@ -8,6 +8,7 @@ com.github.jlgrock.javascriptframework.closuretestingreport
 com.github.jlgrock.javascriptframework.dependencyOverlay
 com.github.jlgrock.javascriptframework.jsar
 com.github.jlgrock.javascriptframework.jsdependency
+com.github.jlgrock.javascriptframework.jsdocs
 com.github.jlgrock.javascriptframework.jspreprocessor
 com.github.jlgrock.javascriptframework.jspreprocessor.processors
 com.github.jlgrock.javascriptframework.mavenutils
