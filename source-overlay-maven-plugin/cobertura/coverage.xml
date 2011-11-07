@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.0" branch-rate="1.0" lines-covered="0" lines-valid="28" branches-covered="0" branches-valid="0" complexity="1.5" version="1.9.4.1" timestamp="1319716416414">
+<coverage line-rate="0.0" branch-rate="1.0" lines-covered="0" lines-valid="28" branches-covered="0" branches-valid="0" complexity="1.5" version="1.9.4.1" timestamp="1320683434280">
 	<sources>
+		<source>C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/source-overlay-maven-plugin/src/main/java</source>
 		<source>--source</source>
-		<source>C:/Users/jgrant/git/JavascriptFramework/maven-javascript-framework-plugins/source-overlay-maven-plugin/src/main/java</source>
 	</sources>
 	<packages>
 		<package name="com.github.jlgrock.javascriptframework.dependencyOverlay" line-rate="0.0" branch-rate="1.0" complexity="1.5">
