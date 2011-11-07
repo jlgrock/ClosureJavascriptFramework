@@ -1,11 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.5" timestamp="2011-11-07T11:46:24.190">
-<file name="C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jsar-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jsar\JsarMojo.java">
-<violation beginline="244" endline="244" begincolumn="22" endcolumn="34" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="com.github.jlgrock.javascriptframework.jsar" class="JsarMojo" method="getIncludes" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
-Avoid unused private methods such as 'getIncludes()'.
-</violation>
-<violation beginline="251" endline="251" begincolumn="22" endcolumn="34" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="com.github.jlgrock.javascriptframework.jsar" class="JsarMojo" method="getExcludes" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
-Avoid unused private methods such as 'getExcludes()'.
-</violation>
-</file>
+<pmd version="4.2.5" timestamp="2011-11-07T11:59:59.012">
 </pmd>

@@ -17,7 +17,7 @@
   <body class="composite">
     <div id="banner">
                     <div id="bannerLeft">
-                jsar Maven Plugin
+                Closure Compiler Maven Plugin
                 </div>
                     <div class="clear">
         <hr/>
@@ -30,7 +30,7 @@
         <span id="publishDate">Last Published: 2011-11-07</span>
                   &nbsp;| <span id="projectVersion">Version: 1.5</span>
                       </div>
-            <div class="xright">                    <a href="./" title="jsar Maven Plugin">jsar Maven Plugin</a>
+            <div class="xright">                    <a href="./" title="Closure Compiler Maven Plugin">Closure Compiler Maven Plugin</a>
               
         
       </div>
@@ -92,10 +92,7 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <a name="Plugin_Documentation"></a><div class="section"><h2>Plugin Documentation<a name="Plugin_Documentation"></a></h2><p>Goals available for this plugin:</p><table border="0" class="bodyTable"><tr class="a"><th>Goal</th><th>Description</th></tr><tr class="b"><td><a href="jsar-mojo.html">jsar:jsar</a></td><td>Build a JSAR package from the current project. This is essentially
-a modified JAR plugin, since Plexus offers no way to extend classes
-from other packages from maven dependencies, this is copied over in
-its entirety and edited.</td></tr></table><a name="System_Requirements"></a><div class="section"><h3>System Requirements<a name="System_Requirements"></a></h3><p>The following specifies the minimum requirements to run this Maven plugin:</p><table border="0" class="bodyTable"><tr class="a"><td>Maven</td><td>2.0</td></tr><tr class="b"><td>JDK</td><td>1.1</td></tr><tr class="a"><td>Memory</td><td>No minimum requirement.</td></tr><tr class="b"><td>Disk Space</td><td>No minimum requirement.</td></tr></table></div><a name="Usage"></a><div class="section"><h3>Usage<a name="Usage"></a></h3><p>You should specify the version in your project's plugin configuration:</p><div class="source"><pre>&lt;project&gt;
+        <a name="Plugin_Documentation"></a><div class="section"><h2>Plugin Documentation<a name="Plugin_Documentation"></a></h2><p>Goals available for this plugin:</p><table border="0" class="bodyTable"><tr class="a"><th>Goal</th><th>Description</th></tr><tr class="b"><td><a href="js-closure-compile-mojo.html">closure-compiler:js-closure-compile</a></td><td>No description.</td></tr></table><a name="System_Requirements"></a><div class="section"><h3>System Requirements<a name="System_Requirements"></a></h3><p>The following specifies the minimum requirements to run this Maven plugin:</p><table border="0" class="bodyTable"><tr class="a"><td>Maven</td><td>2.0</td></tr><tr class="b"><td>JDK</td><td>1.1</td></tr><tr class="a"><td>Memory</td><td>No minimum requirement.</td></tr><tr class="b"><td>Disk Space</td><td>No minimum requirement.</td></tr></table></div><a name="Usage"></a><div class="section"><h3>Usage<a name="Usage"></a></h3><p>You should specify the version in your project's plugin configuration:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;!-- To define the plugin version in your parent POM --&gt;
@@ -103,7 +100,7 @@ its entirety and edited.</td></tr></table><a name="System_Requirements"></a><div
       &lt;plugins&gt;
         &lt;plugin&gt;
           &lt;groupId&gt;com.github.jlgrock.javascript-framework&lt;/groupId&gt;
-          &lt;artifactId&gt;jsar-maven-plugin&lt;/artifactId&gt;
+          &lt;artifactId&gt;closure-compiler-maven-plugin&lt;/artifactId&gt;
           &lt;version&gt;1.5&lt;/version&gt;
         &lt;/plugin&gt;
         ...
@@ -113,7 +110,7 @@ its entirety and edited.</td></tr></table><a name="System_Requirements"></a><div
     &lt;plugins&gt;
       &lt;plugin&gt;
         &lt;groupId&gt;com.github.jlgrock.javascript-framework&lt;/groupId&gt;
-        &lt;artifactId&gt;jsar-maven-plugin&lt;/artifactId&gt;
+        &lt;artifactId&gt;closure-compiler-maven-plugin&lt;/artifactId&gt;
         &lt;version&gt;1.5&lt;/version&gt;
       &lt;/plugin&gt;
       ...
