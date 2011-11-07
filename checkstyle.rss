@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>JS Preprocessor - Checkstyle report</title>
+    <title>Source Archive Maven Plugin - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>JS Preprocessor - Checkstyle report</description>
+    <description>Source Archive Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
       <title>File: 6,
-             Errors: 129,
+             Errors: 1376,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.CompilePreProcessor.java">com/github/jlgrock/javascriptframework/jspreprocessor/CompilePreProcessor.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.AbstractArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/AbstractArchiveMojo.java</a>
                 </td>
                 <td>
                   0
@@ -38,26 +38,12 @@
                   0
                 </td>
                 <td>
-                  23
+                  1301
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.AbstractPreProcessorFrameworkMojo.java">com/github/jlgrock/javascriptframework/jspreprocessor/AbstractPreProcessorFrameworkMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  55
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.package-info.java">com/github/jlgrock/javascriptframework/jspreprocessor/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.package-info.java">com/github/jlgrock/javascriptframework/sourcearchive/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -71,7 +57,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.processors.FileTimeStamp.java">com/github/jlgrock/javascriptframework/jspreprocessor/processors/FileTimeStamp.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.JavaScriptSourceArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/JavaScriptSourceArchiveMojo.java</a>
                 </td>
                 <td>
                   0
@@ -80,12 +66,12 @@
                   0
                 </td>
                 <td>
-                  31
+                  17
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.TestPreProcessor.java">com/github/jlgrock/javascriptframework/jspreprocessor/TestPreProcessor.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.JavaSourceArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/JavaSourceArchiveMojo.java</a>
                 </td>
                 <td>
                   0
@@ -99,7 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.processors.package-info.java">com/github/jlgrock/javascriptframework/jspreprocessor/processors/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.ProcessedJavaScriptArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/ProcessedJavaScriptArchiveMojo.java</a>
                 </td>
                 <td>
                   0
@@ -108,7 +94,21 @@
                   0
                 </td>
                 <td>
+                  18
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.FullSourceArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/FullSourceArchiveMojo.java</a>
+                </td>
+                <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  20
                 </td>
               </tr>
                       </tbody>
