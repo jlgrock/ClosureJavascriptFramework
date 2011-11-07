@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>Maven Utils - Checkstyle report</title>
+    <title>JS Preprocessor - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>Maven Utils - Checkstyle report</description>
+    <description>JS Preprocessor - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
-      <title>File: 25,
-             Errors: 1597,
+      <title>File: 6,
+             Errors: 129,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO.java">com/github/jlgrock/javascriptframework/mavenutils/io/DirectoryIO.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.CompilePreProcessor.java">com/github/jlgrock/javascriptframework/jspreprocessor/CompilePreProcessor.java</a>
                 </td>
                 <td>
                   0
@@ -38,12 +38,12 @@
                   0
                 </td>
                 <td>
-                  112
+                  23
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.logging.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/logging/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.AbstractPreProcessorFrameworkMojo.java">com/github/jlgrock/javascriptframework/jspreprocessor/AbstractPreProcessorFrameworkMojo.java</a>
                 </td>
                 <td>
                   0
@@ -52,26 +52,12 @@
                   0
                 </td>
                 <td>
-                  0
+                  55
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.FileIO.java">com/github/jlgrock/javascriptframework/mavenutils/io/FileIO.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  115
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.parsing.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/parsing/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.package-info.java">com/github/jlgrock/javascriptframework/jspreprocessor/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -85,7 +71,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender.java">com/github/jlgrock/javascriptframework/mavenutils/logging/MojoLogAppender.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.processors.FileTimeStamp.java">com/github/jlgrock/javascriptframework/jspreprocessor/processors/FileTimeStamp.java</a>
                 </td>
                 <td>
                   0
@@ -94,12 +80,12 @@
                   0
                 </td>
                 <td>
-                  85
+                  31
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/FileListBuilder.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.TestPreProcessor.java">com/github/jlgrock/javascriptframework/jspreprocessor/TestPreProcessor.java</a>
                 </td>
                 <td>
                   0
@@ -108,264 +94,12 @@
                   0
                 </td>
                 <td>
-                  88
+                  20
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/RelativePath.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  41
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils.java">com/github/jlgrock/javascriptframework/mavenutils/io/ZipUtils.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  187
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ExtractSrcAftifacts.java">com/github/jlgrock/javascriptframework/mavenutils/mavenobjects/ExtractSrcAftifacts.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  161
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.SearchFileRecursive.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/SearchFileRecursive.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  56
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativeFile.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/RelativeFile.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  44
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations.java">com/github/jlgrock/javascriptframework/mavenutils/mavenobjects/JsarRelativeLocations.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  107
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.PackagingType.java">com/github/jlgrock/javascriptframework/mavenutils/mavenobjects/PackagingType.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  38
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO.java">com/github/jlgrock/javascriptframework/mavenutils/io/ResourceIO.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  93
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType.java">com/github/jlgrock/javascriptframework/mavenutils/mavenobjects/ScopeType.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  45
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.readers.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/io/readers/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.readers.FilteredReader.java">com/github/jlgrock/javascriptframework/mavenutils/io/readers/FilteredReader.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  50
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStream.java">com/github/jlgrock/javascriptframework/mavenutils/logging/Log4jOutputStream.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  96
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.parsing.ParseUtils.java">com/github/jlgrock/javascriptframework/mavenutils/parsing/ParseUtils.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  28
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.pathing.FileNameSeparator.java">com/github/jlgrock/javascriptframework/mavenutils/pathing/FileNameSeparator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  89
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor.java">com/github/jlgrock/javascriptframework/mavenutils/mavenobjects/ArtifactExtractor.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  162
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.io.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/io/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.package-info.java">com/github/jlgrock/javascriptframework/mavenutils/mavenobjects/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jspreprocessor.processors.package-info.java">com/github/jlgrock/javascriptframework/jspreprocessor/processors/package-info.java</a>
                 </td>
                 <td>
                   0

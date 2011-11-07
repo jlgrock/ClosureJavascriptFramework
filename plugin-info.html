@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>PMD Results</title>
+    <title>Plugin Documentation</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -57,8 +57,8 @@
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                     <ul>
                       <li class="none">
-            <strong>PMD Report</strong>
-          </li>
+                          <a href="pmd.html" title="PMD Report">PMD Report</a>
+            </li>
                       <li class="none">
                           <a href="cpd.html" title="CPD Report">CPD Report</a>
             </li>
@@ -78,8 +78,8 @@
                           <a href="checkstyle.html" title="Checkstyle">Checkstyle</a>
             </li>
                       <li class="none">
-                          <a href="plugin-info.html" title="Plugin Documentation">Plugin Documentation</a>
-            </li>
+            <strong>Plugin Documentation</strong>
+          </li>
               </ul>
         </li>
           </ul>
@@ -92,7 +92,38 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>PMD Results<a name="PMD_Results"></a></h2><p>The following document contains the results of <a class="externalLink" href="http://pmd.sourceforge.net/">PMD</a> 4.2.5.</p></div><div class="section"><h2>Files<a name="Files"></a></h2><div class="section"><h3>com/github/jlgrock/javascriptframework/jspreprocessor/AbstractPreProcessorFrameworkMojo.java<a name="comgithubjlgrockjavascriptframeworkjspreprocessorAbstractPreProcessorFrameworkMojo.java"></a></h3><table border="0" class="bodyTable"><tr class="a"><th>Violation</th><th>Line</th></tr><tr class="b"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\AbstractPreProcessorFrameworkMojo.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr><tr class="a"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\AbstractPreProcessorFrameworkMojo.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr><tr class="b"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\AbstractPreProcessorFrameworkMojo.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr></table></div><div class="section"><h3>com/github/jlgrock/javascriptframework/jspreprocessor/CompilePreProcessor.java<a name="comgithubjlgrockjavascriptframeworkjspreprocessorCompilePreProcessor.java"></a></h3><table border="0" class="bodyTable"><tr class="a"><th>Violation</th><th>Line</th></tr><tr class="b"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\CompilePreProcessor.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr><tr class="a"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\CompilePreProcessor.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr><tr class="b"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\CompilePreProcessor.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr></table></div><div class="section"><h3>com/github/jlgrock/javascriptframework/jspreprocessor/TestPreProcessor.java<a name="comgithubjlgrockjavascriptframeworkjspreprocessorTestPreProcessor.java"></a></h3><table border="0" class="bodyTable"><tr class="a"><th>Violation</th><th>Line</th></tr><tr class="b"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\TestPreProcessor.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr><tr class="a"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\TestPreProcessor.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr><tr class="b"><td>Error while parsing C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\jspreprocessor-maven-plugin\src\main\java\com\github\jlgrock\javascriptframework\jspreprocessor\TestPreProcessor.java: Can't use annotations when running in JDK 1.4 mode!</td><td>0</td></tr></table></div></div>
+        <a name="Plugin_Documentation"></a><div class="section"><h2>Plugin Documentation<a name="Plugin_Documentation"></a></h2><p>Goals available for this plugin:</p><table border="0" class="bodyTable"><tr class="a"><th>Goal</th><th>Description</th></tr><tr class="b"><td><a href="compile-preprocessors-mojo.html">jspreprocessor:compile-preprocessors</a></td><td>eventually, this should do a bunch of things, but right now, it
+will just copy from src/main/javascript to
+/target/javascript-generated and replace any references to
+$$assert.</td></tr><tr class="a"><td><a href="test-preprocessors-mojo.html">jspreprocessor:test-preprocessors</a></td><td>eventually, this should do a bunch of things, but right now, it
+will just copy from src/main/javascript to
+/target/javascript-generated.</td></tr></table><a name="System_Requirements"></a><div class="section"><h3>System Requirements<a name="System_Requirements"></a></h3><p>The following specifies the minimum requirements to run this Maven plugin:</p><table border="0" class="bodyTable"><tr class="b"><td>Maven</td><td>2.0</td></tr><tr class="a"><td>JDK</td><td>1.1</td></tr><tr class="b"><td>Memory</td><td>No minimum requirement.</td></tr><tr class="a"><td>Disk Space</td><td>No minimum requirement.</td></tr></table></div><a name="Usage"></a><div class="section"><h3>Usage<a name="Usage"></a></h3><p>You should specify the version in your project's plugin configuration:</p><div class="source"><pre>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;!-- To define the plugin version in your parent POM --&gt;
+    &lt;pluginManagement&gt;
+      &lt;plugins&gt;
+        &lt;plugin&gt;
+          &lt;groupId&gt;com.github.jlgrock.javascript-framework&lt;/groupId&gt;
+          &lt;artifactId&gt;jspreprocessor-maven-plugin&lt;/artifactId&gt;
+          &lt;version&gt;1.5&lt;/version&gt;
+        &lt;/plugin&gt;
+        ...
+      &lt;/plugins&gt;
+    &lt;/pluginManagement&gt;
+    &lt;!-- To use the plugin goals in your POM or parent POM --&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;com.github.jlgrock.javascript-framework&lt;/groupId&gt;
+        &lt;artifactId&gt;jspreprocessor-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.5&lt;/version&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  ...
+&lt;/project&gt;
+</pre></div><p>For more information, see <a class="externalLink" href="http://maven.apache.org/guides/mini/guide-configuring-plugins.html">&quot;Guide to Configuring Plug-ins&quot;</a></p></div></div>
       </div>
     </div>
     <div class="clear">
