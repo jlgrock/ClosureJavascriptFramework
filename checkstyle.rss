@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>Source Archive Maven Plugin - Checkstyle report</title>
+    <title>JS Dependency Plugin - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>Source Archive Maven Plugin - Checkstyle report</description>
+    <description>JS Dependency Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
-      <title>File: 6,
-             Errors: 1376,
+      <title>File: 2,
+             Errors: 128,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.AbstractArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/AbstractArchiveMojo.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jsdependency.JsarDependencyMojo.java">com/github/jlgrock/javascriptframework/jsdependency/JsarDependencyMojo.java</a>
                 </td>
                 <td>
                   0
@@ -38,12 +38,12 @@
                   0
                 </td>
                 <td>
-                  1301
+                  128
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.package-info.java">com/github/jlgrock/javascriptframework/sourcearchive/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jsdependency.package-info.java">com/github/jlgrock/javascriptframework/jsdependency/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -53,62 +53,6 @@
                 </td>
                 <td>
                   0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.JavaScriptSourceArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/JavaScriptSourceArchiveMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  17
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.JavaSourceArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/JavaSourceArchiveMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  20
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.ProcessedJavaScriptArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/ProcessedJavaScriptArchiveMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  18
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.sourcearchive.FullSourceArchiveMojo.java">com/github/jlgrock/javascriptframework/sourcearchive/FullSourceArchiveMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  20
                 </td>
               </tr>
                       </tbody>
