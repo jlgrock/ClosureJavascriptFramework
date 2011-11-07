@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.5" timestamp="2011-11-07T10:47:51.347">
+<file name="C:\Users\jgrant\git\ClosureJavascriptFramework\maven-javascript-framework-plugins\maven-utils\src\main\java\com\github\jlgrock\javascriptframework\mavenutils\io\DirectoryIO.java">
+<violation beginline="64" endline="66" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="com.github.jlgrock.javascriptframework.mavenutils.io" class="DirectoryIO" method="createDir" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+</pmd>

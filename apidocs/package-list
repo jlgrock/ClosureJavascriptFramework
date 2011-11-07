@@ -1,16 +1,3 @@
-com.github.jlgrock.javascriptframework.closurecompiler
-com.github.jlgrock.javascriptframework.closuretesting
-com.github.jlgrock.javascriptframework.closuretesting.resultparsing
-com.github.jlgrock.javascriptframework.closuretesting.resultparsing.generators
-com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers
-com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents
-com.github.jlgrock.javascriptframework.closuretestingreport
-com.github.jlgrock.javascriptframework.dependencyOverlay
-com.github.jlgrock.javascriptframework.jsar
-com.github.jlgrock.javascriptframework.jsdependency
-com.github.jlgrock.javascriptframework.jsdocs
-com.github.jlgrock.javascriptframework.jspreprocessor
-com.github.jlgrock.javascriptframework.jspreprocessor.processors
 com.github.jlgrock.javascriptframework.mavenutils
 com.github.jlgrock.javascriptframework.mavenutils.io
 com.github.jlgrock.javascriptframework.mavenutils.io.readers
@@ -18,4 +5,3 @@ com.github.jlgrock.javascriptframework.mavenutils.logging
 com.github.jlgrock.javascriptframework.mavenutils.mavenobjects
 com.github.jlgrock.javascriptframework.mavenutils.parsing
 com.github.jlgrock.javascriptframework.mavenutils.pathing
-com.github.jlgrock.javascriptframework.sourcearchive
