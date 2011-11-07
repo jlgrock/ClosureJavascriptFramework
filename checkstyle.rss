@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>JS Dependency Plugin - Checkstyle report</title>
+    <title>jsar Maven Plugin - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>JS Dependency Plugin - Checkstyle report</description>
+    <description>jsar Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
       <title>File: 2,
-             Errors: 128,
+             Errors: 250,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jsdependency.JsarDependencyMojo.java">com/github/jlgrock/javascriptframework/jsdependency/JsarDependencyMojo.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jsar.JsarPropertiesUtil.java">com/github/jlgrock/javascriptframework/jsar/JsarPropertiesUtil.java</a>
                 </td>
                 <td>
                   0
@@ -38,12 +38,12 @@
                   0
                 </td>
                 <td>
-                  128
+                  119
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jsdependency.package-info.java">com/github/jlgrock/javascriptframework/jsdependency/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.jsar.JsarMojo.java">com/github/jlgrock/javascriptframework/jsar/JsarMojo.java</a>
                 </td>
                 <td>
                   0
@@ -52,7 +52,7 @@
                   0
                 </td>
                 <td>
-                  0
+                  131
                 </td>
               </tr>
                       </tbody>

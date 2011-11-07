@@ -1,26 +1,26 @@
 -classpath
-'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsdependency-maven-plugin/target/classes;C:/Users/jgrant/.m2/repository/log4j/log4j/1.2.16/log4j-1.2.16.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-profile/2.2.1/maven-profile-2.2.1.jar;C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/maven-utils/target/classes;C:/Users/jgrant/.m2/repository/commons-lang/commons-lang/2.5/commons-lang-2.5.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-repository-metadata/2.2.1/maven-repository-metadata-2.2.1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-artifact-manager/2.2.1/maven-artifact-manager-2.2.1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-plugin-registry/2.2.1/maven-plugin-registry-2.2.1.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.11/plexus-interpolation-1.11.jar;C:/Users/jgrant/.m2/repository/backport-util-concurrent/backport-util-concurrent/3.1/backport-util-concurrent-3.1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-project/2.2.1/maven-project-2.2.1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-settings/2.2.1/maven-settings-2.2.1.jar;C:/Users/jgrant/.m2/repository/commons-io/commons-io/2.0/commons-io-2.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-artifact/2.2.1/maven-artifact-2.2.1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-beta-6/wagon-provider-api-1.0-beta-6.jar;C:/Users/jgrant/.m2/repository/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-utils/1.5.15/plexus-utils-1.5.15.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-model/2.2.1/maven-model-2.2.1.jar'
+'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/target/classes;C:/Users/jgrant/.m2/repository/log4j/log4j/1.2.16/log4j-1.2.16.jar;C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/maven-utils/target/classes;C:/Users/jgrant/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-archiver/2.4.1/maven-archiver-2.4.1.jar;C:/Users/jgrant/.m2/repository/commons-lang/commons-lang/2.1/commons-lang-2.1.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/plugins/maven-jar-plugin/2.3.1/maven-jar-plugin-2.3.1.jar;C:/Users/jgrant/.m2/repository/org/apache/myfaces/buildtools/myfaces-javascript-plugin/1.0.2/myfaces-javascript-plugin-1.0.2.jar;C:/Users/jgrant/.m2/repository/commons-collections/commons-collections/2.0/commons-collections-2.0.jar;C:/Users/jgrant/.m2/repository/commons-beanutils/commons-beanutils/1.4/commons-beanutils-1.4.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-project/2.0.6/maven-project-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-settings/2.0.6/maven-settings-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-artifact/2.0.6/maven-artifact-2.0.6.jar;C:/Users/jgrant/.m2/repository/commons-io/commons-io/1.0/commons-io-1.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar;C:/Users/jgrant/.m2/repository/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar;C:/Users/jgrant/.m2/repository/xerces/xerces/1.2.3/xerces-1.2.3.jar;C:/Users/jgrant/.m2/repository/commons-logging/commons-logging/1.0/commons-logging-1.0.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-utils/2.0.5/plexus-utils-2.0.5.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-model/2.0.6/maven-model-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-profile/2.0.6/maven-profile-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-io/1.0/plexus-io-1.0.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-repository-metadata/2.0.6/maven-repository-metadata-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-artifact-manager/2.0.6/maven-artifact-manager-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-plugin-registry/2.0.6/maven-plugin-registry-2.0.6.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.13/plexus-interpolation-1.13.jar;C:/Users/jgrant/.m2/repository/com/yahoo/platform/yui/yuicompressor/2.3.6/yuicompressor-2.3.6.jar;C:/Users/jgrant/.m2/repository/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar;C:/Users/jgrant/.m2/repository/org/codehaus/plexus/plexus-archiver/1.0/plexus-archiver-1.0.jar;C:/Users/jgrant/.m2/repository/commons-jxpath/commons-jxpath/1.2/commons-jxpath-1.2.jar;C:/Users/jgrant/.m2/repository/jdom/jdom/b9/jdom-b9.jar'
 -encoding
 'Cp1252'
 -protected
 -sourcepath
-'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsdependency-maven-plugin/src/main/java'
+'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/src/main/java'
 -author
 -bottom
 'Copyright &#169; 2011. All Rights Reserved.'
 -charset
 'UTF-8'
 -d
-'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsdependency-maven-plugin/target/site/apidocs'
+'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/target/site/apidocs'
 -docencoding
 'UTF-8'
 -doctitle
-'JS Dependency Plugin 1.5 API'
+'jsar Maven Plugin 1.5 API'
 -linkoffline
-'http://download.oracle.com/javase/6/docs/api' 'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsdependency-maven-plugin/target/javadoc-bundle-options'
+'http://download.oracle.com/javase/6/docs/api' 'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/jsar-maven-plugin/target/javadoc-bundle-options'
 -linkoffline
 'https://github.com/jlgrock/JavascriptFramework/apidocs' 'C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/maven-utils/target/site/apidocs'
 -use
 -version
 -windowtitle
-'JS Dependency Plugin 1.5 API'
+'jsar Maven Plugin 1.5 API'
