@@ -126,8 +126,6 @@ public class ZipUtils {
 		try {
 			while ((entry = zis.getNextEntry()) != null) {
 				if (zipEntryName == null || entry.getName().startsWith(zipEntryName)) {
-					if (zipEntryName != null)
-						LOGGER.info("zipEntryName: " + zipEntryName);
 					ZipUtils.unzipEntry(zis, entry, outputDir);
 				}
 			}

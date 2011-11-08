@@ -46,11 +46,11 @@ public final class CalcDeps {
 	 * @throws IOException if there is a problem parsing the files for dependency info
 	 */
 	private static HashMap<File, DependencyInfo> buildDependenciesFromFiles(
-			final Collection<File> files) throws IOException {
+			final File googleBaseJS, final Collection<File> files) throws IOException {
 		HashMap<File, DependencyInfo> result = new HashMap<File, DependencyInfo>();
 		Set<File> searchedAlready = new HashSet<File>();
 		for (File file : files) {
-			if (!searchedAlready.contains(file)) {
+			if (!searchedAlready.contains(file) && !file.equals(googleBaseJS)) {
 				DependencyInfo dep = AnnotationFileReader
 						.parseForDependencyInfo(file);
 				result.put(file, dep);
@@ -80,12 +80,12 @@ public final class CalcDeps {
 	 * @throws IOException if there is a problem parsing the files
 	 */
 	private static List<DependencyInfo> calculateDependencies(
-			final File baseJs, final Set<File> inputs, final Set<File> paths)
+			final File baseJs, final Collection<File> inputs, final Collection<File> paths)
 			throws IOException {
 		HashSet<File> temp = new HashSet<File>();
 		temp.addAll(inputs);
-		HashMap<File, DependencyInfo> inputHash = buildDependenciesFromFiles(inputs);
-		HashMap<File, DependencyInfo> searchHash = buildDependenciesFromFiles(paths);
+		HashMap<File, DependencyInfo> inputHash = buildDependenciesFromFiles(baseJs, inputs);
+		HashMap<File, DependencyInfo> searchHash = buildDependenciesFromFiles(baseJs, paths);
 		LOGGER.info("Dependencies Calculated.");
 
 		List<DependencyInfo> sortedDeps = slowSort(inputHash.values(),
@@ -105,7 +105,7 @@ public final class CalcDeps {
 	 *          generate deps relative to.
 	 */
 	private static boolean outputDeps(final File googleBaseFile,
-			final List<DependencyInfo> sortedDeps,
+			final Collection<DependencyInfo> sortedDeps,
 			final File outputFile) throws IOException {
 		DirectoryIO.createDir(outputFile.getParentFile());
 		FileWriter fw = new FileWriter(outputFile);
@@ -168,7 +168,7 @@ public final class CalcDeps {
 			final HashSet<File> seenList, final ArrayList<DependencyInfo> resultList) {
 		if (!searchSet.containsKey(requireNamespace)) {
 			LOGGER.error("search set doesn't contain key '" + requireNamespace
-					+ "'");
+					+ "'"); //TODO add the file that this comes from at a later point to improve clarity
 		}
 		DependencyInfo dep = searchSet.get(requireNamespace);
 		if (!seenList.contains(dep.getFile())) {
@@ -223,7 +223,7 @@ public final class CalcDeps {
 	 * @throws IOException if there is a problem reading from any dependencies or writing the depenency file
 	 */
 	public static List<File> executeCalcDeps(final File googleBaseFile,
-			final Set<File> inputs, final Set<File> paths, final File outputFile)
+			final Collection<File> inputs, final Collection<File> paths, final File outputFile)
 			throws IOException {
 		LOGGER.debug("Finding Closure dependencies...");
 		List<DependencyInfo> sortedDeps = calculateDependencies(googleBaseFile,

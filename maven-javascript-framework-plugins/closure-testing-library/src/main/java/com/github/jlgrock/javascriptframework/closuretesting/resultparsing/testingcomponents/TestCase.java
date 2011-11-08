@@ -1,6 +1,8 @@
 package com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,6 +23,11 @@ public class TestCase {
 	 */
 	private static final String NEWLINE = "\n";
 
+	/**
+	 * Simple tab representation.
+	 */
+	private static final String TAB = "\t";
+	
 	/**
 	 * the prefix for a test for the test case error output.
 	 */
@@ -63,7 +70,7 @@ public class TestCase {
 	/**
 	 * The set of information of all tests.
 	 */
-	private Set<TestFailureStatistic> testFailureStatistics;
+	private List<TestFailureStatistic> testFailureStatistics;
 
 	/**
 	 * The end information for the tests.
@@ -79,7 +86,7 @@ public class TestCase {
 	 * Constructor.
 	 */
 	public TestCase() {
-		testFailureStatistics = new HashSet<TestFailureStatistic>();
+		testFailureStatistics = new ArrayList<TestFailureStatistic>();
 		rawDivs = new HashSet<String>();
 	}
 
@@ -179,7 +186,7 @@ public class TestCase {
 	/**
 	 * @return the testFailureStatistics
 	 */
-	public final Set<TestFailureStatistic> getTestFailureStatistics() {
+	public final List<TestFailureStatistic> getTestFailureStatistics() {
 		return testFailureStatistics;
 	}
 
@@ -188,7 +195,7 @@ public class TestCase {
 	 *            the testFailureStatistics to set
 	 */
 	public final void setTestFailureStatistics(
-			final Set<TestFailureStatistic> testFailureStatisticsIn) {
+			final List<TestFailureStatistic> testFailureStatisticsIn) {
 		this.testFailureStatistics = testFailureStatisticsIn;
 	}
 
@@ -248,6 +255,11 @@ public class TestCase {
 			sb.append(TestCase.RESULT_PREFIX);
 			sb.append(singleTest.getResult());
 			sb.append(TestCase.NEWLINE);
+			for (String reason : singleTest.getFailureReasons()) {
+				sb.append(TestCase.TAB);
+				sb.append(reason);
+				sb.append(TestCase.NEWLINE);
+			}
 		}
 		return sb.toString();
 	}
@@ -261,5 +273,10 @@ public class TestCase {
 	public final void addToTestFailureStatistics(
 			final TestFailureStatistic testFailureStatistic) {
 		this.testFailureStatistics.add(testFailureStatistic);
+	}
+
+	public void addToLastTestFailureStatistic(String divText) {
+		TestFailureStatistic tfs = this.testFailureStatistics.get(this.testFailureStatistics.size()-1);
+		tfs.addToFailureReasons(divText);
 	}
 }

@@ -40,7 +40,7 @@ public class TestCaseRef {
 	/**
 	 * The begin tag for html.
 	 */
-	private static final String BEGIN_HTML = "<html>";
+	private static final String BEGIN_HTML = "<html>\n";
 
 	/**
 	 * The end tag for html.
@@ -50,28 +50,28 @@ public class TestCaseRef {
 	/**
 	 * The begin tag for heading with title.
 	 */
-	private static final String BEGIN_HEADING = "<head><title>Test for ";
+	private static final String BEGIN_HEADING = "\t<head>\n\t\t<title>Test for ";
 
 	/**
 	 * The end tag for heading with title.
 	 */
-	private static final String END_HEADING = "</title></head>";
+	private static final String END_HEADING = "</title>\n\t</head>\n";
 	/**
 	 * The begin tag for body.
 	 */
-	private static final String BEGIN_BODY = "<body>";
+	private static final String BEGIN_BODY = "\t<body>\n";
 	/**
 	 * The end tag for body.
 	 */
-	private static final String END_BODY = "</body>";
+	private static final String END_BODY = "\t</body>\n";
 	/**
 	 * The begin tag for script.
 	 */
-	private static final String BEGIN_SCRIPT = "<script src=\"";
+	private static final String BEGIN_SCRIPT = "\t\t<script src=\"";
 	/**
 	 * The end tag for script.
 	 */
-	private static final String END_SCRIPT = "\"></script>";
+	private static final String END_SCRIPT = "\"></script>\n";
 
 	/**
 	 * The Constructor.

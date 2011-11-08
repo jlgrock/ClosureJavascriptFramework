@@ -101,6 +101,12 @@ public final class TestCaseParser {
 		if (divParsed instanceof TestFailureStatistic) {
 			testCase.addToTestFailureStatistics((TestFailureStatistic) divParsed);
 		}
+		
+		if (testCase.getTestCaseStart() != null && testCase.getTestCaseEnd() == null 
+				&& divParsed == null) {
+			//add to last failure statistic
+			testCase.addToLastTestFailureStatistic(divText);
+		}
 		if (divParsed instanceof TestCaseEnd) {
 			testCase.setTestCaseEnd((TestCaseEnd) divParsed);
 		}

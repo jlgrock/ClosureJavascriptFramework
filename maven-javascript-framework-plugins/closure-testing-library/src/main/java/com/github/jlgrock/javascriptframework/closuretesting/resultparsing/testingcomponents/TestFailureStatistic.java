@@ -1,6 +1,8 @@
 package com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.TestResultType;
 
@@ -33,6 +35,10 @@ public class TestFailureStatistic implements IParsedDivObject {
 	private final TestResultType result;
 	
 	/**
+	 * The reasons behind the failure, if there was one.
+	 */
+	private final List<String> failureReasons;
+	/**
 	 * Constructor.
 	 * 
 	 * @param completionTimeIn the time of completion of the test
@@ -41,9 +47,10 @@ public class TestFailureStatistic implements IParsedDivObject {
 	 */
 	public TestFailureStatistic(final Calendar completionTimeIn, 
 			final String nameOfTestIn, final TestResultType resultIn) {
-		this.completionTime = completionTimeIn;
-		this.nameOfTest = nameOfTestIn;
-		this.result = resultIn;
+		completionTime = completionTimeIn;
+		nameOfTest = nameOfTestIn;
+		result = resultIn;
+		failureReasons = new ArrayList<String>();
 	}
 	
 	/**
@@ -65,5 +72,21 @@ public class TestFailureStatistic implements IParsedDivObject {
 	 */
 	public final TestResultType getResult() {
 		return result;
+	}
+	
+	/**
+	 * Adds to the failureReasons ArrayList
+	 * 
+	 * @param reason the string to add to the array
+	 */
+	public final void addToFailureReasons(final String reason) {
+		failureReasons.add(reason);
+	}
+	
+	/**
+	 * @return failureReasons
+	 */
+	public final List<String> getFailureReasons() {
+		return failureReasons;
 	}
 }

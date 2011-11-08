@@ -49,7 +49,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		MojoLogAppender.beginLogging(this);
 		try {
 			Set<File> files = generateFiles();
-			if (isSkipTests()) {
+			if (!isSkipTests()) {
 				Set<TestCase> testCases = parseFiles(files);
 				boolean encounteredError = checkForFailuresInTestCases(testCases);
 				if (verbose) {
@@ -133,7 +133,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	private Set<File> generateFiles() throws IOException {
 		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
 		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
-		File internsDir = JsarRelativeLocations.getInternsLocation(getFrameworkTargetDirectory());
+		File depsFileLocation = JsarRelativeLocations.getCalcDepsLocation(getFrameworkTargetDirectory());
 		
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 		File baseLocation = new File(getClosureLibrarylocation()
@@ -145,17 +145,25 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		LOGGER.info("Generating Test Suite");
 		Set<File> fileSet = calculateFileSet();
 		Set<File> testDeps = FileListBuilder.buildFilteredList(testDepsDir, "js");
+		Set<File> depsFileSet = FileListBuilder.buildFilteredList(depsFileLocation, "js");
+		File depsFile = null;
+		if (depsFileSet.size() == 1) {
+			depsFile = depsFileSet.toArray(new File[depsFileSet.size()])[0];
+		} else {
+			throw new IOException("Could not find debug/deps file at location '" + depsFileLocation + "'.");
+		}
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Files that will be included in testing:" + fileSet);
 			LOGGER.debug("Base Location:" + baseLocation);
-			LOGGER.debug("Internal Dependency Location:" + internsDir);
+			LOGGER.debug("calc deps Location:" + depsFile);
 			LOGGER.debug("Testing Dependency Location:" + testDepsDir);
 			LOGGER.debug("Testing Source Directory:" + getTestSourceDirectory());
 		}
 		
 		
 		SuiteGenerator suite = new SuiteGenerator(fileSet, baseLocation,
-				internsDir, testDeps);
+				depsFile, testDeps);
 		return suite.generateTestFiles(testOutputDir);
 	}
 
