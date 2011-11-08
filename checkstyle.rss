@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>Closure Testing Library - Checkstyle report</title>
+    <title>Closure Compiler Maven Plugin - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>Closure Testing Library - Checkstyle report</description>
+    <description>Closure Compiler Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
-      <title>File: 30,
-             Errors: 1516,
+      <title>File: 8,
+             Errors: 1178,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestTimingStatisticParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestTimingStatisticParser.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.DependencyInfo.java">com/github/jlgrock/javascriptframework/closurecompiler/DependencyInfo.java</a>
                 </td>
                 <td>
                   0
@@ -38,12 +38,12 @@
                   0
                 </td>
                 <td>
-                  36
+                  240
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCaseLocation.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCaseLocation.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.StrictLevel.java">com/github/jlgrock/javascriptframework/closurecompiler/StrictLevel.java</a>
                 </td>
                 <td>
                   0
@@ -52,12 +52,12 @@
                   0
                 </td>
                 <td>
-                  26
+                  103
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.TestResultType.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/TestResultType.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.JsClosureCompileMojo.java">com/github/jlgrock/javascriptframework/closurecompiler/JsClosureCompileMojo.java</a>
                 </td>
                 <td>
                   0
@@ -66,306 +66,12 @@
                   0
                 </td>
                 <td>
-                  44
+                  451
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCaseTimingStatistic.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCaseTimingStatistic.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  68
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseLocationParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseLocationParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  33
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseFailureStatisticParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseFailureStatisticParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  30
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseStartParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseStartParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  38
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  96
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCaseFailureStatistic.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCaseFailureStatistic.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  36
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCase.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCase.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  230
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.generators.SuiteGenerator.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/generators/SuiteGenerator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  85
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.generators.package-info.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/generators/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestFailureStatistic.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestFailureStatistic.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  62
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.package-info.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseEndParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseEndParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  39
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestTimingStatistic.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestTimingStatistic.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  54
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCaseStart.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCaseStart.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  20
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCaseEnd.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCaseEnd.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  24
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCaseSummary.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/TestCaseSummary.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  42
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.package-info.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseTimingStatisticParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseTimingStatisticParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  37
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.DivParseFactory.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/DivParseFactory.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  57
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.IParsedDivObject.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/testingcomponents/IParsedDivObject.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.IDivParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/IDivParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  24
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.package-info.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.package-info.java">com/github/jlgrock/javascriptframework/closurecompiler/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -379,7 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.ParseRunner.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/ParseRunner.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.ErrorLevel.java">com/github/jlgrock/javascriptframework/closurecompiler/ErrorLevel.java</a>
                 </td>
                 <td>
                   0
@@ -388,12 +94,12 @@
                   0
                 </td>
                 <td>
-                  128
+                  34
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestCaseSummaryParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestCaseSummaryParser.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.InclusionStrategy.java">com/github/jlgrock/javascriptframework/closurecompiler/InclusionStrategy.java</a>
                 </td>
                 <td>
                   0
@@ -402,12 +108,12 @@
                   0
                 </td>
                 <td>
-                  33
+                  19
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.generators.TestCaseRef.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/generators/TestCaseRef.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.CalcDeps.java">com/github/jlgrock/javascriptframework/closurecompiler/CalcDeps.java</a>
                 </td>
                 <td>
                   0
@@ -416,12 +122,12 @@
                   0
                 </td>
                 <td>
-                  142
+                  244
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.generators.TestCaseGenerator.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/generators/TestCaseGenerator.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.AnnotationFileReader.java">com/github/jlgrock/javascriptframework/closurecompiler/AnnotationFileReader.java</a>
                 </td>
                 <td>
                   0
@@ -430,21 +136,7 @@
                   0
                 </td>
                 <td>
-                  64
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers.TestFailureStatisticParser.java">com/github/jlgrock/javascriptframework/closuretesting/resultparsing/parsers/TestFailureStatisticParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  62
+                  87
                 </td>
               </tr>
                       </tbody>
