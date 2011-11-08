@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>Closure Compiler Maven Plugin - Checkstyle report</title>
+    <title>Closure Testing Maven Plugin - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>Closure Compiler Maven Plugin - Checkstyle report</description>
+    <description>Closure Testing Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
-      <title>File: 8,
-             Errors: 1178,
+      <title>File: 3,
+             Errors: 310,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.DependencyInfo.java">com/github/jlgrock/javascriptframework/closurecompiler/DependencyInfo.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.package-info.java">com/github/jlgrock/javascriptframework/closuretesting/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -38,12 +38,26 @@
                   0
                 </td>
                 <td>
-                  240
+                  0
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.StrictLevel.java">com/github/jlgrock/javascriptframework/closurecompiler/StrictLevel.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.ClosureTestingMojo.java">com/github/jlgrock/javascriptframework/closuretesting/ClosureTestingMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  207
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.AbstractClosureTestingMojo.java">com/github/jlgrock/javascriptframework/closuretesting/AbstractClosureTestingMojo.java</a>
                 </td>
                 <td>
                   0
@@ -53,90 +67,6 @@
                 </td>
                 <td>
                   103
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.JsClosureCompileMojo.java">com/github/jlgrock/javascriptframework/closurecompiler/JsClosureCompileMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  451
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.package-info.java">com/github/jlgrock/javascriptframework/closurecompiler/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.ErrorLevel.java">com/github/jlgrock/javascriptframework/closurecompiler/ErrorLevel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  34
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.InclusionStrategy.java">com/github/jlgrock/javascriptframework/closurecompiler/InclusionStrategy.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  19
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.CalcDeps.java">com/github/jlgrock/javascriptframework/closurecompiler/CalcDeps.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  244
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closurecompiler.AnnotationFileReader.java">com/github/jlgrock/javascriptframework/closurecompiler/AnnotationFileReader.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  87
                 </td>
               </tr>
                       </tbody>

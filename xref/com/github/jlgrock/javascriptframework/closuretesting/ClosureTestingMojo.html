@@ -59,7 +59,7 @@
 <a class="jxr_linenumber" name="49" href="#49">49</a>  		MojoLogAppender.beginLogging(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="50" href="#50">50</a>  		<strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="51" href="#51">51</a>  			Set&lt;File&gt; files = generateFiles();
-<a class="jxr_linenumber" name="52" href="#52">52</a>  			<strong class="jxr_keyword">if</strong> (isSkipTests()) {
+<a class="jxr_linenumber" name="52" href="#52">52</a>  			<strong class="jxr_keyword">if</strong> (!isSkipTests()) {
 <a class="jxr_linenumber" name="53" href="#53">53</a>  				Set&lt;TestCase&gt; testCases = parseFiles(files);
 <a class="jxr_linenumber" name="54" href="#54">54</a>  				<strong class="jxr_keyword">boolean</strong> encounteredError = checkForFailuresInTestCases(testCases);
 <a class="jxr_linenumber" name="55" href="#55">55</a>  				<strong class="jxr_keyword">if</strong> (verbose) {
@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="133" href="#133">133</a> 	<strong class="jxr_keyword">private</strong> Set&lt;File&gt; generateFiles() <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="134" href="#134">134</a> 		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
 <a class="jxr_linenumber" name="135" href="#135">135</a> 		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
-<a class="jxr_linenumber" name="136" href="#136">136</a> 		File internsDir = JsarRelativeLocations.getInternsLocation(getFrameworkTargetDirectory());
+<a class="jxr_linenumber" name="136" href="#136">136</a> 		File depsFileLocation = JsarRelativeLocations.getCalcDepsLocation(getFrameworkTargetDirectory());
 <a class="jxr_linenumber" name="137" href="#137">137</a> 		
 <a class="jxr_linenumber" name="138" href="#138">138</a> 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 <a class="jxr_linenumber" name="139" href="#139">139</a> 		File baseLocation = <strong class="jxr_keyword">new</strong> File(getClosureLibrarylocation()
@@ -155,58 +155,66 @@
 <a class="jxr_linenumber" name="145" href="#145">145</a> 		LOGGER.info(<span class="jxr_string">"Generating Test Suite"</span>);
 <a class="jxr_linenumber" name="146" href="#146">146</a> 		Set&lt;File&gt; fileSet = calculateFileSet();
 <a class="jxr_linenumber" name="147" href="#147">147</a> 		Set&lt;File&gt; testDeps = FileListBuilder.buildFilteredList(testDepsDir, <span class="jxr_string">"js"</span>);
-<a class="jxr_linenumber" name="148" href="#148">148</a> 		<strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
-<a class="jxr_linenumber" name="149" href="#149">149</a> 			LOGGER.debug(<span class="jxr_string">"Files that will be included in testing:"</span> + fileSet);
-<a class="jxr_linenumber" name="150" href="#150">150</a> 			LOGGER.debug(<span class="jxr_string">"Base Location:"</span> + baseLocation);
-<a class="jxr_linenumber" name="151" href="#151">151</a> 			LOGGER.debug(<span class="jxr_string">"Internal Dependency Location:"</span> + internsDir);
-<a class="jxr_linenumber" name="152" href="#152">152</a> 			LOGGER.debug(<span class="jxr_string">"Testing Dependency Location:"</span> + testDepsDir);
-<a class="jxr_linenumber" name="153" href="#153">153</a> 			LOGGER.debug(<span class="jxr_string">"Testing Source Directory:"</span> + getTestSourceDirectory());
+<a class="jxr_linenumber" name="148" href="#148">148</a> 		Set&lt;File&gt; depsFileSet = FileListBuilder.buildFilteredList(depsFileLocation, <span class="jxr_string">"js"</span>);
+<a class="jxr_linenumber" name="149" href="#149">149</a> 		File depsFile = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="150" href="#150">150</a> 		<strong class="jxr_keyword">if</strong> (depsFileSet.size() == 1) {
+<a class="jxr_linenumber" name="151" href="#151">151</a> 			depsFile = depsFileSet.toArray(<strong class="jxr_keyword">new</strong> File[depsFileSet.size()])[0];
+<a class="jxr_linenumber" name="152" href="#152">152</a> 		} <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="153" href="#153">153</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Could not find debug/deps file at location '"</span> + depsFileLocation + <span class="jxr_string">"'."</span>);
 <a class="jxr_linenumber" name="154" href="#154">154</a> 		}
 <a class="jxr_linenumber" name="155" href="#155">155</a> 		
-<a class="jxr_linenumber" name="156" href="#156">156</a> 		
-<a class="jxr_linenumber" name="157" href="#157">157</a> 		SuiteGenerator suite = <strong class="jxr_keyword">new</strong> <a href="../../../../../com/github/jlgrock/javascriptframework/closuretesting/resultparsing/generators/SuiteGenerator.html">SuiteGenerator</a>(fileSet, baseLocation,
-<a class="jxr_linenumber" name="158" href="#158">158</a> 				internsDir, testDeps);
-<a class="jxr_linenumber" name="159" href="#159">159</a> 		<strong class="jxr_keyword">return</strong> suite.generateTestFiles(testOutputDir);
-<a class="jxr_linenumber" name="160" href="#160">160</a> 	}
-<a class="jxr_linenumber" name="161" href="#161">161</a> 
-<a class="jxr_linenumber" name="162" href="#162">162</a> 	<em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="163" href="#163">163</a> <em class="jxr_javadoccomment">	 * Parse the files created.</em>
-<a class="jxr_linenumber" name="164" href="#164">164</a> <em class="jxr_javadoccomment">	 * </em>
-<a class="jxr_linenumber" name="165" href="#165">165</a> <em class="jxr_javadoccomment">	 * @param files</em>
-<a class="jxr_linenumber" name="166" href="#166">166</a> <em class="jxr_javadoccomment">	 *            the files to parse</em>
-<a class="jxr_linenumber" name="167" href="#167">167</a> <em class="jxr_javadoccomment">	 * @return the set of test cases received from parsing</em>
-<a class="jxr_linenumber" name="168" href="#168">168</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="169" href="#169">169</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Set&lt;TestCase&gt; parseFiles(<strong class="jxr_keyword">final</strong> Set&lt;File&gt; files) {
-<a class="jxr_linenumber" name="170" href="#170">170</a> 		WebDriver driver = <strong class="jxr_keyword">new</strong> HtmlUnitDriver(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="171" href="#171">171</a> 		Set&lt;TestCase&gt; testCases = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="172" href="#172">172</a> 		<strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="173" href="#173">173</a> 			ParseRunner parseRunner = <strong class="jxr_keyword">new</strong> <a href="../../../../../com/github/jlgrock/javascriptframework/closuretesting/resultparsing/ParseRunner.html">ParseRunner</a>(files, driver);
-<a class="jxr_linenumber" name="174" href="#174">174</a> 			testCases = parseRunner.parseFiles();
-<a class="jxr_linenumber" name="175" href="#175">175</a> 		} <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="176" href="#176">176</a> 			driver.close();
-<a class="jxr_linenumber" name="177" href="#177">177</a> 		}
-<a class="jxr_linenumber" name="178" href="#178">178</a> 		<strong class="jxr_keyword">return</strong> testCases;
-<a class="jxr_linenumber" name="179" href="#179">179</a> 	}
-<a class="jxr_linenumber" name="180" href="#180">180</a> 
-<a class="jxr_linenumber" name="181" href="#181">181</a> 	<em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="182" href="#182">182</a> <em class="jxr_javadoccomment">	 * Will calculate the set of files.</em>
-<a class="jxr_linenumber" name="183" href="#183">183</a> <em class="jxr_javadoccomment">	 * </em>
-<a class="jxr_linenumber" name="184" href="#184">184</a> <em class="jxr_javadoccomment">	 * @return the file set</em>
-<a class="jxr_linenumber" name="185" href="#185">185</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="186" href="#186">186</a> 	<strong class="jxr_keyword">private</strong> Set&lt;File&gt; calculateFileSet() {
-<a class="jxr_linenumber" name="187" href="#187">187</a> 		LOGGER.info(<span class="jxr_string">"Calculating File Set"</span>);
-<a class="jxr_linenumber" name="188" href="#188">188</a> 		Set&lt;File&gt; files = <strong class="jxr_keyword">new</strong> HashSet&lt;File&gt;();
-<a class="jxr_linenumber" name="189" href="#189">189</a> 		files.addAll(FileListBuilder.buildFilteredList(
-<a class="jxr_linenumber" name="190" href="#190">190</a> 				getTestSourceDirectory(), <span class="jxr_string">"js"</span>));
-<a class="jxr_linenumber" name="191" href="#191">191</a> 		<strong class="jxr_keyword">if</strong> (getIncludes() != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="192" href="#192">192</a> 			files.addAll(getIncludes());
-<a class="jxr_linenumber" name="193" href="#193">193</a> 		}
-<a class="jxr_linenumber" name="194" href="#194">194</a> 		<strong class="jxr_keyword">if</strong> (getExcludes() != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="195" href="#195">195</a> 			files.removeAll(getExcludes());
-<a class="jxr_linenumber" name="196" href="#196">196</a> 		}
-<a class="jxr_linenumber" name="197" href="#197">197</a> 		<strong class="jxr_keyword">return</strong> files;
-<a class="jxr_linenumber" name="198" href="#198">198</a> 	}
-<a class="jxr_linenumber" name="199" href="#199">199</a> }
+<a class="jxr_linenumber" name="156" href="#156">156</a> 		<strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
+<a class="jxr_linenumber" name="157" href="#157">157</a> 			LOGGER.debug(<span class="jxr_string">"Files that will be included in testing:"</span> + fileSet);
+<a class="jxr_linenumber" name="158" href="#158">158</a> 			LOGGER.debug(<span class="jxr_string">"Base Location:"</span> + baseLocation);
+<a class="jxr_linenumber" name="159" href="#159">159</a> 			LOGGER.debug(<span class="jxr_string">"calc deps Location:"</span> + depsFile);
+<a class="jxr_linenumber" name="160" href="#160">160</a> 			LOGGER.debug(<span class="jxr_string">"Testing Dependency Location:"</span> + testDepsDir);
+<a class="jxr_linenumber" name="161" href="#161">161</a> 			LOGGER.debug(<span class="jxr_string">"Testing Source Directory:"</span> + getTestSourceDirectory());
+<a class="jxr_linenumber" name="162" href="#162">162</a> 		}
+<a class="jxr_linenumber" name="163" href="#163">163</a> 		
+<a class="jxr_linenumber" name="164" href="#164">164</a> 		
+<a class="jxr_linenumber" name="165" href="#165">165</a> 		SuiteGenerator suite = <strong class="jxr_keyword">new</strong> SuiteGenerator(fileSet, baseLocation,
+<a class="jxr_linenumber" name="166" href="#166">166</a> 				depsFile, testDeps);
+<a class="jxr_linenumber" name="167" href="#167">167</a> 		<strong class="jxr_keyword">return</strong> suite.generateTestFiles(testOutputDir);
+<a class="jxr_linenumber" name="168" href="#168">168</a> 	}
+<a class="jxr_linenumber" name="169" href="#169">169</a> 
+<a class="jxr_linenumber" name="170" href="#170">170</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="171" href="#171">171</a> <em class="jxr_javadoccomment">	 * Parse the files created.</em>
+<a class="jxr_linenumber" name="172" href="#172">172</a> <em class="jxr_javadoccomment">	 * </em>
+<a class="jxr_linenumber" name="173" href="#173">173</a> <em class="jxr_javadoccomment">	 * @param files</em>
+<a class="jxr_linenumber" name="174" href="#174">174</a> <em class="jxr_javadoccomment">	 *            the files to parse</em>
+<a class="jxr_linenumber" name="175" href="#175">175</a> <em class="jxr_javadoccomment">	 * @return the set of test cases received from parsing</em>
+<a class="jxr_linenumber" name="176" href="#176">176</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="177" href="#177">177</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Set&lt;TestCase&gt; parseFiles(<strong class="jxr_keyword">final</strong> Set&lt;File&gt; files) {
+<a class="jxr_linenumber" name="178" href="#178">178</a> 		WebDriver driver = <strong class="jxr_keyword">new</strong> HtmlUnitDriver(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="179" href="#179">179</a> 		Set&lt;TestCase&gt; testCases = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="180" href="#180">180</a> 		<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="181" href="#181">181</a> 			ParseRunner parseRunner = <strong class="jxr_keyword">new</strong> ParseRunner(files, driver);
+<a class="jxr_linenumber" name="182" href="#182">182</a> 			testCases = parseRunner.parseFiles();
+<a class="jxr_linenumber" name="183" href="#183">183</a> 		} <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="184" href="#184">184</a> 			driver.close();
+<a class="jxr_linenumber" name="185" href="#185">185</a> 		}
+<a class="jxr_linenumber" name="186" href="#186">186</a> 		<strong class="jxr_keyword">return</strong> testCases;
+<a class="jxr_linenumber" name="187" href="#187">187</a> 	}
+<a class="jxr_linenumber" name="188" href="#188">188</a> 
+<a class="jxr_linenumber" name="189" href="#189">189</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="190" href="#190">190</a> <em class="jxr_javadoccomment">	 * Will calculate the set of files.</em>
+<a class="jxr_linenumber" name="191" href="#191">191</a> <em class="jxr_javadoccomment">	 * </em>
+<a class="jxr_linenumber" name="192" href="#192">192</a> <em class="jxr_javadoccomment">	 * @return the file set</em>
+<a class="jxr_linenumber" name="193" href="#193">193</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="194" href="#194">194</a> 	<strong class="jxr_keyword">private</strong> Set&lt;File&gt; calculateFileSet() {
+<a class="jxr_linenumber" name="195" href="#195">195</a> 		LOGGER.info(<span class="jxr_string">"Calculating File Set"</span>);
+<a class="jxr_linenumber" name="196" href="#196">196</a> 		Set&lt;File&gt; files = <strong class="jxr_keyword">new</strong> HashSet&lt;File&gt;();
+<a class="jxr_linenumber" name="197" href="#197">197</a> 		files.addAll(FileListBuilder.buildFilteredList(
+<a class="jxr_linenumber" name="198" href="#198">198</a> 				getTestSourceDirectory(), <span class="jxr_string">"js"</span>));
+<a class="jxr_linenumber" name="199" href="#199">199</a> 		<strong class="jxr_keyword">if</strong> (getIncludes() != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="200" href="#200">200</a> 			files.addAll(getIncludes());
+<a class="jxr_linenumber" name="201" href="#201">201</a> 		}
+<a class="jxr_linenumber" name="202" href="#202">202</a> 		<strong class="jxr_keyword">if</strong> (getExcludes() != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="203" href="#203">203</a> 			files.removeAll(getExcludes());
+<a class="jxr_linenumber" name="204" href="#204">204</a> 		}
+<a class="jxr_linenumber" name="205" href="#205">205</a> 		<strong class="jxr_keyword">return</strong> files;
+<a class="jxr_linenumber" name="206" href="#206">206</a> 	}
+<a class="jxr_linenumber" name="207" href="#207">207</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
