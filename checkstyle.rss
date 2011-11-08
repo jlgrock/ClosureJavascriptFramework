@@ -2,14 +2,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>Closure Testing Maven Plugin - Checkstyle report</title>
+    <title>Closure Testing Report Maven Plugin - Checkstyle report</title>
     <link>https://github.com/jlgrock/JavascriptFramework</link>
-    <description>Closure Testing Maven Plugin - Checkstyle report</description>
+    <description>Closure Testing Report Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2011</copyright>
     <item>
       <title>File: 3,
-             Errors: 310,
+             Errors: 358,
              Warnings: 0,
              Infos: 0
       </title>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.package-info.java">com/github/jlgrock/javascriptframework/closuretesting/package-info.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretestingreport.package-info.java">com/github/jlgrock/javascriptframework/closuretestingreport/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -43,7 +43,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.ClosureTestingMojo.java">com/github/jlgrock/javascriptframework/closuretesting/ClosureTestingMojo.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretestingreport.ClosureTestingReportMojo.java">com/github/jlgrock/javascriptframework/closuretestingreport/ClosureTestingReportMojo.java</a>
                 </td>
                 <td>
                   0
@@ -52,12 +52,12 @@
                   0
                 </td>
                 <td>
-                  207
+                  133
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretesting.AbstractClosureTestingMojo.java">com/github/jlgrock/javascriptframework/closuretesting/AbstractClosureTestingMojo.java</a>
+                  <a href="https://github.com/jlgrock/JavascriptFramework/checkstyle.html#com.github.jlgrock.javascriptframework.closuretestingreport.ClosureTestingReportGenerator.java">com/github/jlgrock/javascriptframework/closuretestingreport/ClosureTestingReportGenerator.java</a>
                 </td>
                 <td>
                   0
@@ -66,7 +66,7 @@
                   0
                 </td>
                 <td>
-                  103
+                  225
                 </td>
               </tr>
                       </tbody>
