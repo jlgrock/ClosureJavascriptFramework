@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="121" branches-covered="0" branches-valid="16" complexity="1.5263157894736843" version="1.9.4.1" timestamp="1320788495868">
+<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="121" branches-covered="0" branches-valid="16" complexity="1.5263157894736843" version="1.9.4.1" timestamp="1320797058090">
 	<sources>
 		<source>--source</source>
 		<source>C:/Users/jgrant/git/ClosureJavascriptFramework/maven-javascript-framework-plugins/closure-testing-report-maven-plugin/src/main/java</source>
