@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.6</version>
+		<version>1.7</version>
 	</parent>
 	<artifactId>closure-testing-library</artifactId>
 	<packaging>jar</packaging>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.9.0</version>
+			<version>2.12.0</version>
 		</dependency>
 		
 		<!-- Log4j -->

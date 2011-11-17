@@ -19,9 +19,14 @@ public class JsarRelativeLocations {
 	public static final String JSAR_EXTERN_LOCATION = "externDependencies";
 
 	/**
-	 * The location of the source files in the jsar
+	 * The location of the assertion source files in the jsar
 	 */
-	public static final String JSAR_PROCESSED_SOURCE_LOCATION = "processedJavascript";
+	public static final String JSAR_ASSERTION_SOURCE_LOCATION = "assertionSource";
+	
+	/**
+	 * The location of the source files (with assertions removed) in the jsar
+	 */
+	public static final String JSAR_PROCESSED_SOURCE_LOCATION = "debugSource";
 	
 	/**
 	 * The location of the intern files in the jsar
@@ -39,9 +44,14 @@ public class JsarRelativeLocations {
 	public static final String JSAR_COMPILE_LOCATION = "compiled";
 	
 	/**
-	 * The location of the source files in the jsar
+	 * The location of the generated assert deps file
 	 */
-	public static final String JSAR_CALCDEPS_LOCATION = "calcDeps";
+	public static final String JSAR_ASSERT_LOCATION = "assert";
+	
+	/**
+	 * The location of the generated debug deps file
+	 */
+	public static final String JSAR_DEBUG_LOCATION = "debug";
 
 	/**
 	 * private Constructor for utility class.
@@ -49,8 +59,12 @@ public class JsarRelativeLocations {
 	private JsarRelativeLocations() {
 	}
 
-	public static final File getCalcDepsLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_CALCDEPS_LOCATION);
+	public static final File getDebugDepsLocation(final File frameworkLocation) {
+		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_DEBUG_LOCATION);
+	}
+	
+	public static final File getAssertDepsLocation(final File frameworkLocation) {
+		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERT_LOCATION);
 	}
 	
 	public static final File getTestLocation(final File frameworkLocation) {
@@ -61,7 +75,11 @@ public class JsarRelativeLocations {
 		return new File(frameworkLocation, JSAR_TEST_SUITE_LOCATION);
 	}
 	
-	public static final File getProcessedSourceLocation(final File frameworkLocation) {
+	public static final File getAssertionSourceLocation(final File frameworkLocation) {
+		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERTION_SOURCE_LOCATION);
+	}
+	
+	public static final File getDebugSourceLocation(final File frameworkLocation) {
 		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_PROCESSED_SOURCE_LOCATION);
 	}
 

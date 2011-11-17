@@ -9,7 +9,11 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}${file.separator}javascriptframework${file.separator}processedJavascript</directory>
+			<directory>${project.build.directory}${file.separator}javascriptframework${file.separator}closure-library</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}${file.separator}javascriptframework${file.separator}output${file.separator}processedJavascript</directory>
 			<outputDirectory></outputDirectory>
 		</fileSet>
 		<fileSet>

@@ -41,43 +41,91 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(JsClosureCompileMojo.class);
-	/**
-	 * The file produced after running the dependencies and files through the
-	 * compiler.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework"
-	 * @required
-	 */
-	private File frameworkTargetDirectory;
 
 	/**
-	 * The file produced after running the dependencies and files through the
-	 * compiler.
+	 * A simple util to convert a collection of files to a list of closure
+	 * JSSourceFiles.
 	 * 
-	 * @parameter default-value="${project.build.finalName}-min.js"
-	 * @required
+	 * @param jsFiles
+	 *            the collection of files to convert
+	 * @return the list of google formatted objects
 	 */
-	private String compiledFilename;
+	private static List<JSSourceFile> convertToJSSourceFiles(
+			final Collection<File> jsFiles) {
+		List<JSSourceFile> jsSourceFiles = new ArrayList<JSSourceFile>();
+		for (File f : jsFiles) {
+			jsSourceFiles.add(JSSourceFile.fromFile(f));
+		}
+		return jsSourceFiles;
+	}
 
 	/**
-	 * The file produced after running the dependencies and files through the
-	 * compiler.
+	 * Create the dependencies JS file.
 	 * 
-	 * @parameter default-value="${project.build.finalName}-debug.js"
-	 * @required
+	 * @param src
+	 *            the location of the source files
+	 * @param combinedInternal
+	 *            the set of combined internal files (internal maven
+	 *            dependencies, closure library, and source files)
+	 * @return the list of dependencies, in dependency order
+	 * @throws MojoExecutionException
+	 *             if the dependency generator is not able to make a file
+	 * @throws IOException
+	 *             if there is a problem reading or writing to any of the files
 	 */
-	private String generatedDepsJS;
+	private static List<File> createDepsJS(final File baseLocation,
+			final Collection<File> src, final Collection<File> interns,
+			final File depsFile) throws MojoExecutionException, IOException {
+
+		// TODO when they fix the visibility rules in the DepsGenerator, replace
+		// it with Google's version
+		LOGGER.debug("base location: " + baseLocation);
+		LOGGER.debug("src files: " + src);
+		LOGGER.debug("intern files: " + interns);
+		LOGGER.debug("deps file location: " + depsFile);
+		return CalcDeps.executeCalcDeps(baseLocation, src, interns, depsFile);
+	}
+
+	private static File getBaseLocation(final File closureLibraryLocation)
+			throws MojoExecutionException {
+		File baseLocation = new File(closureLibraryLocation.getAbsoluteFile()
+				+ File.separator + "closure" + File.separator + "goog"
+				+ File.separator + "base.js");
+		if (!baseLocation.exists()) {
+			throw new MojoExecutionException(
+					"Could not locate \"base.js\" at location \""
+							+ baseLocation.getParentFile().getAbsolutePath()
+							+ "\"");
+		}
+		return baseLocation;
+	}
 
 	/**
-	 * The default directory to extract files to. This likely shouldn't be
-	 * changed unless there is a conflict with another plugin.
+	 * List the errors that google is providing from the compiler output.
 	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}output${file.separator}processedJavascript"
-	 * @required
+	 * @param result
+	 *            the results from the compiler
 	 */
-	private File sourceDirectory;
+	private static void listErrors(final Result result) {
+		for (JSError warning : result.warnings) {
+			LOGGER.warn("[Goog.WARN]: " + warning.toString());
+		}
+
+		for (JSError error : result.errors) {
+			LOGGER.error("[Goog.ERROR]: " + error.toString());
+		}
+	}
+
+	/**
+	 * List the javascript files in a directory.
+	 * 
+	 * @param directory
+	 *            the directory to search
+	 * @return the set of files with the ".js" extension
+	 */
+	private static Set<File> listFiles(final File directory) {
+		return FileListBuilder.buildFilteredList(directory, "js");
+	}
 
 	/**
 	 * The location of the closure library. By default, this is expected in the
@@ -94,9 +142,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private File closureLibraryLocation;
 
 	/**
-	 * @parameter default-value="true"
+	 * The file produced after running the dependencies and files through the
+	 * compiler.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-min.js"
+	 * @required
 	 */
-	private boolean generateExports;
+	private String compiledFilename;
 
 	/**
 	 * Specifies the compiler level to use.
@@ -137,6 +189,39 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private String errorLevel;
 
 	/**
+	 * The file produced after running the dependencies and files through the
+	 * compiler.
+	 * 
+	 * @parameter default-value=
+	 *            "${project.build.directory}${file.separator}javascriptFramework"
+	 * @required
+	 */
+	private File frameworkTargetDirectory;
+
+	/**
+	 * The file produced after running the dependencies and files through the
+	 * compiler.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-assert.js"
+	 * @required
+	 */
+	private String generatedAssertJS;
+
+	/**
+	 * The file produced after running the dependencies and files through the
+	 * compiler.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-debug.js"
+	 * @required
+	 */
+	private String generatedDebugJS;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean generateExports;
+
+	/**
 	 * What to include based off of maven includes. If you are creating an API
 	 * with an empty src folder, or you expect to use all of the maven
 	 * dependencies as source, set this to ALL.
@@ -152,55 +237,83 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private String inclusionStrategy;
 
-	@Override
-	public final void execute() throws MojoExecutionException,
-			MojoFailureException {
-		MojoLogAppender.beginLogging(this);
-		try {
-			LOGGER.info("Compiling source files and internal dependencies to location \""
-					+ JsarRelativeLocations.getCompileLocation(
-							frameworkTargetDirectory).getAbsolutePath() + "\".");
-			// get sets of internal files
-			Collection<File> sourceFiles = calculateSourceFiles();
-			Collection<File> internFiles = calculateInternalFiles(sourceFiles);
+	/**
+	 * The default directory to extract files to. This likely shouldn't be
+	 * changed unless there is a conflict with another plugin.
+	 * 
+	 * @parameter default-value=
+	 *            "${basedir}${file.separator}src${file.separator}test${file.separator}javascript"
+	 * @required
+	 */
+	private File testSourceDirectory; // TODO needs to use this for creading the
+										// deps files
 
-			// gather externs
-			Collection<JSSourceFile> externs = calculateExternFiles();
-
-			// create deps.js
-			List<File> depsFiles = createDepsJS(sourceFiles, internFiles);
-
-			// create file collection for compilation
-			List<File> compileFiles = new ArrayList<File>();
-			compileFiles.add(getBaseLocation());
-			compileFiles.add(getGeneratedDepsFile());
-			compileFiles.addAll(depsFiles);
-
-			// compile
-			boolean result = compile(convertToJSSourceFiles(compileFiles),
-					externs);
-
-			if (!result) {
-				String message = "Google Closure Compilation failure.  Please review errors to continue.";
-				LOGGER.error(message);
-				throw new MojoFailureException(message);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			e.printStackTrace(new PrintStream(new Log4jOutputStream(LOGGER,
-					Level.DEBUG)));
-			throw new MojoExecutionException(
-					"Unable to closure compile files: " + e.getMessage());
-		} finally {
-			MojoLogAppender.endLogging();
-		}
+	/**
+	 * Extract external dependency libraries to the location specified in the
+	 * settings.
+	 * 
+	 * @return the list of the files that are extracted
+	 * @throws IOException
+	 *             if unable to read the default externs
+	 */
+	private List<JSSourceFile> calculateExternFiles() throws IOException {
+		Set<File> externSourceFiles = listFiles(JsarRelativeLocations
+				.getExternsLocation(frameworkTargetDirectory));
+		List<JSSourceFile> externalJSSourceFiles = convertToJSSourceFiles(externSourceFiles);
+		externalJSSourceFiles.addAll(CommandLineRunner.getDefaultExterns());
+		LOGGER.debug("number of external files:" + externalJSSourceFiles.size());
+		return externalJSSourceFiles;
 	}
 
-	private File getGeneratedDepsFile() {
-		return new File(
-				JsarRelativeLocations
-						.getCalcDepsLocation(frameworkTargetDirectory),
-				generatedDepsJS);
+	/**
+	 * Extract internal dependency libraries, source to the location specified
+	 * in the settings. Then create the deps to be loaded first.
+	 * 
+	 * @return the list of the files that are extracted (plus the generated deps
+	 *         file)
+	 * @throws MojoExecutionException
+	 *             if there is a problem generating the dependency file
+	 * @throws IOException
+	 *             if there is a problem reading or extracting the files
+	 */
+	private Collection<File> calculateInternalFiles(
+			final Collection<File> source) throws MojoExecutionException,
+			IOException {
+		Set<File> internalSourceFiles = listFiles(JsarRelativeLocations
+				.getInternsLocation(frameworkTargetDirectory));
+		LOGGER.debug("number of internal dependency files:"
+				+ internalSourceFiles.size());
+
+		Set<File> closureLibFiles = listFiles(closureLibraryLocation);
+		LOGGER.debug("number of google lib files:" + closureLibFiles.size());
+
+		HashSet<File> combinedInternal = new HashSet<File>();
+
+		combinedInternal.addAll(source);
+		combinedInternal.addAll(internalSourceFiles);
+		combinedInternal.addAll(closureLibFiles);
+
+		return combinedInternal;
+	}
+
+	private Set<File> calculateSourceFiles(final File sourceDir,
+			final File internsLocation) {
+		InclusionStrategy strategy = InclusionStrategy
+				.getByType(inclusionStrategy);
+		if (strategy == null) {
+			strategy = InclusionStrategy.WHEN_IN_SRCS;
+		}
+		LOGGER.info("Calculating source files using Inclusion strategy: "
+				+ strategy);
+		Set<File> listSourceFiles = new HashSet<File>();
+		if (strategy.equals(InclusionStrategy.WHEN_IN_SRCS)) {
+			listSourceFiles.addAll(listFiles(sourceDir));
+		} else {
+			listSourceFiles.addAll(listFiles(sourceDir));
+			listSourceFiles.addAll(listFiles(internsLocation));
+		}
+		LOGGER.debug("number of source files:" + listSourceFiles.size());
+		return listSourceFiles;
 	}
 
 	/**
@@ -280,159 +393,77 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		return true;
 	}
 
-	private Set<File> calculateSourceFiles() {
-		InclusionStrategy strategy = InclusionStrategy
-				.getByType(inclusionStrategy);
-		if (strategy == null) {
-			strategy = InclusionStrategy.WHEN_IN_SRCS;
-		}
-		LOGGER.info("Calculating source files using Inclusion strategy: "
-				+ strategy);
-		Set<File> listSourceFiles = new HashSet<File>();
-		if (strategy.equals(InclusionStrategy.WHEN_IN_SRCS)) {
-			listSourceFiles.addAll(listFiles(sourceDirectory));
-		} else {
-			listSourceFiles.addAll(listFiles(sourceDirectory));
-			listSourceFiles.addAll(listFiles(JsarRelativeLocations
-					.getInternsLocation(frameworkTargetDirectory)));
-		}
-		LOGGER.debug("number of source files:" + listSourceFiles.size());
-		return listSourceFiles;
-	}
+	@Override
+	public final void execute() throws MojoExecutionException,
+			MojoFailureException {
+		MojoLogAppender.beginLogging(this);
+		try {
+			LOGGER.info("Compiling source files and internal dependencies to location \""
+					+ JsarRelativeLocations.getCompileLocation(
+							frameworkTargetDirectory).getAbsolutePath() + "\".");
+			// gather externs for both asserts and debug
+			Collection<JSSourceFile> externs = calculateExternFiles();
 
-	/**
-	 * Create the dependencies JS file.
-	 * 
-	 * @param src
-	 *            the location of the source files
-	 * @param combinedInternal
-	 *            the set of combined internal files (internal maven
-	 *            dependencies, closure library, and source files)
-	 * @return the list of dependencies, in dependency order
-	 * @throws MojoExecutionException
-	 *             if the dependency generator is not able to make a file
-	 * @throws IOException
-	 *             if there is a problem reading or writing to any of the files
-	 */
-	private List<File> createDepsJS(final Collection<File> src,
-			final Collection<File> interns) throws MojoExecutionException,
-			IOException {
+			// create assert file
+			Collection<File> assertSourceFiles = calculateSourceFiles(
+					JsarRelativeLocations
+							.getAssertionSourceLocation(frameworkTargetDirectory),
+					JsarRelativeLocations
+							.getInternsLocation(frameworkTargetDirectory));
+			File baseLocation = getBaseLocation(closureLibraryLocation);
+			File assertFile = getGeneratedAssertJS();
+			Collection<File> assertInternFiles = calculateInternalFiles(assertSourceFiles);
+			List<File> assertDepsFiles = createDepsJS(baseLocation,
+					assertSourceFiles, assertInternFiles, assertFile);
 
-		File baseLocation = getBaseLocation();
+			// create debug file
+			File debugFile = getGeneratedDebugJS();
+			Collection<File> sourceFiles = calculateSourceFiles(
+					JsarRelativeLocations
+							.getDebugSourceLocation(frameworkTargetDirectory),
+					JsarRelativeLocations
+							.getInternsLocation(frameworkTargetDirectory));
+			Collection<File> debugInternFiles = calculateInternalFiles(sourceFiles);
+			List<File> debugDepsFiles = createDepsJS(baseLocation, sourceFiles,
+					debugInternFiles, debugFile);
 
-		File depsFile = getGeneratedDepsFile();
+			// create file collection for compilation
+			List<File> debugFiles = new ArrayList<File>();
+			debugFiles.add(getBaseLocation(closureLibraryLocation));
+			debugFiles.add(debugFile);
+			debugFiles.addAll(debugDepsFiles);
 
-		// TODO when they fix the visibility rules in the DepsGenerator, replace
-		// it with Google's version
-		LOGGER.debug("base location: " + baseLocation);
-		LOGGER.debug("src files: " + src);
-		LOGGER.debug("intern files: " + interns);
-		LOGGER.debug("deps file location: " + depsFile);
-		return CalcDeps.executeCalcDeps(baseLocation, src, interns, depsFile);
-	}
+			// compile debug into compiled dir
+			boolean result = compile(convertToJSSourceFiles(debugFiles),
+					externs);
 
-	private File getBaseLocation() throws MojoExecutionException {
-		File baseLocation = new File(closureLibraryLocation.getAbsoluteFile()
-				+ File.separator + "closure" + File.separator + "goog"
-				+ File.separator + "base.js");
-		if (!baseLocation.exists()) {
+			if (!result) {
+				String message = "Google Closure Compilation failure.  Please review errors to continue.";
+				LOGGER.error(message);
+				throw new MojoFailureException(message);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			e.printStackTrace(new PrintStream(new Log4jOutputStream(LOGGER,
+					Level.DEBUG)));
 			throw new MojoExecutionException(
-					"Could not locate \"base.js\" at location \""
-							+ baseLocation.getParentFile().getAbsolutePath()
-							+ "\"");
-		}
-		return baseLocation;
-	}
-
-	/**
-	 * List the errors that google is providing from the compiler output.
-	 * 
-	 * @param result
-	 *            the results from the compiler
-	 */
-	private void listErrors(final Result result) {
-		for (JSError warning : result.warnings) {
-			LOGGER.warn("[Goog.WARN]: " + warning.toString());
-		}
-
-		for (JSError error : result.errors) {
-			LOGGER.error("[Goog.ERROR]: " + error.toString());
+					"Unable to closure compile files: " + e.getMessage());
+		} finally {
+			MojoLogAppender.endLogging();
 		}
 	}
 
-	/**
-	 * Extract internal dependency libraries, source to the location specified
-	 * in the settings. Then create the deps to be loaded first.
-	 * 
-	 * @return the list of the files that are extracted (plus the generated deps
-	 *         file)
-	 * @throws MojoExecutionException
-	 *             if there is a problem generating the dependency file
-	 * @throws IOException
-	 *             if there is a problem reading or extracting the files
-	 */
-	private Collection<File> calculateInternalFiles(
-			final Collection<File> source) throws MojoExecutionException,
-			IOException {
-		Set<File> internalSourceFiles = listFiles(JsarRelativeLocations
-				.getInternsLocation(frameworkTargetDirectory));
-		LOGGER.debug("number of internal dependency files:"
-				+ internalSourceFiles.size());
-
-		Set<File> closureLibFiles = listFiles(closureLibraryLocation);
-		LOGGER.debug("number of google lib files:" + closureLibFiles.size());
-
-		HashSet<File> combinedInternal = new HashSet<File>();
-
-		combinedInternal.addAll(source);
-		combinedInternal.addAll(internalSourceFiles);
-		combinedInternal.addAll(closureLibFiles);
-
-		return combinedInternal;
+	private File getGeneratedAssertJS() {
+		return new File(
+				JsarRelativeLocations
+						.getAssertDepsLocation(frameworkTargetDirectory),
+				generatedAssertJS);
 	}
 
-	/**
-	 * Extract external dependency libraries to the location specified in the
-	 * settings.
-	 * 
-	 * @return the list of the files that are extracted
-	 * @throws IOException
-	 *             if unable to read the default externs
-	 */
-	private List<JSSourceFile> calculateExternFiles() throws IOException {
-		Set<File> externSourceFiles = listFiles(JsarRelativeLocations
-				.getExternsLocation(frameworkTargetDirectory));
-		List<JSSourceFile> externalJSSourceFiles = convertToJSSourceFiles(externSourceFiles);
-		externalJSSourceFiles.addAll(CommandLineRunner.getDefaultExterns());
-		LOGGER.debug("number of external files:" + externalJSSourceFiles.size());
-		return externalJSSourceFiles;
-	}
-
-	/**
-	 * A simple util to convert a collection of files to a list of closure
-	 * JSSourceFiles.
-	 * 
-	 * @param jsFiles
-	 *            the collection of files to convert
-	 * @return the list of google formatted objects
-	 */
-	private static List<JSSourceFile> convertToJSSourceFiles(
-			final Collection<File> jsFiles) {
-		List<JSSourceFile> jsSourceFiles = new ArrayList<JSSourceFile>();
-		for (File f : jsFiles) {
-			jsSourceFiles.add(JSSourceFile.fromFile(f));
-		}
-		return jsSourceFiles;
-	}
-
-	/**
-	 * List the javascript files in a directory.
-	 * 
-	 * @param directory
-	 *            the directory to search
-	 * @return the set of files with the ".js" extension
-	 */
-	private Set<File> listFiles(final File directory) {
-		return FileListBuilder.buildFilteredList(directory, "js");
+	private File getGeneratedDebugJS() {
+		return new File(
+				JsarRelativeLocations
+						.getDebugDepsLocation(frameworkTargetDirectory),
+				generatedDebugJS);
 	}
 }

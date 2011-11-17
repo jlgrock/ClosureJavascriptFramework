@@ -10,21 +10,21 @@ import org.apache.maven.project.MavenProject;
  * 
  * @author <a href="mailto:grantjl@umich.edu">Justin Grant</a>
  * @requiresProject
- * @goal java-test-source-archive
+ * @goal js-test-source-archive
  * @inheritByDefault false
  * @threadSafe
  */
-public class JavaSourceArchiveMojo extends AbstractArchiveMojo {
+public class JavaScriptTestSourceArchiveMojo extends AbstractArchiveMojo {
 
 	/**
 	 * The Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(JavaSourceArchiveMojo.class);
-	
+	private static final Logger LOGGER = Logger.getLogger(JavaScriptTestSourceArchiveMojo.class);
+
 	/**
 	 * The resource to assemble with.
 	 */
-	public static final String DESCRIPTOR_RESOURCE_NAME = "js-test-src-assembly.xml";
+	public static final String DESCRIPTOR_RESOURCE_NAME = "js-src-assembly.xml";
 	
     /**
      * @parameter default-value="${project}"
@@ -39,7 +39,7 @@ public class JavaSourceArchiveMojo extends AbstractArchiveMojo {
     }
 
     @Override
-	protected final String getDescriptorResourceName() {
+    protected final String getDescriptorResourceName() {
 		return DESCRIPTOR_RESOURCE_NAME;
 	}
 }

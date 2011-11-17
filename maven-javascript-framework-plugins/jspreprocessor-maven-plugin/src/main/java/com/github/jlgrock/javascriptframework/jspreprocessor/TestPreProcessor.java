@@ -1,6 +1,9 @@
 package com.github.jlgrock.javascriptframework.jspreprocessor;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * eventually, this should do a bunch of things, but right now, it will just copy from
@@ -30,5 +33,10 @@ public class TestPreProcessor extends AbstractPreProcessorFrameworkMojo {
 	@Override
 	public final File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
+	}
+
+	@Override
+	void copyAndPreprocessFile(final File srcFile, final File destFile, final boolean removeAsserts) throws IOException {
+		FileUtils.copyFile(srcFile, destFile);
 	}
 }

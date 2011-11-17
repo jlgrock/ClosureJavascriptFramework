@@ -133,7 +133,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	private Set<File> generateFiles() throws IOException {
 		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
 		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
-		File depsFileLocation = JsarRelativeLocations.getCalcDepsLocation(getFrameworkTargetDirectory());
+		File depsFileLocation = JsarRelativeLocations.getAssertDepsLocation(getFrameworkTargetDirectory());
 		
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 		File baseLocation = new File(getClosureLibrarylocation()
@@ -176,6 +176,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 */
 	private static Set<TestCase> parseFiles(final Set<File> files) {
 		WebDriver driver = new HtmlUnitDriver(true);
+		
 		Set<TestCase> testCases = null;
 		try {
 			ParseRunner parseRunner = new ParseRunner(files, driver);

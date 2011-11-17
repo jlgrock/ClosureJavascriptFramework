@@ -162,7 +162,7 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	/**
 	 * The filename of the assembled distribution file.
 	 * 
-	 * @parameter default-value="${project.build.finalName}"
+	 * @parameter default-value="${project.build.finalName}-src"
 	 * @required
 	 */
 	private String finalName;

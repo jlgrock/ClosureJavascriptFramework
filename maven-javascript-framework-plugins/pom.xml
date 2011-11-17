@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jlgrock.javascript-framework</groupId>
 	<artifactId>maven-javascript-framework-plugins</artifactId>
-	<version>1.6</version>
+	<version>1.7</version>
 	<packaging>pom</packaging>
 	<name>JavaScript Framework</name>
 	<description>A compilation of javascript plugins written for the explicit purpose to work well with the Google Closure Compiler and the Google Closure Library</description>
@@ -18,6 +18,7 @@
 		<maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
 		<maven-surefire-plugin.version>2.10</maven-surefire-plugin.version>
 		<maven-pmd-plugin.version>2.5</maven-pmd-plugin.version>
+		<maven-plugin-plugin.version>2.9</maven-plugin-plugin.version>
 		<maven-project-info-reports-plugin.version>2.3.1</maven-project-info-reports-plugin.version>
 		<maven-site-plugin.version>3.0</maven-site-plugin.version>
 		<maven-source-plugin.version>2.1.2</maven-source-plugin.version>
@@ -30,16 +31,43 @@
 		<junit-maven-plugin.version>4.8.2</junit-maven-plugin.version>
 		<plexus.utils.version>2.0.1</plexus.utils.version>
 		<log4j.version>1.2.16</log4j.version>
+		<maven-source-plugin.version>2.1.2</maven-source-plugin.version>
+		<maven.scm.version>1.3</maven.scm.version>
+		<git.wagon.version>0.3.1</git.wagon.version>
+		<spock.version>0.5</spock.version>
+		<gmaven.groovy.version>1.3</gmaven.groovy.version>
+		<groovy.version>1.7</groovy.version>
+		<groovy.full.version>1.7.5</groovy.full.version>
+		<spock.to.groovy.version>0.4-groovy-1.7</spock.to.groovy.version>
 	</properties>
 
 	<dependencies>
-		<!-- Java Testing -->
+		<!-- Groovy/Spock Testing -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit-maven-plugin.version}</version>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>${groovy.full.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.spockframework</groupId>
+			<artifactId>spock-core</artifactId>
+			<version>${spock.to.groovy.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Groovy Testing libs for mocking objects that have no interfaces -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<modules>
@@ -63,23 +91,95 @@
 			<extension>
 				<groupId>org.apache.maven.scm</groupId>
 				<artifactId>maven-scm-provider-gitexe</artifactId>
-				<version>1.3</version>
+				<version>${maven.scm.version}</version>
 			</extension>
 			<extension>
 				<groupId>org.apache.maven.scm</groupId>
 				<artifactId>maven-scm-manager-plexus</artifactId>
-				<version>1.3</version>
+				<version>${maven.scm.version}</version>
 			</extension>
 			<extension>
 				<groupId>org.kathrynhuxtable.maven.wagon</groupId>
 				<artifactId>wagon-gitsite</artifactId>
-				<version>0.3.1</version>
+				<version>${git.wagon.version}</version>
 			</extension>
 		</extensions>
 
 		<plugins>
-			<!-- Build Checks -->
+			<!-- <plugin>
+				Groovy Testing (only for testing)
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<version>${gmaven.groovy.version}</version>
+				<configuration>
+					<providerSelection>${groovy.version}</providerSelection>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.gmaven.runtime</groupId>
+						<artifactId>gmaven-runtime-${groovy.version}</artifactId>
+						<version>${gmaven.groovy.version}</version>
+						<exclusions>
+							<exclusion>
+								<groupId>org.codehaus.groovy</groupId>
+								<artifactId>groovy-all</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all</artifactId>
+						<version>${groovy.full.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generateStubs</goal>
+							<goal>compile</goal>
+							<goal>generateTestStubs</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+			
+			<!-- Source Files -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
+			<!-- Generate Java Doc jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- To use the plugin goals in your POM or parent POM -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>${maven-plugin-plugin.version}</version>
+			</plugin>
 
 			<!-- Site Reporting -->
 			<plugin>
@@ -96,7 +196,7 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-pmd-plugin</artifactId>
-							<version>2.5</version>
+							<version>${maven-pmd-plugin.version}</version>
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -141,12 +241,22 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-plugin-plugin</artifactId>
-							<version>2.5.1</version>
+							<version>${maven-plugin-plugin.version}</version>
 						</plugin>
 					</reportPlugins>
 				</configuration>
 			</plugin>
 		</plugins>
+		<!-- To define the plugin version in your parent POM -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-plugin-plugin</artifactId>
+					<version>2.9</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<issueManagement>

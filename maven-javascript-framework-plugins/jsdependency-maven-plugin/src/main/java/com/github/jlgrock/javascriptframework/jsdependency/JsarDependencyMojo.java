@@ -42,6 +42,13 @@ public class JsarDependencyMojo extends AbstractMojo {
 	private File frameworkTargetDirectory;
 
 	/**
+	 * If you are using a local version of the library, you can skip this.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean skipExtraction;
+	
+	/**
 	 * The default directory to extract dependency files marked with classifier
 	 * of "external". This likely shouldn't be changed unless there is a
 	 * conflict with another plugin.
@@ -121,12 +128,14 @@ public class JsarDependencyMojo extends AbstractMojo {
 		extractJSArtifacts.extract(JsarRelativeLocations.JSAR_COMPILE_LOCATION
 				+ "/", PackagingType.JSAR, ScopeType.TEST, location);
 
-		// extract google dependencies (if needed)
-		LOGGER.info("Extracting google closure library to location \""
-				+ closureExtractLibDirectory.getAbsolutePath() + "\"");
-		ZipUtils.unzip(
-				ResourceIO.getResourceAsZipStream("closure-library.zip"),
-				closureExtractLibDirectory);
+		if (!skipExtraction) {
+			// extract google dependencies (if needed)
+			LOGGER.info("Extracting google closure library to location \""
+					+ closureExtractLibDirectory.getAbsolutePath() + "\"");
+			ZipUtils.unzip(
+					ResourceIO.getResourceAsZipStream("closure-library.zip"),
+					closureExtractLibDirectory);
+		}
 	}
 
 	/**

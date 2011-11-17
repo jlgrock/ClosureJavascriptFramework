@@ -242,10 +242,11 @@ public class TestCase {
 		StringBuffer sb = new StringBuffer();
 		sb.append(TestCase.NEWLINE);
 		sb.append(TestCase.TEST_CASE_PREFIX);
-		if (getSummary() != null) {
+		if (getSummary() != null && !getSummary().getRelativeLocation().equals("")) {
 			sb.append(getSummary().getRelativeLocation());
 		} else {
-			sb.append("cannot parse name...");// TODO - can do better than this
+			sb.append("Error.  Could not parse contents of file.  Please review previous errors above for more information.");
+			sb.append(TestCase.NEWLINE);
 		}
 		sb.append(TestCase.TEST_CASE_SUFFIX);
 		sb.append(TestCase.NEWLINE);
