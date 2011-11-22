@@ -6,11 +6,11 @@
 			<implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
 			<configuration>
 				<phases>
-					<generate-sources></generate-sources>
+					<generate-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency</generate-sources>
 					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
-					<compile>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency,com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors</compile>
-					<test-compile>com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test</test-compile>
-					<test></test>
+					<compile>com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors</compile>
+					<generate-test-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-test-dependency</generate-test-sources>
+					<test>com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test</test>
 					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
 					<package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:jsar</package>
 					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
