@@ -203,7 +203,8 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 
 		File archiveOutputDir = getArchiveOutputDirectory();
 		if (archiveOutputDir != null) {
-			// TODO archive
+			LOGGER.debug("creating archive at " + new File(archiveOutputDir, getFinalName() + "-jsdocs.jsar").getAbsolutePath());
+			ZipUtils.zipFolder(getOutputDirectory(), new File(archiveOutputDir, getFinalName() + "-jsdocs.jsar"));
 			LOGGER.info("archive created.");
 		}
 	}

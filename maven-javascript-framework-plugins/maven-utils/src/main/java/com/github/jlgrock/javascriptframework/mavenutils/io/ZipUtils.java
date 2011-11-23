@@ -47,7 +47,7 @@ public class ZipUtils {
 				+ "\" to resulting file \"" + destinationFile + "\".");
 
 		//create the resulting folder structure
-		DirectoryIO.createDir(destinationFile);
+		DirectoryIO.createDir(destinationFile.getParentFile());
 
 		//create a zip output stream
 		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(destinationFile)));
