@@ -75,6 +75,12 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 
 	/**
 	 * @parameter default-value=
+	 *            "${project.basedir}${file.separator}src${file.separator}main${file.separator}externs"
+	 */
+	private File externsDirectory;
+	
+	/**
+	 * @parameter default-value=
 	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 */
 	private File frameworkTargetDirectory;
@@ -92,6 +98,11 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 		return sourceDirectory;
 	}
 
+	@Override
+	public final File getExternsDirectory() {
+		return externsDirectory;
+	}
+	
 	@Override
 	public final File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
@@ -418,7 +429,7 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	 *            the format to print it
 	 * @return the current time in the format designated
 	 */
-	public static String now(String dateFormat) {
+	public static String now(final String dateFormat) {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 		return sdf.format(cal.getTime());

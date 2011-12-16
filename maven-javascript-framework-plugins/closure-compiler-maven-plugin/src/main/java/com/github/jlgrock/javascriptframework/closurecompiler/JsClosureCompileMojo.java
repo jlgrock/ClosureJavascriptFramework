@@ -73,9 +73,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws IOException
 	 *             if there is a problem reading or writing to any of the files
 	 */
-	private static List<File> createDepsJS(final File baseLocation,
+	private static List<File> createDepsAndRequiresJS(final File baseLocation,
 			final Collection<File> src, final Collection<File> interns,
-			final File depsFile) throws MojoExecutionException, IOException {
+			final File depsFile, final File requiresFile) throws MojoExecutionException, IOException {
 
 		// TODO when they fix the visibility rules in the DepsGenerator, replace
 		// it with Google's version
@@ -83,9 +83,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		LOGGER.debug("src files: " + src);
 		LOGGER.debug("intern files: " + interns);
 		LOGGER.debug("deps file location: " + depsFile);
-		return CalcDeps.executeCalcDeps(baseLocation, src, interns, depsFile);
+		return CalcDeps.executeCalcDeps(baseLocation, src, interns, depsFile, requiresFile);
 	}
-
+	
 	private static File getBaseLocation(final File closureLibraryLocation)
 			throws MojoExecutionException {
 		File baseLocation = new File(closureLibraryLocation.getAbsoluteFile()
@@ -206,6 +206,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @required
 	 */
 	private String generatedAssertJS;
+	
+	/**
+	 * The file produced that allows inclusion of assert into non-closure based
+	 * systems.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-assert-requires.js"
+	 * @required
+	 */
+	private String generatedAssertRequiresJS;
 
 	/**
 	 * The file produced after running the dependencies and files through the
@@ -215,6 +224,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @required
 	 */
 	private String generatedDebugJS;
+
+	/**
+	 * The file produced that allows inclusion of debug into non-closure based
+	 * systems.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-debug-requires.js"
+	 * @required
+	 */
+	private String generatedDebugRequiresJS;
 
 	/**
 	 * @parameter default-value="true"
@@ -412,20 +430,22 @@ public class JsClosureCompileMojo extends AbstractMojo {
 							.getInternsLocation(frameworkTargetDirectory));
 			File baseLocation = getBaseLocation(closureLibraryLocation);
 			File assertFile = getGeneratedAssertJS();
+			File assertRequiresFile = getGeneratedAssertRequiresJS();
 			Collection<File> assertInternFiles = calculateInternalFiles(assertSourceFiles);
-			List<File> assertDepsFiles = createDepsJS(baseLocation,
-					assertSourceFiles, assertInternFiles, assertFile);
+			createDepsAndRequiresJS(baseLocation,
+					assertSourceFiles, assertInternFiles, assertFile, assertRequiresFile);
 
 			// create debug file
 			File debugFile = getGeneratedDebugJS();
+			File debugRequiresFile = getGeneratedDebugRequiresJS();
 			Collection<File> sourceFiles = calculateSourceFiles(
 					JsarRelativeLocations
 							.getDebugSourceLocation(frameworkTargetDirectory),
 					JsarRelativeLocations
 							.getInternsLocation(frameworkTargetDirectory));
 			Collection<File> debugInternFiles = calculateInternalFiles(sourceFiles);
-			List<File> debugDepsFiles = createDepsJS(baseLocation, sourceFiles,
-					debugInternFiles, debugFile);
+			List<File> debugDepsFiles = createDepsAndRequiresJS(baseLocation, sourceFiles,
+					debugInternFiles, debugFile, debugRequiresFile);
 
 			// create file collection for compilation
 			List<File> debugFiles = new ArrayList<File>();
@@ -465,5 +485,19 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				JsarRelativeLocations
 						.getDebugDepsLocation(frameworkTargetDirectory),
 				generatedDebugJS);
+	}
+	
+	private File getGeneratedAssertRequiresJS() {
+		return new File(
+				JsarRelativeLocations
+						.getAssertRequiresLocation(frameworkTargetDirectory),
+				generatedAssertRequiresJS);
+	}
+
+	private File getGeneratedDebugRequiresJS() {
+		return new File(
+				JsarRelativeLocations
+						.getDebugRequiresLocation(frameworkTargetDirectory),
+				generatedDebugRequiresJS);
 	}
 }

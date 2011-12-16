@@ -48,10 +48,22 @@ public class JsarRelativeLocations {
 	 */
 	public static final String JSAR_ASSERT_LOCATION = "assert";
 	
+	
 	/**
 	 * The location of the generated debug deps file
 	 */
 	public static final String JSAR_DEBUG_LOCATION = "debug";
+	
+	/**
+	 * The location of the generated assert deps file
+	 */
+	public static final String JSAR_ASSERT_REQUIRES_LOCATION = "assertRequires";
+	
+	
+	/**
+	 * The location of the generated debug deps file
+	 */
+	public static final String JSAR_DEBUG_REQUIRES_LOCATION = "debugRequires";
 
 	/**
 	 * private Constructor for utility class.
@@ -65,6 +77,14 @@ public class JsarRelativeLocations {
 	
 	public static final File getAssertDepsLocation(final File frameworkLocation) {
 		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERT_LOCATION);
+	}
+	
+	public static final File getDebugRequiresLocation(final File frameworkLocation) {
+		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_DEBUG_REQUIRES_LOCATION);
+	}
+	
+	public static final File getAssertRequiresLocation(final File frameworkLocation) {
+		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERT_REQUIRES_LOCATION);
 	}
 	
 	public static final File getTestLocation(final File frameworkLocation) {

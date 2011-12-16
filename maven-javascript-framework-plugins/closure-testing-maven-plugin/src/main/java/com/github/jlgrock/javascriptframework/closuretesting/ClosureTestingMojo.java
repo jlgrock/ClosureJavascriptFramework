@@ -120,7 +120,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 				sb.append(testCase.toString());
 			}
 		}
-		LOGGER.error(sb.toString());
+		LOGGER.error(sb.toString()); //TODO if var is not defined, it doesn't parse?
 	}
 
 	/**

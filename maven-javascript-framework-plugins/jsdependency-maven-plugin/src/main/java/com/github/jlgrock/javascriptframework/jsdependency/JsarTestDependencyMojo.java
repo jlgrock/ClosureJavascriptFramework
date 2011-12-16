@@ -36,15 +36,6 @@ public class JsarTestDependencyMojo extends AbstractDependencyMojo {
 	 */
 	private MavenProject project;
 
-	/**
-	 * Whether or not to expand the debug and assertion library.  This can be useful 
-	 * when including files for an api.  When doing this, make sure to include the 
-	 * appropriate internal dependencies and closure compiler.
-	 * 
-	 * @parameter default-value="false"
-	 */
-	private boolean expandDebug;
-
 	@Override
 	public MavenProject getProject() {
 		return project;
@@ -67,19 +58,7 @@ public class JsarTestDependencyMojo extends AbstractDependencyMojo {
 		extractJSArtifacts.extract(JsarRelativeLocations.JSAR_COMPILE_LOCATION
 				+ "/", PackagingType.JSAR, ScopeType.TEST, location);
 
-		if (expandDebug) {
-			location = JsarRelativeLocations
-					.getOutputLocation(getFrameworkTargetDirectory());
-			extractJSArtifacts.extract(
-					JsarRelativeLocations.JSAR_DEBUG_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.TEST, location);
-
-			location = JsarRelativeLocations
-					.getOutputLocation(getFrameworkTargetDirectory());
-			extractJSArtifacts.extract(
-					JsarRelativeLocations.JSAR_ASSERT_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.TEST, location);
-		}
+		
 	}
 
 }

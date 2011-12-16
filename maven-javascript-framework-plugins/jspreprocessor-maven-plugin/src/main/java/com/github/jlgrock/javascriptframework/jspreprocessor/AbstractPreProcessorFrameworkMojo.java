@@ -52,12 +52,18 @@ public abstract class AbstractPreProcessorFrameworkMojo extends AbstractMojo {
 					.getAssertionSourceLocation(getFrameworkTargetDirectory());
 			File topLevelProcessedDir = JsarRelativeLocations
 					.getDebugSourceLocation(getFrameworkTargetDirectory());
-
+			File externsDir = JsarRelativeLocations
+					.getExternsLocation(getFrameworkTargetDirectory());
+			
 			DirectoryIO.recursivelyDeleteDirectory(topLevelProcessedDir);
 			File source = getSourceDirectory();
+			File externs = getExternsDirectory();
 			if (source.exists()) {
 				copyAndPreprocessDirectory(source, topLevelAssertionDir, false);
 				copyAndPreprocessDirectory(source, topLevelProcessedDir, true);
+				if (externs.exists()) {
+					DirectoryIO.copyDirectory(externs, externsDir);
+				}
 			} else {
 				LOGGER.info("No directory found at location \""
 						+ source.getAbsolutePath()
@@ -122,6 +128,13 @@ public abstract class AbstractPreProcessorFrameworkMojo extends AbstractMojo {
 	 * @return the source directory used for the preprocessor step.
 	 */
 	public abstract File getSourceDirectory();
+
+	/**
+	 * Accessor method for externs directory.
+	 * 
+	 * @return the externs directory used for the preprocessor step.
+	 */
+	public abstract File getExternsDirectory();
 
 	/**
 	 * Accessor method for destination directory.

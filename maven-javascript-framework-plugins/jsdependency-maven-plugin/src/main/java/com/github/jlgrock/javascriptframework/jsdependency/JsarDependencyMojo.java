@@ -39,11 +39,11 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 	private MavenProject project;
 
 	/**
-	 * If you are using a local version of the library, you can skip this.
+	 * If you are using a local version of the library, you can skip the google library extraction.
 	 * 
 	 * @parameter default-value="false"
 	 */
-	private boolean skipExtraction;
+	private boolean skipGoogleExtraction;
 	
 	@Override
 	public MavenProject getProject() {
@@ -75,7 +75,7 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 		extractJSArtifacts.extract(JsarRelativeLocations.JSAR_EXTERN_LOCATION
 				+ "/", PackagingType.JSAR, ScopeType.COMPILE, location);
 
-		if (!skipExtraction) {
+		if (!skipGoogleExtraction) {
 			// extract google dependencies (if needed)
 			LOGGER.info("Extracting google closure library to location \""
 					+ getClosureExtractLibDirectory().getAbsolutePath() + "\"");
@@ -90,6 +90,6 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 	 * @return the skipExtraction
 	 */
 	public boolean isSkipExtraction() {
-		return skipExtraction;
+		return skipGoogleExtraction;
 	}
 }

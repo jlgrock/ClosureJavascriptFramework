@@ -48,17 +48,6 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 		this.requires = new HashSet<String>();
 	}
 
-	@Override
-	public final String toString() {
-		String s = null;
-		try {
-			s = toString(null);
-		} catch (IOException e) {
-			LOGGER.error("This should never be possible.  Please put a bug in for this.");
-		}
-		return s;
-	}
-
 	/**
 	 * the file, relative path from the base.
 	 * 
@@ -68,7 +57,7 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 	 * @throws IOException
 	 *             if either of the files cannot be found
 	 */
-	public final String toString(final File basePath) throws IOException {
+	public final String toDepsString(final File basePath) throws IOException {
 		String filePath = "";
 		if (basePath == null) {
 			filePath = getFile().getCanonicalPath();
@@ -84,6 +73,18 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 				+ ", " + getRequiresString() + ");";
 	}
 
+	/**
+	 * the file, relative path from the base.
+	 * 
+	 * @param basePath
+	 *            the base to build the relative string off of
+	 * @return the relative path
+	 * @throws IOException
+	 *             if either of the files cannot be found
+	 */
+	public final String toRequiresString(final File basePath) throws IOException {
+		return "goog.requires(\"" + getProvidesString() + "\");";
+	}
 	/**
 	 * Add a provides to the current file scan.
 	 * 

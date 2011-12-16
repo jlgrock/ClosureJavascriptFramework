@@ -21,6 +21,11 @@ public class TestPreProcessor extends AbstractPreProcessorFrameworkMojo {
 	private File sourceDirectory;
 
 	/**
+	 * @parameter default-value="${project.basedir}${file.separator}src${file.separator}test${file.separator}externs"
+	 */
+	private File externsDirectory;
+
+	/**
 	 * @parameter default-value="${project.build.directory}${file.separator}javascriptframework"
 	 */
 	private File frameworkTargetDirectory;
@@ -29,6 +34,11 @@ public class TestPreProcessor extends AbstractPreProcessorFrameworkMojo {
 	public final File getSourceDirectory() {
 		return sourceDirectory;
 	}
+	
+	@Override
+	public final File getExternsDirectory() {
+		return externsDirectory;
+	}
 
 	@Override
 	public final File getFrameworkTargetDirectory() {
@@ -36,7 +46,7 @@ public class TestPreProcessor extends AbstractPreProcessorFrameworkMojo {
 	}
 
 	@Override
-	void copyAndPreprocessFile(final File srcFile, final File destFile, final boolean removeAsserts) throws IOException {
+	public final void copyAndPreprocessFile(final File srcFile, final File destFile, final boolean removeAsserts) throws IOException {
 		FileUtils.copyFile(srcFile, destFile);
 	}
 }
