@@ -145,7 +145,6 @@ public final class CalcDeps {
 		for (DependencyInfo fileDep : sortedDeps) {
 			if (fileDep != null) {
 				buff.write(fileDep.toRequiresString(googleBaseFile));
-				buff.write("\n");
 				buff.flush();
 			}
 		}

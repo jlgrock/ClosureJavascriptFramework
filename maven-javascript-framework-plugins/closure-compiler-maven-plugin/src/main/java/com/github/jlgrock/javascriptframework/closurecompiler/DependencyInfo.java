@@ -83,7 +83,14 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 	 *             if either of the files cannot be found
 	 */
 	public final String toRequiresString(final File basePath) throws IOException {
-		return "goog.requires(\"" + getProvidesString() + "\");";
+		StringBuilder providesString = new StringBuilder();
+		for (String provide : getProvides()) {
+			providesString.append("goog.requires(\"");
+			providesString.append(provide);
+			providesString.append("\");\n");
+		}
+		return providesString.toString();
+
 	}
 	/**
 	 * Add a provides to the current file scan.
@@ -155,7 +162,7 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 		providesString.append("]");
 		return providesString.toString();
 	}
-
+	
 	/**
 	 * Get the requires objects.
 	 * 
