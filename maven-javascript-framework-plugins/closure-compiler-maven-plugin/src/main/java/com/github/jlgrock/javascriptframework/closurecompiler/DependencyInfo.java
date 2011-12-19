@@ -85,7 +85,7 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 	public final String toRequiresString(final File basePath) throws IOException {
 		StringBuilder providesString = new StringBuilder();
 		for (String provide : getProvides()) {
-			providesString.append("goog.requires(\"");
+			providesString.append("goog.require(\"");
 			providesString.append(provide);
 			providesString.append("\");\n");
 		}

@@ -25,6 +25,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType;
  * 
  * @goal js-war-dependency
  * @phase initialize
+ * @requiresDependencyResolution compile
  */
 public class JsarWarDependencyMojo extends AbstractMojo {
 	/**
@@ -91,7 +92,7 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	 * anything with a classifier that is unspecified or "internal".
 	 * 
 	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}js"
+	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript"
 	 */
 	private File frameworkTargetDirectory;
 	
@@ -135,7 +136,7 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 		File location;
 
 		@SuppressWarnings("unchecked")
-		Set<Artifact> artifactSet = getProject().getDependencyArtifacts();
+		Set<Artifact> artifactSet = getProject().getArtifacts();
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(
 				artifactSet);
 
