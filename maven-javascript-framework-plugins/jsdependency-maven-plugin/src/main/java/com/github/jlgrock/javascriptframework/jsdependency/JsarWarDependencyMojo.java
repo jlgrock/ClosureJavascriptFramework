@@ -97,6 +97,15 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	private File frameworkTargetDirectory;
 	
 	/**
+	 * The default directory to extract dependency files to. This will do
+	 * anything with a classifier that is unspecified or "internal".
+	 * 
+	 * @parameter default-value=
+	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript${file.separator}compiled"
+	 */
+	private File compiledFileDirectory;
+	
+	/**
 	 * @return the maven project
 	 */
 	public MavenProject getProject() {
@@ -135,6 +144,7 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	protected void extractDependencies() throws IOException {
 		File location;
 
+		//for debugging files, get transitive dependencies
 		@SuppressWarnings("unchecked")
 		Set<Artifact> artifactSet = getProject().getArtifacts();
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(
@@ -164,8 +174,14 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 					ResourceIO.getResourceAsZipStream("closure-library.zip"),
 					getFrameworkTargetDirectory());
 		}
+		
+		//for the rest of this, only get specified dependency (not transitive)
+		
+		@SuppressWarnings("unchecked")
+		Set<Artifact> artifactSetNonTransitive = getProject().getDependencyArtifacts();
+		extractJSArtifacts = new ArtifactExtractor(artifactSetNonTransitive);
+		
 		location = JsarRelativeLocations.getOutputLocation(getFrameworkTargetDirectory());
-
 		if (extractAssert) {
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_ASSERT_LOCATION + "/",
@@ -195,10 +211,10 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 		}
 		if (extractCompiled) {
 			LOGGER.info("Extracting compiled dependencies to location \""
-					+ location.getAbsolutePath() + "\"");
+					+ compiledFileDirectory.getAbsolutePath() + "\"");
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_COMPILE_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.ANY, location);
+					PackagingType.JSAR, ScopeType.ANY, compiledFileDirectory);
 		}
 	}
 	
