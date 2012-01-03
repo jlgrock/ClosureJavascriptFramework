@@ -339,4 +339,15 @@
 		</site>
 	</distributionManagement>
 
+	<developers>
+		<developer>
+			<name>Justin Grant</name>
+			<roles>
+				<role>Project Lead</role>
+				<role>CM</role>
+			</roles>
+			<timezone>-5</timezone>
+			<email>jlgrock@hotmail.com</email>
+		</developer>
+	</developers>
 </project>
