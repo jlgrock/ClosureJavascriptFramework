@@ -187,6 +187,10 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 					JsarRelativeLocations.JSAR_ASSERT_LOCATION + "/",
 					PackagingType.JSAR, ScopeType.ANY, location);
 
+			extractJSArtifacts.extract(
+					JsarRelativeLocations.JSAR_ASSERTION_SOURCE_LOCATION + "/",
+					PackagingType.JSAR, ScopeType.ANY, location);
+			
 			if (includeRequiresFiles) {
 				location = JsarRelativeLocations
 						.getOutputLocation(getFrameworkTargetDirectory());
@@ -200,6 +204,11 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_DEBUG_LOCATION + "/",
 					PackagingType.JSAR, ScopeType.ANY, location);
+			
+			extractJSArtifacts.extract(
+					JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
+					PackagingType.JSAR, ScopeType.ANY, location);
+			
 			if (includeRequiresFiles) {
 				location = JsarRelativeLocations
 						.getOutputLocation(getFrameworkTargetDirectory());

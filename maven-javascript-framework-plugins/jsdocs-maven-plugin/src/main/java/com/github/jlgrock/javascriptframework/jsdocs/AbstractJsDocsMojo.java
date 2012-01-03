@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -110,6 +111,15 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	private File outputDirectory;
 
 	/**
+	 * Use to identify the base directory of the project.  This should not be modified.
+	 * default-value="${basedir}"
+	 */
+	private File baseDir;
+	
+	protected File getBaseDir() {
+		return baseDir;
+	}
+	/**
 	 * @return the caseSensitive
 	 */
 	public boolean isCaseSensitive() {
@@ -180,9 +190,12 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 			return;
 		}
 		// run the report
-		Set<File> files = FileListBuilder.buildFilteredList(
-				getSourceDirectory(), "js");
-
+		ArrayList<File> sourceDirs = getSourceDirectories();
+		Set<File> files = new HashSet<File>();
+		for (File dir : sourceDirs) {
+			LOGGER.debug("adding files from the " + dir.getAbsoluteFile());
+			files.addAll(FileListBuilder.buildFilteredList(dir, "js"));
+		}
 		AbstractJsDocsMojo
 				.extractJSDocToolkit(getToolkitExtractDirectory());
 		if (!getTemplate().exists()) {
@@ -276,7 +289,7 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	/**
 	 * @return the sourceDirectory
 	 */
-	public abstract File getSourceDirectory();
+	public abstract ArrayList<File> getSourceDirectories();
 
 	/**
 	 * @return aggregator

@@ -7,12 +7,8 @@ import java.util.Locale;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.reporting.MavenReportException;
 import org.mozilla.javascript.tools.shell.Main;
-
-import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 /**
  * Generates javascript docs from the jsdoc-toolkit (the final version).
  * 
@@ -23,10 +19,8 @@ public class JsDocsMojo extends AbstractJsDocsMojo {
 	/**
 	 * The path to the JavaScript source directory). Default is
 	 * src/main/javascript
-	 * 
-	 * @parameter expression="${basedir}/src/main/javascript"
 	 */
-	private File sourceDirectory;
+	private ArrayList<File> sourceDirectories;
 
 	/**
 	 * Specifies the destination directory where javadoc saves the generated
@@ -41,8 +35,14 @@ public class JsDocsMojo extends AbstractJsDocsMojo {
 	}
 	
 	@Override
-	public File getSourceDirectory() {
-		return sourceDirectory;
+	public ArrayList<File> getSourceDirectories() {
+		if (sourceDirectories == null) {
+			ArrayList<File> srcDirs = new ArrayList<File>();
+			srcDirs.add(new File(getBaseDir(), "src/main/javascript"));
+			srcDirs.add(new File(getBaseDir(), "target/javascriptFramework/internDependencies/debugSource"));
+			return srcDirs;
+		}
+		return sourceDirectories;
 	}
 
 	@Override

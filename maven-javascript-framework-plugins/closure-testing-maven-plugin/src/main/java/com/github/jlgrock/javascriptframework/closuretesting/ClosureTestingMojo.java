@@ -133,7 +133,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	private Set<File> generateFiles() throws IOException {
 		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
 		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
-		File depsFileLocation = JsarRelativeLocations.getAssertDepsLocation(getFrameworkTargetDirectory());
+		File depsFileLocation = JsarRelativeLocations.getTestDepsLocation(getFrameworkTargetDirectory());
 		
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 		File baseLocation = new File(getClosureLibrarylocation()
@@ -150,7 +150,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		if (depsFileSet.size() == 1) {
 			depsFile = depsFileSet.toArray(new File[depsFileSet.size()])[0];
 		} else {
-			throw new IOException("Could not find debug/deps file at location '" + depsFileLocation + "'.");
+			throw new IOException("Could not find debug/deps file (or found more than one) at location '" + depsFileLocation + "'.");
 		}
 		
 		if (LOGGER.isDebugEnabled()) {

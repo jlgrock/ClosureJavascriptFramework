@@ -1,6 +1,7 @@
 package com.github.jlgrock.javascriptframework.jsdocs;
 
 import java.io.File;
+import java.util.ArrayList;
 /**
  * Generates and aggregates javascript docs, from the jsdoc-toolkit (the final
  * version) and stores them into a js archive.
@@ -11,11 +12,9 @@ import java.io.File;
 public class TestJsDocsMojo extends JsDocsMojo {
 	/**
 	 * The path to the JavaScript source directory). Default is
-	 * src/main/javascript
-	 * 
-	 * @parameter expression="${basedir}/src/main/javascript"
+	 * src/test/javascript
 	 */
-	private File sourceDirectory;
+	private ArrayList<File> sourceDirectories;
 
 	/**
      * Specifies the destination directory where test Javadoc saves the generated HTML files.
@@ -26,8 +25,14 @@ public class TestJsDocsMojo extends JsDocsMojo {
     private File reportOutputDirectory;
 
 	@Override
-	public File getSourceDirectory() {
-		return sourceDirectory;
+	public ArrayList<File> getSourceDirectories() {
+		if (sourceDirectories == null) {
+			ArrayList<File> srcDirs = new ArrayList<File>();
+			srcDirs.add(new File(getBaseDir(), "src/test/javascript"));
+			srcDirs.add(new File(getBaseDir(), "target/javascriptFramework/internDependencies/debugSource"));
+			return srcDirs;
+		}
+		return sourceDirectories;
 	}
 
 	/**

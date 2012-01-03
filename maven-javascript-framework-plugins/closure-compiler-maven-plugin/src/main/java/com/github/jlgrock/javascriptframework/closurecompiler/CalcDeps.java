@@ -265,8 +265,10 @@ public final class CalcDeps {
 		outputDeps(googleBaseFile, sortedDeps, depsFile);
 
 		// create deps file
-		LOGGER.debug("Outputting Closure dependency requires file...");
-		outputRequires(googleBaseFile, sortedDeps, requiresFile);
+		if (requiresFile != null) {
+			LOGGER.debug("Outputting Closure dependency requires file...");
+			outputRequires(googleBaseFile, sortedDeps, requiresFile);
+		}
 		
 		LOGGER.debug("Closure dependencies created");
 		return pullFilesFromDeps(sortedDeps);
