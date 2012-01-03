@@ -1,6 +1,15 @@
 The following software is the Closure Javascript Framework which is a 
 group of plug-ins that can be used in conjunction with maven to execute 
-the closure compiler on javascript code. 
+the Google Closure Compiler on JavaScript code.  This Framework allows
+for scaling and modularity.
 
 For more information, please refer to the website at the location:
 https://github.com/jlgrock/ClosureJavascriptFramework/wiki
+
+For information about the Google Closure Compiler, please check out the
+documentation here:
+http://code.google.com/closure/compiler/
+
+For help with using the Closure Compiler, you can get information
+from the user groups:
+http://groups.google.com/group/closure-compiler-discuss
