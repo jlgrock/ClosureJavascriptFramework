@@ -322,9 +322,9 @@
 	</profiles>
 
 	<scm>
-		<url>http://github.com/jlgrock/${github.project.name}</url>
-		<connection>scm:git:git://github.com/jlgrock/${github.project.name}.git</connection>
-		<developerConnection>scm:git:git@github.com:jlgrock/${github.project.name}.git</developerConnection>
+		<url>http://github.com/jlgrock/${github.project.name}/maven-javascript-framework-plugins</url>
+		<connection>scm:git:git://github.com/jlgrock/${github.project.name}.git/maven-javascript-framework-plugins</connection>
+		<developerConnection>scm:git:git@github.com:jlgrock/${github.project.name}.git/maven-javascript-framework-plugins</developerConnection>
 	</scm>
 
 	<ciManagement>
