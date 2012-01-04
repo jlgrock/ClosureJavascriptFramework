@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jlgrock.javascript-framework</groupId>
 	<artifactId>maven-javascript-framework-plugins</artifactId>
-	<version>1.10.0</version>
+	<version>1.10.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JavaScript Framework</name>
 	<description>A compilation of javascript plugins written for the explicit purpose to work well with the Google Closure Compiler and the Google Closure Library</description>
@@ -48,7 +48,7 @@
 			<artifactId>groovy-all</artifactId>
 			<version>${groovy.full.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
@@ -106,44 +106,18 @@
 		</extensions>
 
 		<plugins>
-			<!-- <plugin>
-				Groovy Testing (only for testing)
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
-				<version>${gmaven.groovy.version}</version>
-				<configuration>
-					<providerSelection>${groovy.version}</providerSelection>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.gmaven.runtime</groupId>
-						<artifactId>gmaven-runtime-${groovy.version}</artifactId>
-						<version>${gmaven.groovy.version}</version>
-						<exclusions>
-							<exclusion>
-								<groupId>org.codehaus.groovy</groupId>
-								<artifactId>groovy-all</artifactId>
-							</exclusion>
-						</exclusions>
-					</dependency>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-all</artifactId>
-						<version>${groovy.full.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generateStubs</goal>
-							<goal>compile</goal>
-							<goal>generateTestStubs</goal>
-							<goal>testCompile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
-			
+			<!-- <plugin> Groovy Testing (only for testing) <groupId>org.codehaus.gmaven</groupId> 
+				<artifactId>gmaven-plugin</artifactId> <version>${gmaven.groovy.version}</version> 
+				<configuration> <providerSelection>${groovy.version}</providerSelection> 
+				</configuration> <dependencies> <dependency> <groupId>org.codehaus.gmaven.runtime</groupId> 
+				<artifactId>gmaven-runtime-${groovy.version}</artifactId> <version>${gmaven.groovy.version}</version> 
+				<exclusions> <exclusion> <groupId>org.codehaus.groovy</groupId> <artifactId>groovy-all</artifactId> 
+				</exclusion> </exclusions> </dependency> <dependency> <groupId>org.codehaus.groovy</groupId> 
+				<artifactId>groovy-all</artifactId> <version>${groovy.full.version}</version> 
+				</dependency> </dependencies> <executions> <execution> <goals> <goal>generateStubs</goal> 
+				<goal>compile</goal> <goal>generateTestStubs</goal> <goal>testCompile</goal> 
+				</goals> </execution> </executions> </plugin> -->
+
 			<!-- Source Files -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -319,6 +293,32 @@
 					<url>http://zeus/nexus/content/repositories/snapshots/</url>
 				</repository>
 			</distributionManagement>
+		</profile>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
