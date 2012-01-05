@@ -180,29 +180,6 @@
 		</license>
 	</licenses>
 
-	<profiles>
-		<profile>
-			<id>deployRelease</id>
-			<distributionManagement>
-				<repository>
-					<id>local releases</id>
-					<name>local nexus</name>
-					<url>http://zeus/nexus/content/repositories/releases/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-		<profile>
-			<id>deploySnapshot</id>
-			<distributionManagement>
-				<repository>
-					<id>local snapshots</id>
-					<name>local nexus</name>
-					<url>http://zeus/nexus/content/repositories/snapshots/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
-
 	<scm>
 		<url>http://github.com/andygibson/${github.project.name}</url>
 		<connection>scm:git:git://github.com/jlgrock/${github.project.name}.git</connection>
