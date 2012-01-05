@@ -71,31 +71,4 @@
 		</profile>
 	</profiles>
 
-	<!-- The main repository. If the library is not in this repository, it should 
-		be added (using proxy caching) by the CM to the repository -->
-	<repositories>
-		<repository>
-			<id>localNexus</id>
-			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>localNexus</id>
-			<url>http://zeus/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
 </project>
