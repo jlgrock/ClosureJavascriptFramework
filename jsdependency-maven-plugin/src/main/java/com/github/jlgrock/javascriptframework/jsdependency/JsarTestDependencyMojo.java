@@ -37,12 +37,12 @@ public class JsarTestDependencyMojo extends AbstractDependencyMojo {
 	private MavenProject project;
 
 	@Override
-	public MavenProject getProject() {
+	public final MavenProject getProject() {
 		return project;
 	}
 
 	@Override
-	protected void extractDependencies() throws IOException {
+	protected final void extractDependencies() throws IOException {
 		File location;
 
 		@SuppressWarnings("unchecked")

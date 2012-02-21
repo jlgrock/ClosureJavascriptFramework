@@ -20,6 +20,26 @@ import com.github.jlgrock.javascriptframework.mavenutils.parsing.ParseUtils;
  */
 public class TestCaseStartParser implements IDivParser {
 	/**
+	 * The position of the hour.
+	 */
+	private static int HOUR_POSITION = 1;
+
+	/**
+	 * The position of the minute.
+	 */
+	private static int MINUTE_POSITION = 2;
+	
+	/**
+	 * The position of the second.
+	 */
+	private static int SECOND_POSITION = 3;
+
+	/**
+	 * The position of the millisecond.
+	 */
+	private static int MILLISECOND_POSITION = 4;
+	
+	/**
 	 * pattern matches "[time] Start".
 	 */
 	private static final String START_TAG_PATTERN = "\\s*([0-9]*):([0-9]*):([0-9]*).([0-9]*)\\s*Start\\s*";
@@ -36,10 +56,10 @@ public class TestCaseStartParser implements IDivParser {
 		Date currentDate = new Date();
 		parsedCompletionTime.setTime(currentDate);
 		
-		parsedCompletionTime.set(Calendar.HOUR, Integer.valueOf(parsedValues[1]));
-		parsedCompletionTime.set(Calendar.MINUTE, Integer.valueOf(parsedValues[2]));
-		parsedCompletionTime.set(Calendar.SECOND, Integer.valueOf(parsedValues[3]));
-		parsedCompletionTime.set(Calendar.MILLISECOND, Integer.valueOf(parsedValues[4]));
+		parsedCompletionTime.set(Calendar.HOUR, Integer.valueOf(parsedValues[HOUR_POSITION]));
+		parsedCompletionTime.set(Calendar.MINUTE, Integer.valueOf(parsedValues[MINUTE_POSITION]));
+		parsedCompletionTime.set(Calendar.SECOND, Integer.valueOf(parsedValues[SECOND_POSITION]));
+		parsedCompletionTime.set(Calendar.MILLISECOND, Integer.valueOf(parsedValues[MILLISECOND_POSITION]));
 		return new TestCaseStart(parsedCompletionTime);
 	}
 }

@@ -25,6 +25,36 @@ import com.github.jlgrock.javascriptframework.mavenutils.parsing.ParseUtils;
  */
 public class TestFailureStatisticParser implements IDivParser {
 	/**
+	 * The position of the hour.
+	 */
+	private static int HOUR_POSITION = 1;
+
+	/**
+	 * The position of the minute.
+	 */
+	private static int MINUTE_POSITION = 2;
+	
+	/**
+	 * The position of the second.
+	 */
+	private static int SECOND_POSITION = 3;
+
+	/**
+	 * The position of the millisecond.
+	 */
+	private static int MILLISECOND_POSITION = 4;
+	
+	/**
+	 * The position of the parsed name.
+	 */
+	private static int PARSED_NAME_POSITION = 5;
+	
+	/**
+	 * The position of the parsed result.
+	 */
+	private static int PARSED_RESULT_POSITION = 6;
+	
+	/**
 	 * pattern matches "[time] testname : PASSED/FAILED".
 	 */
 	private static final String SINGLE_TEST_PATTERN = "\\s*([0-9]*):([0-9]*):([0-9]*)\\.([0-9]*)\\s*(\\w*)\\s:\\s(PASSED|FAILED)\\s*.*";
@@ -46,13 +76,13 @@ public class TestFailureStatisticParser implements IDivParser {
 		Date currentDate = new Date();
 		parsedCompletionTime.setTime(currentDate);
 		
-		parsedCompletionTime.set(Calendar.HOUR, Integer.valueOf(parsedValues[1]));
-		parsedCompletionTime.set(Calendar.MINUTE, Integer.valueOf(parsedValues[2]));
-		parsedCompletionTime.set(Calendar.SECOND, Integer.valueOf(parsedValues[3]));
-		parsedCompletionTime.set(Calendar.MILLISECOND, Integer.valueOf(parsedValues[4]));
+		parsedCompletionTime.set(Calendar.HOUR, Integer.valueOf(parsedValues[HOUR_POSITION]));
+		parsedCompletionTime.set(Calendar.MINUTE, Integer.valueOf(parsedValues[MINUTE_POSITION]));
+		parsedCompletionTime.set(Calendar.SECOND, Integer.valueOf(parsedValues[SECOND_POSITION]));
+		parsedCompletionTime.set(Calendar.MILLISECOND, Integer.valueOf(parsedValues[MILLISECOND_POSITION]));
 		
-		String parsedName = new String(parsedValues[5]);
-		TestResultType parsedResult = TestResultType.getByName(parsedValues[6]);
+		String parsedName = new String(parsedValues[PARSED_NAME_POSITION]);
+		TestResultType parsedResult = TestResultType.getByName(parsedValues[PARSED_RESULT_POSITION]);
 		
 		return new TestFailureStatistic(parsedCompletionTime, parsedName, parsedResult);
 	}

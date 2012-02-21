@@ -12,9 +12,15 @@ import org.apache.log4j.Logger;
  * 
  */
 public class Log4jOutputStream extends OutputStream {
+	/**
+	 * The character used as the line separator constant.
+	 */
 	private static final String LINE_SEPERATOR = System
 			.getProperty("line.separator");
 
+	/**
+	 * The boolean to keep track if the output stream has been closed.
+	 */
 	private boolean isClosed = false;
 
 	/**
@@ -49,11 +55,8 @@ public class Log4jOutputStream extends OutputStream {
 	 *            the logger to log output to
 	 * @param levelIn
 	 *            the level at which to log messages at
-	 * @throws IllegalArgumentException
-	 *             the the parameters are not set
 	 */
-	public Log4jOutputStream(final Logger loggerIn, final Level levelIn)
-			throws IllegalArgumentException {
+	public Log4jOutputStream(final Logger loggerIn, final Level levelIn) {
 		if (loggerIn == null || levelIn == null) {
 			throw new IllegalArgumentException(
 					"nether logger nor level are allowed to be null");
@@ -65,13 +68,13 @@ public class Log4jOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void close() {
+	public final void close() {
 		flush();
 		isClosed = true;
 	}
 
 	@Override
-	public void write(final int b) throws IOException {
+	public final void write(final int b) throws IOException {
 		if (isClosed) {
 			throw new IOException("The stream has been closed.");
 		}
@@ -92,7 +95,7 @@ public class Log4jOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void flush() {
+	public final void flush() {
 		if (count == 0) {
 			return;
 		}

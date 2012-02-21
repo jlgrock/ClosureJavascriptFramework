@@ -17,6 +17,21 @@ import com.github.jlgrock.javascriptframework.mavenutils.parsing.ParseUtils;
  */
 public class TestTimingStatisticParser implements IDivParser {
 	/**
+	 * The position of the time.
+	 */
+	private static int TIME_POSITION = 1;
+
+	/**
+	 * The position of the measurement.
+	 */
+	private static int MEASUREMENT_POSITION = 2;
+	
+	/**
+	 * The position of the number of files.
+	 */
+	private static int NUM_FILES_POSITION = 3;
+	
+	/**
 	 * pattern matches "# passed, # failed".
 	 */
 	private static final String PASSED_FAILED_PATTERN = "\\s*([0-9]*)\\s*(\\w*)/test,\\s*([0-9]*)\\s*files loaded.\\s*";
@@ -36,9 +51,9 @@ public class TestTimingStatisticParser implements IDivParser {
 	public final IParsedDivObject parse(final String divText) {
 		String[] parsedValues = ParseUtils.parseIntoGroups(
 				PASSED_FAILED_PATTERN, divText);
-		int parsedTime = Integer.valueOf(parsedValues[1]);
-		String parsedUnitOfMeasurement = parsedValues[2];
-		int parsedNumFiles = Integer.valueOf(parsedValues[3]);
+		int parsedTime = Integer.valueOf(parsedValues[TIME_POSITION]);
+		String parsedUnitOfMeasurement = parsedValues[MEASUREMENT_POSITION];
+		int parsedNumFiles = Integer.valueOf(parsedValues[NUM_FILES_POSITION]);
 		return new TestTimingStatistic(parsedTime, parsedUnitOfMeasurement,
 				parsedNumFiles);
 	}

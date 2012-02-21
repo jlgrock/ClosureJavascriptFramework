@@ -20,7 +20,7 @@ public final class FileListBuilder {
 	/**
 	 * The Logger.
 	 */
-	private final static Logger LOGGER = Logger.getLogger(FileListBuilder.class);
+	private static final Logger LOGGER = Logger.getLogger(FileListBuilder.class);
 
 	/**
 	 * Build a list of all files within a given root. If the root that is given
@@ -81,6 +81,15 @@ public final class FileListBuilder {
 		return fileList;
 	}
 
+	/**
+	 * Creates files off of relative paths from a root.
+	 * @param root 
+	 * 			the root file to base the relative
+	 * @param relativePaths
+	 * 			the paths to create the files from
+	 * @return
+	 * 			the set of files created
+	 */
 	public static Set<File> turnRelativeIntoFiles(final File root, final String[] relativePaths) {
 		Set<File> files = new HashSet<File>();
 		for (int i = 0; i < relativePaths.length; i++) {

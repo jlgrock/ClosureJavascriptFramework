@@ -12,6 +12,11 @@ import org.apache.maven.project.MavenProject;
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 
+/**
+ * The Abstract instance of all of the dependecy mojo implementations. This
+ * gives common functions for retrieving dependencies for each different type.
+ * 
+ */
 public abstract class AbstractDependencyMojo extends AbstractMojo {
 	/**
 	 * The Logger.
@@ -41,7 +46,7 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	/**
 	 * @return the closureExtractLibDirectory
 	 */
-	public File getClosureExtractLibDirectory() {
+	public final File getClosureExtractLibDirectory() {
 		return closureExtractLibDirectory;
 	}
 
@@ -69,8 +74,6 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	/**
 	 * Extract the dependencies from the jsar to the appropriate location(s).
 	 * 
-	 * @param extractJSArtifacts
-	 *            the artifacts to extract
 	 * @throws IOException
 	 *             if there is a problem reading the artifact
 	 */
@@ -84,7 +87,7 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Get the current project
+	 * @return the current maven project
 	 */
 	public abstract MavenProject getProject();
 }

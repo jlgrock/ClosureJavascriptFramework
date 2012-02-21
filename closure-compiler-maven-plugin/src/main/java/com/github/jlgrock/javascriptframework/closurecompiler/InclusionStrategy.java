@@ -2,25 +2,46 @@ package com.github.jlgrock.javascriptframework.closurecompiler;
 
 import java.util.HashMap;
 
+/**
+ * The possible inclusion strategies for this plugin.
+ */
 public enum InclusionStrategy {
-    ALL("all"),
-    WHEN_IN_SRCS("when_in_srcs");
+	/**
+	 * The possible inclusion strategies.
+	 */
+    ALL("all"), WHEN_IN_SRCS("when_in_srcs");
     
+    /**
+     * The type string.
+     */
     private String type;
-    public static final HashMap<String, InclusionStrategy> types;
+    
+    /**
+     * The hashmap used for lookups.
+     */
+    public static final HashMap<String, InclusionStrategy> TYPES;
     
     static {
-    	types = new HashMap<String, InclusionStrategy>(); 
+    	TYPES = new HashMap<String, InclusionStrategy>(); 
     	for (InclusionStrategy t : values()) {
-    		types.put(t.type, t);
+    		TYPES.put(t.type, t);
     	}
     }
     
+    /**
+     * The private constructor.
+     * @param typeIn the type used for lookups
+     */
     InclusionStrategy(final String typeIn) {
     	this.type = typeIn;
     }
     
+    /**
+     * Lookup the inclusion strategy by the type.
+     * @param key the type to look for
+     * @return the appropriate inclusion strategy
+     */
     public static InclusionStrategy getByType(final String key) {
-    	return types.get(key.toLowerCase());
+    	return TYPES.get(key.toLowerCase());
     }
   }

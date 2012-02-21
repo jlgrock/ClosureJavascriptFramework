@@ -276,7 +276,11 @@ public class TestCase {
 		this.testFailureStatistics.add(testFailureStatistic);
 	}
 
-	public void addToLastTestFailureStatistic(String divText) {
+	/**
+	 * Will add a lastTestFailureStatistic to the set.
+	 * @param divText the text of the div
+	 */
+	public final void addToLastTestFailureStatistic(final String divText) {
 		TestFailureStatistic tfs = this.testFailureStatistics.get(this.testFailureStatistics.size()-1);
 		tfs.addToFailureReasons(divText);
 	}

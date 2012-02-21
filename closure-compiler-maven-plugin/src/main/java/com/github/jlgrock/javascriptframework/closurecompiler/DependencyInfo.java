@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
 
 /**
@@ -16,10 +14,6 @@ import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
  * 
  */
 public class DependencyInfo implements Comparable<DependencyInfo> {
-	/**
-	 * The Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(DependencyInfo.class);
 	/**
 	 * The file that was scanned.
 	 */

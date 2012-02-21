@@ -42,14 +42,16 @@ public class SuiteGenerator {
 	 *            the location of the closure library (which contains base.js)
 	 * @param dependencyLocationIn
 	 *            the location of the generated dependency file
+	 * @param testDependenciesIn
+	 *            the set of test dependencies
 	 */
 	public SuiteGenerator(final Set<File> sourceFilesIn,
 			final File closureLibraryBaseLocationIn, 
-			final File depsLocationIn, 
+			final File dependencyLocationIn, 
 			final Set<File> testDependenciesIn) {
 		sourceFiles = sourceFilesIn;
 		closureLibraryBaseLocation = closureLibraryBaseLocationIn;
-		depsLocation = depsLocationIn;
+		depsLocation = dependencyLocationIn;
 		testDependencies = testDependenciesIn;
 	}
 
@@ -70,18 +72,20 @@ public class SuiteGenerator {
 	/**
 	 * Creates the set of test files.
 	 * 
+	 * @param sourceLocation
+	 * 			  the location of the testing source, used for relative pathing
 	 * @param outputDirectory
 	 *            the output directory to generate the files to
 	 * @return the set of files created
 	 * @throws IOException
 	 *             if unable to create one or more test cases
 	 */
-	public final Set<File> generateTestFiles(final File outputDirectory)
+	public final Set<File> generateTestFiles(final File sourceLocation, final File outputDirectory)
 			throws IOException {
 		Set<File> outputFiles = new HashSet<File>();
 		Set<TestCaseGenerator> generatedTestCases = generateTestCases();
 		for (TestCaseGenerator testCaseGenerator : generatedTestCases) {
-			File testCase = testCaseGenerator.createTestCase(outputDirectory);
+			File testCase = testCaseGenerator.createTestCase(sourceLocation, outputDirectory);
 			outputFiles.add(testCase);
 		}
 		return outputFiles;

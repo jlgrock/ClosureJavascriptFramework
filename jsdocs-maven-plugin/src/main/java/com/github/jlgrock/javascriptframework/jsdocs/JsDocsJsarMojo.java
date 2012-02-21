@@ -18,7 +18,7 @@ public class JsDocsJsarMojo extends JsDocsMojo {
 	private File jsarOutputDirectory;
 
 	@Override
-	protected File getArchiveOutputDirectory() {
+	protected final File getArchiveOutputDirectory() {
 		return jsarOutputDirectory;
 	}
 }

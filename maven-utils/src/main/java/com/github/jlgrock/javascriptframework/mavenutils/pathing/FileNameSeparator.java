@@ -3,16 +3,27 @@ package com.github.jlgrock.javascriptframework.mavenutils.pathing;
 import java.io.File;
 
 /**
- * A class used to separate the file into its component parts
+ * A class used to separate the file into its component parts.
  *
  */
 public class FileNameSeparator {
+	/**
+	 * The path to the file.
+	 */
 	private String path;
+	
+	/**
+	 * The file name.
+	 */
 	private String name;
+	
+	/**
+	 * The file extension.
+	 */
 	private String extension;
 
 	/**
-	 * Constructor for files
+	 * Constructor for files.
 	 * 
 	 * @param fileIn the file 
 	 */
@@ -31,7 +42,7 @@ public class FileNameSeparator {
 	 * Constructor for string representation of a file. This should be the
 	 * absolute path
 	 * 
-	 * @param fileIn
+	 * @param absoluteFile
 	 *            the absolute file path to parse
 	 */
 	public FileNameSeparator(final String absoluteFile) {
@@ -61,7 +72,7 @@ public class FileNameSeparator {
 	 * 
 	 * @return the path of the file
 	 */
-	public String getPath() {
+	public final String getPath() {
 		return this.path;
 	}
 
@@ -70,7 +81,7 @@ public class FileNameSeparator {
 	 * 
 	 * @return the name of the file (minus an extension, if it exists)
 	 */
-	public String getName() {
+	public final String getName() {
 		return this.name;
 	}
 
@@ -79,7 +90,7 @@ public class FileNameSeparator {
 	 * 
 	 * @return the extension of the file (if it exists)
 	 */
-	public String getExtension() {
+	public final String getExtension() {
 		return this.extension;
 	}
 }

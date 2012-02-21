@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileNameSeparator;
+import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
 
 /**
  * A Class that will generate a test case output container and write to file.
@@ -40,6 +41,8 @@ public class TestCaseGenerator {
 	 *            the location of the dependency file
 	 * @param sourceFile
 	 *            the location of the sourcefile to generate the test off of
+	 * @param testDepsIn
+	 *            the set of external dependencies for testing
 	 */
 	public TestCaseGenerator(final File closureLocation,
 			final File depsLocation, final File sourceFile,
@@ -53,6 +56,8 @@ public class TestCaseGenerator {
 	/**
 	 * Create the test case at the output directory specified.
 	 * 
+	 * @param sourceLocation
+	 *            the location of the test source, used for relative pathing
 	 * @param outputDirectory
 	 *            the output directory to store the file
 	 * @return the test case file
@@ -60,11 +65,12 @@ public class TestCaseGenerator {
 	 *             if unable to create the directory or write to the test case
 	 *             file
 	 */
-	public final File createTestCase(final File outputDirectory)
+	public final File createTestCase(final File sourceLocation, final File outputDirectory)
 			throws IOException {
 		FileNameSeparator fns = new FileNameSeparator(generatorSourceFile);
+		String relPath = RelativePath.getRelPathFromBase(sourceLocation, new File(fns.getPath()));
 		String outputFilePath = outputDirectory.getAbsoluteFile()
-				+ File.separator + fns.getName() + ".html";
+				+ File.separator + relPath + File.separator + fns.getName() + ".html";
 		File testCase = new File(outputFilePath);
 		new TestCaseRef(generatorClosureLocation, generatorDepsLocation,
 				generatorSourceFile, testCase, testDeps).writeToFile();

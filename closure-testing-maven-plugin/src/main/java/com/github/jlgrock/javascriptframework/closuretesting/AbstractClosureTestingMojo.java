@@ -42,6 +42,15 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	private File closureLibraryLocation;
 
 	/**
+	 * The file produced after running the dependencies and files through the
+	 * compiler.  This should match the name of the closure compiler.
+	 * 
+	 * @parameter default-value="${project.build.finalName}-min.js"
+	 * @required
+	 */
+	private String compiledFilename;
+	
+	/**
 	 * Set this to "true" to skip running tests, but still compile them. Its use
 	 * is NOT RECOMMENDED, but quite convenient on occasion.
 	 * 
@@ -49,6 +58,14 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 */
 	private boolean skipTests;
 
+	/**
+	 * If set to true, this forces the plug-in to generate and run the test cases on the compiled 
+	 * version of the code.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean runTestsOnCompiled;
+	
 	/**
 	 * A list of <exclude> elements specifying the tests (by pattern) that
 	 * should be included in testing. When not specified and when the test
@@ -80,6 +97,9 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 		return testSourceDirectory;
 	}
 
+	/**
+	 * @return the frameworkTargetDirectory
+	 */	
 	public final File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
 	}
@@ -109,6 +129,20 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 */
 	public final List<File> getIncludes() {
 		return includes;
+	}
+
+	/**
+	 * @return the runTestsOnCompiled
+	 */
+	public final boolean isRunTestsOnCompiled() {
+		return runTestsOnCompiled;
+	}
+	
+	/**
+	 * @return the compiledFilename
+	 */	
+	public final String getCompiledFilename() {
+		return compiledFilename;
 	}
 
 	@Override

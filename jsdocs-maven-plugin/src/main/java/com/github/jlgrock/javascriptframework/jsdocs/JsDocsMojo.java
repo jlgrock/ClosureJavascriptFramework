@@ -2,20 +2,25 @@ package com.github.jlgrock.javascriptframework.jsdocs;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.reporting.MavenReportException;
-import org.mozilla.javascript.tools.shell.Main;
+
 /**
  * Generates javascript docs from the jsdoc-toolkit (the final version).
  * 
  * @goal jsdoc
- *
+ * 
  */
-public class JsDocsMojo extends AbstractJsDocsMojo {	
+public class JsDocsMojo extends AbstractJsDocsMojo {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(JsDocsMojo.class);
+
 	/**
 	 * The path to the JavaScript source directory). Default is
 	 * src/main/javascript
@@ -26,79 +31,61 @@ public class JsDocsMojo extends AbstractJsDocsMojo {
 	 * Specifies the destination directory where javadoc saves the generated
 	 * HTML files.
 	 * 
-	 * @parameter expression="${project.reporting.outputDirectory}/jsapidocs" default-value="${project.reporting.outputDirectory}/jsapidocs"
+	 * @parameter expression="${project.reporting.outputDirectory}/jsapidocs"
+	 *            default-value="${project.reporting.outputDirectory}/jsapidocs"
 	 */
 	private File reportOutputDirectory;
-    
+
+	/**
+	 * Constructor.
+	 */
 	public JsDocsMojo() {
-		System.out.println("initialized JsDocsMojo...");
+		LOGGER.debug("initialized JsDocsMojo...");
 	}
-	
+
 	@Override
 	public ArrayList<File> getSourceDirectories() {
 		if (sourceDirectories == null) {
 			ArrayList<File> srcDirs = new ArrayList<File>();
 			srcDirs.add(new File(getBaseDir(), "src/main/javascript"));
-			srcDirs.add(new File(getBaseDir(), "target/javascriptFramework/internDependencies/debugSource"));
+			srcDirs.add(new File(getBaseDir(),
+					"target/javascriptFramework/internDependencies/debugSource"));
 			return srcDirs;
 		}
 		return sourceDirectories;
 	}
 
 	@Override
-    protected boolean isAggregator() {
-        return false;
-    }
-	
+	protected boolean isAggregator() {
+		return false;
+	}
+
 	@Override
-    protected String getClassifier() {
-        return "jsdocs";
-    }
-	
+	protected String getClassifier() {
+		return "jsdocs";
+	}
+
 	/**
-	 * This method is called when the report generation is invoked by maven-site-plugin.
-	 *
+	 * This method is called when the report generation is invoked by
+	 * maven-site-plugin.
+	 * 
 	 * @param aSink
+	 *            the aSink to write for
 	 * @param aSinkFactory
+	 *            the aSinkFactory provided by Maven
 	 * @param aLocale
+	 *            the local to adjust for
 	 * @throws MavenReportException
+	 *             for any exception
 	 */
-	public void generate( Sink aSink, SinkFactory aSinkFactory, Locale aLocale )
-	throws MavenReportException {
-		System.out.println("starting report generation (3)...");
+	public final void generate(final Sink aSink,
+			final SinkFactory aSinkFactory, final Locale aLocale)
+			throws MavenReportException {
 		try {
 			execute();
 		} catch (Exception e) {
 			throw new MavenReportException(e.getMessage(), e);
 		}
-	}
-	
-	public static void main(String args[]) {
-		List<String> arguments = new ArrayList<String>();
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\target\\jsdoctoolkit24\\app\\run.js");
-		arguments.add("-d=C:\\Workspaces\\maven-plugins\\testDependencyResolution\\target\\jsapidocs\\jsdocs");
-		arguments.add("-t=C:\\Workspaces\\maven-plugins\\testDependencyResolution\\target\\jsdoctoolkit24\\templates\\jsdoc");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\arrayIterator.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\notification\\eventType.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\simple.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\composite.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\collection.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\cdmProperty.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\notification\\observable.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\recordSet.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\property.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\predefcdmtypes.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\usercdmtypes.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\mapping_validator.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\notification\\observer.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\record.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\notification\\message.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\recordSetCollection.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\parser.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\iterator.js");
-		arguments.add("C:\\Workspaces\\maven-plugins\\testDependencyResolution\\src\\main\\javascript\\com\\potomacfusion\\synapse\\cdm\\primitive.js");
-		arguments.add("-j=C:\\Workspaces\\maven-plugins\\testDependencyResolution\\target\\jsdoctoolkit24\\app\\run.js");
-		Main.exec(arguments.toArray(new String[0]));
 	}
 
 	@Override

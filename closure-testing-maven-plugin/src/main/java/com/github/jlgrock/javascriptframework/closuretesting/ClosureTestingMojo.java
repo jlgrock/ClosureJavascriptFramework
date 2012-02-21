@@ -134,6 +134,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
 		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
 		File depsFileLocation = JsarRelativeLocations.getTestDepsLocation(getFrameworkTargetDirectory());
+		Set<File> returnFiles = new HashSet<File>();
 		
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 		File baseLocation = new File(getClosureLibrarylocation()
@@ -150,7 +151,8 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		if (depsFileSet.size() == 1) {
 			depsFile = depsFileSet.toArray(new File[depsFileSet.size()])[0];
 		} else {
-			throw new IOException("Could not find debug/deps file (or found more than one) at location '" + depsFileLocation + "'.");
+			throw new IOException("Could not find debug/deps file (or found more than one) at location '"
+					+ depsFileLocation + "'.");
 		}
 		
 		if (LOGGER.isDebugEnabled()) {
@@ -164,7 +166,28 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		
 		SuiteGenerator suite = new SuiteGenerator(fileSet, baseLocation,
 				depsFile, testDeps);
-		return suite.generateTestFiles(testOutputDir);
+		
+		returnFiles.addAll(suite.generateTestFiles(getTestSourceDirectory(), testOutputDir));
+
+		if (isRunTestsOnCompiled()) {
+			File testCompiledOutputDir = JsarRelativeLocations.getCompiledTestSuiteLocation(getFrameworkTargetDirectory());
+			File compiledFile = new File(
+					JsarRelativeLocations
+					.getCompileLocation(getFrameworkTargetDirectory()),
+			getCompiledFilename());
+			
+			SuiteGenerator suiteCompiled = new SuiteGenerator(fileSet, baseLocation,
+					compiledFile, testDeps);
+			returnFiles.addAll(suiteCompiled.generateTestFiles(getTestSourceDirectory(), testCompiledOutputDir));
+		}
+
+		for (File file : returnFiles) {
+			LOGGER.debug("filename: " + file.getAbsolutePath());
+		}
+		LOGGER.debug("baseLocation: " + baseLocation.getAbsolutePath());
+		LOGGER.debug("testOutputDir: " + testOutputDir.getAbsolutePath());
+		
+		return returnFiles;
 	}
 
 	/**

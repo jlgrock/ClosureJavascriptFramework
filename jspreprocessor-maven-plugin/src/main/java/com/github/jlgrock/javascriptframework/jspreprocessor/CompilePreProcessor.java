@@ -40,8 +40,9 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	 * Basically, the only ways you should be using $assert statements other
 	 * than calling it directly. This is used to ignore these types.
 	 */
-	public static final String ASSERT_REQUIRE_REGEX_STR = 
-		"(\\s*\\$\\$assert\\s*=.*)|(.*=\\s\\$\\$assert.*)|(.*?goog.require\\s*?\\(\\s*[\\\"']\\$\\$assert[\\\"']\\s*\\).*)|(.*?goog.provide\\s*?\\(\\s*[\\\"']\\$\\$assert[\\\"']\\s*\\).*)";
+	public static final String ASSERT_REQUIRE_REGEX_STR = "(\\s*\\$\\$assert\\s*=.*)|"
+			+ "(.*=\\s\\$\\$assert.*)|(.*?goog.require\\s*?\\(\\s*[\\\"']"
+			+ "\\$\\$assert[\\\"']\\s*\\).*)|(.*?goog.provide\\s*?\\(\\s*[\\\"']\\$\\$assert[\\\"']\\s*\\).*)";
 
 	/**
 	 * The regular expression to find assert statements on a string.
@@ -78,7 +79,7 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	 *            "${project.basedir}${file.separator}src${file.separator}main${file.separator}externs"
 	 */
 	private File externsDirectory;
-	
+
 	/**
 	 * @parameter default-value=
 	 *            "${project.build.directory}${file.separator}javascriptFramework"
@@ -102,7 +103,7 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	public final File getExternsDirectory() {
 		return externsDirectory;
 	}
-	
+
 	@Override
 	public final File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
@@ -122,15 +123,12 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	 *            whether to return the empty string or return the augmented
 	 *            assertion
 	 * @return the new assertion expression
-	 * @throws IllegalArgumentException
-	 *             if the assert statement didn't match the expected format
 	 * @throws IOException
 	 *             if there was a problem reading or writing to the file
 	 */
 	protected static String assertReplacement(final Reader readerIn,
 			final String fileName, final String lineNumber,
-			final boolean removeAssertions) throws IllegalArgumentException,
-			IOException {
+			final boolean removeAssertions) throws IOException {
 		// assume within the content of the assert statement
 		StringBuffer sb1 = new StringBuffer();
 		StringBuffer sb2 = new StringBuffer();
@@ -295,8 +293,11 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	}
 
 	/**
-	 * Whether the character evaluated is whitespace, for assert parsing purposes.
-	 * @param expressionChar the character to evaluate
+	 * Whether the character evaluated is whitespace, for assert parsing
+	 * purposes.
+	 * 
+	 * @param expressionChar
+	 *            the character to evaluate
 	 * @return true if it is a form of whitespace, otherwise false
 	 */
 	private static boolean isWhitespace(final char expressionChar) {
@@ -354,15 +355,12 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 	 * @param removeAssertions
 	 *            if true, removes them, if false, augments the assertion
 	 *            objects
-	 * @throws IllegalArgumentException
-	 *             if there is a problem with an assertion statement
 	 * @throws IOException
 	 *             if there is a problem reading or writing the files
 	 */
 	private static void readAndWriteBuffer(final Reader iReader,
 			final Writer oWriter, final String srcFileName,
-			final boolean removeAssertions) throws IllegalArgumentException,
-			IOException {
+			final boolean removeAssertions) throws IOException {
 		int lineNumber = 0;
 		BufferedReader bufferedIn = new BufferedReader(iReader);
 		BufferedWriter bufferedOut = new BufferedWriter(oWriter);

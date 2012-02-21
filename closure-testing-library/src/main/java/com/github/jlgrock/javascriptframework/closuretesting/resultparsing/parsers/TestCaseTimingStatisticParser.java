@@ -17,6 +17,26 @@ import com.github.jlgrock.javascriptframework.mavenutils.parsing.ParseUtils;
  */
 public class TestCaseTimingStatisticParser implements IDivParser {
 	/**
+	 * The position of the hour.
+	 */
+	private static int NUMBER_RUN_POSITION = 1;
+
+	/**
+	 * The position of the minute.
+	 */
+	private static int NUMBER_TOTAL_POSITION = 2;
+	
+	/**
+	 * The position of the time value.
+	 */
+	private static int TIME_VALUE_POSITION = 3;
+
+	/**
+	 * The position of the time units.
+	 */
+	private static int TIME_UNITS_POSITION = 4;
+	
+	/**
 	 * pattern matches "# ms/test.  # files loaded."
 	 */
 	private static final String TEST_CASE_TIMING_PATTERN = "\\s*([0-9]*)\\s*of\\s*([0-9]*)\\s*tests run in\\s*([0-9]*)(\\w)*\\.";
@@ -24,10 +44,10 @@ public class TestCaseTimingStatisticParser implements IDivParser {
 	@Override
 	public final IParsedDivObject parse(final String divText) {
 		String[] parsedValues = ParseUtils.parseIntoGroups(TEST_CASE_TIMING_PATTERN, divText);
-		int parsedNumberRun = Integer.valueOf(parsedValues[1]);
-		int parsedNumberTotal = Integer.valueOf(parsedValues[2]);
-		int parsedTimeValue = Integer.valueOf(parsedValues[3]);
-		String parsedTimeUnits = parsedValues[4];
+		int parsedNumberRun = Integer.valueOf(parsedValues[NUMBER_RUN_POSITION]);
+		int parsedNumberTotal = Integer.valueOf(parsedValues[NUMBER_TOTAL_POSITION]);
+		int parsedTimeValue = Integer.valueOf(parsedValues[TIME_VALUE_POSITION]);
+		String parsedTimeUnits = parsedValues[TIME_UNITS_POSITION];
 		return new TestCaseTimingStatistic(parsedNumberRun, parsedNumberTotal, parsedTimeValue, parsedTimeUnits);
 	}
 

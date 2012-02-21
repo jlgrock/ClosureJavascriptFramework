@@ -108,7 +108,7 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	/**
 	 * @return the maven project
 	 */
-	public MavenProject getProject() {
+	public final MavenProject getProject() {
 		return project;
 	}
 	
@@ -136,12 +136,10 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	/**
 	 * Extract the dependencies from the jsar to the appropriate location(s).
 	 * 
-	 * @param extractJSArtifacts
-	 *            the artifacts to extract
-	 * @throws IOException
+	  * @throws IOException
 	 *             if there is a problem reading the artifact
 	 */
-	protected void extractDependencies() throws IOException {
+	protected final void extractDependencies() throws IOException {
 		File location;
 
 		//for debugging files, get transitive dependencies

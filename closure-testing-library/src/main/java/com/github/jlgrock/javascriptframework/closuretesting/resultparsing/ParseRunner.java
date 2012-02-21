@@ -1,13 +1,10 @@
 package com.github.jlgrock.javascriptframework.closuretesting.resultparsing;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

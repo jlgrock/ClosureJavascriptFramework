@@ -75,7 +75,7 @@ public class TestFailureStatistic implements IParsedDivObject {
 	}
 	
 	/**
-	 * Adds to the failureReasons ArrayList
+	 * Adds to the failureReasons ArrayList.
 	 * 
 	 * @param reason the string to add to the array
 	 */

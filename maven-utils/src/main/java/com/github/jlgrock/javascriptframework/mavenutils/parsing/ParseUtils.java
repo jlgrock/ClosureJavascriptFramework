@@ -4,9 +4,21 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ParseUtils {
+/**
+ * Utilities for parsing strings.
+ */
+public final class ParseUtils {
+	/**
+	 * Private constructor.
+	 */
 	private ParseUtils() {}
-		
+	
+	/**
+	 * Parse the test into groups based on the regular expression.
+	 * @param regex the regex to use
+	 * @param parseText the text to parse
+	 * @return an array of strings from the parsing.
+	 */
 	public static String[] parseIntoGroups(final String regex, final String parseText) {
 		ArrayList<String> parsedValues = new ArrayList<String>();
 		Pattern pattern = Pattern.compile(regex);

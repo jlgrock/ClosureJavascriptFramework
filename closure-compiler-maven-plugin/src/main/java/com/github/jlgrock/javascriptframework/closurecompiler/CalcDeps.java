@@ -38,15 +38,19 @@ public final class CalcDeps {
 	 * extracts their provides and requires, and builds out a list of dependency
 	 * objects.
 	 * 
+	 * @param googleBaseJS
+	 *            the location of base.js in the google library
 	 * @param files
 	 *            a list of files to be parsed for goog.provides and
 	 *            goog.requires.
 	 * @return A list of dependency objects, one for each file in the files
-	 *          argument.
-	 * @throws IOException if there is a problem parsing the files for dependency info
+	 *         argument.
+	 * @throws IOException
+	 *             if there is a problem parsing the files for dependency info
 	 */
 	private static HashMap<File, DependencyInfo> buildDependenciesFromFiles(
-			final File googleBaseJS, final Collection<File> files) throws IOException {
+			final File googleBaseJS, final Collection<File> files)
+			throws IOException {
 		HashMap<File, DependencyInfo> result = new HashMap<File, DependencyInfo>();
 		Set<File> searchedAlready = new HashSet<File>();
 		for (File file : files) {
@@ -70,22 +74,28 @@ public final class CalcDeps {
 	 * including the inputs, that represent all of the code that is needed to
 	 * compile the given inputs.
 	 * 
-	 * @param baseJs the base.js file that is in the closure library
-	 * @param paths the references (files, directories) that are used to build the
+	 * @param baseJs
+	 *            the base.js file that is in the closure library
+	 * @param paths
+	 *            the references (files, directories) that are used to build the
 	 *            dependency hash.
-	 * @param inputs the inputs (files, directories, namespaces) that have
+	 * @param inputs
+	 *            the inputs (files, directories, namespaces) that have
 	 *            dependencies that need to be calculated.
 	 * @return A list of all files, including inputs, that are needed to compile
 	 *         the given inputs.
-	 * @throws IOException if there is a problem parsing the files
+	 * @throws IOException
+	 *             if there is a problem parsing the files
 	 */
 	private static List<DependencyInfo> calculateDependencies(
-			final File baseJs, final Collection<File> inputs, final Collection<File> paths)
-			throws IOException {
+			final File baseJs, final Collection<File> inputs,
+			final Collection<File> paths) throws IOException {
 		HashSet<File> temp = new HashSet<File>();
 		temp.addAll(inputs);
-		HashMap<File, DependencyInfo> inputHash = buildDependenciesFromFiles(baseJs, inputs);
-		HashMap<File, DependencyInfo> searchHash = buildDependenciesFromFiles(baseJs, paths);
+		HashMap<File, DependencyInfo> inputHash = buildDependenciesFromFiles(
+				baseJs, inputs);
+		HashMap<File, DependencyInfo> searchHash = buildDependenciesFromFiles(
+				baseJs, paths);
 		LOGGER.info("Dependencies Calculated.");
 
 		List<DependencyInfo> sortedDeps = slowSort(inputHash.values(),
@@ -98,15 +108,20 @@ public final class CalcDeps {
 	/**
 	 * Print out a deps.js file from a list of source paths.
 	 * 
-	 * @param sortedDeps The sorted list of dependencies
-	 * @param outputFile The output file.
-	 * @throws IOException if there is a problem writing the file
+	 * @param googleBaseFile
+	 *            the location of base.js in the google library
+	 * @param sortedDeps
+	 *            The sorted list of dependencies
+	 * @param outputFile
+	 *            The output file.
+	 * @throws IOException
+	 *             if there is a problem writing the file
 	 * @return True on success, false if it was unable to find the base path to
-	 *          generate deps relative to.
+	 *         generate deps relative to.
 	 */
 	private static boolean outputDeps(final File googleBaseFile,
-			final Collection<DependencyInfo> sortedDeps,
-			final File outputFile) throws IOException {
+			final Collection<DependencyInfo> sortedDeps, final File outputFile)
+			throws IOException {
 		DirectoryIO.createDir(outputFile.getParentFile());
 		FileWriter fw = new FileWriter(outputFile);
 		BufferedWriter buff = new BufferedWriter(fw);
@@ -124,19 +139,24 @@ public final class CalcDeps {
 		return true;
 
 	}
-	
+
 	/**
 	 * Print out a requires.js file from a list of source paths.
 	 * 
-	 * @param sortedDeps The sorted list of dependencies
-	 * @param outputFile The output file.
-	 * @throws IOException if there is a problem writing the file
+	 * @param googleBaseFile
+	 *            the location of base.js in the google library
+	 * @param sortedDeps
+	 *            The sorted list of dependencies
+	 * @param outputFile
+	 *            The output file.
+	 * @throws IOException
+	 *             if there is a problem writing the file
 	 * @return True on success, false if it was unable to find the base path to
-	 *          generate deps relative to.
+	 *         generate deps relative to.
 	 */
 	private static boolean outputRequires(final File googleBaseFile,
-			final Collection<DependencyInfo> sortedDeps,
-			final File outputFile) throws IOException {
+			final Collection<DependencyInfo> sortedDeps, final File outputFile)
+			throws IOException {
 		DirectoryIO.createDir(outputFile.getParentFile());
 		FileWriter fw = new FileWriter(outputFile);
 		BufferedWriter buff = new BufferedWriter(fw);
@@ -174,8 +194,8 @@ public final class CalcDeps {
 			if (!seenList.contains(input.getFile())) {
 				seenList.add(input.getFile());
 				for (String require : input.getRequires()) {
-					orderDependenciesForNamespace(input.getFile(), require, searchSet, seenList,
-							resultList);
+					orderDependenciesForNamespace(input.getFile(), require,
+							searchSet, seenList, resultList);
 				}
 				resultList.add(input);
 			}
@@ -186,26 +206,35 @@ public final class CalcDeps {
 	/**
 	 * Will order the Dependencies for a single namespace.
 	 * 
-	 * @param requireNamespace whether or not to require the namespace 
-	 * @param searchSet the set to search through
-	 * @param seenList the list of objects that have been seen already (which may be added to)
-	 * @param resultList the resulting list which will be added to
+	 * @param inputFile
+	 *            the file
+	 * @param requireNamespace
+	 *            whether or not to require the namespace
+	 * @param searchSet
+	 *            the set to search through
+	 * @param seenList
+	 *            the list of objects that have been seen already (which may be
+	 *            added to)
+	 * @param resultList
+	 *            the resulting list which will be added to
 	 */
-	private static void orderDependenciesForNamespace(
-			final File inputFile,
+	private static void orderDependenciesForNamespace(final File inputFile,
 			final String requireNamespace,
 			final HashMap<String, DependencyInfo> searchSet,
-			final HashSet<File> seenList, final ArrayList<DependencyInfo> resultList) {
+			final HashSet<File> seenList,
+			final ArrayList<DependencyInfo> resultList) {
 		if (!searchSet.containsKey(requireNamespace)) {
-			LOGGER.error("Problem with require in file '" + inputFile.getName() + "'.  Can't find a goog.require for '" + requireNamespace
-					+ "'"); //TODO add the file that this comes from at a later point to improve clarity
+			LOGGER.error("Problem with require in file '" + inputFile.getName()
+					+ "'.  Can't find a goog.require for '" + requireNamespace
+					+ "'"); // TODO add the file that this comes from at a later
+							// point to improve clarity
 		}
 		DependencyInfo dep = searchSet.get(requireNamespace);
 		if (!seenList.contains(dep.getFile())) {
 			seenList.add(dep.getFile());
 			for (String subRequire : dep.getRequires()) {
-				orderDependenciesForNamespace(dep.getFile(), subRequire, searchSet,
-						seenList, resultList);
+				orderDependenciesForNamespace(dep.getFile(), subRequire,
+						searchSet, seenList, resultList);
 			}
 			resultList.add(dep);
 		}
@@ -214,7 +243,8 @@ public final class CalcDeps {
 	/**
 	 * Build the search list for seraching for dependencies.
 	 * 
-	 * @param deps the external dependencies
+	 * @param deps
+	 *            the external dependencies
 	 * @return the list of external dependencies, hashed by the namespace
 	 */
 	private static HashMap<String, DependencyInfo> buildSearchList(
@@ -231,10 +261,12 @@ public final class CalcDeps {
 	/**
 	 * convert the sortedDependency list into a list of files.
 	 * 
-	 * @param sortedDeps the sorted dependencies
+	 * @param sortedDeps
+	 *            the sorted dependencies
 	 * @return the sorted list of files
 	 */
-	private static List<File> pullFilesFromDeps(final List<DependencyInfo> sortedDeps) {
+	private static List<File> pullFilesFromDeps(
+			final List<DependencyInfo> sortedDeps) {
 		ArrayList<File> returnVal = new ArrayList<File>();
 		for (DependencyInfo dep : sortedDeps) {
 			returnVal.add(dep.getFile());
@@ -243,19 +275,27 @@ public final class CalcDeps {
 	}
 
 	/**
-	 * This will sort the list of dependencies, write a dependency file, and return the list of dependencies.
+	 * This will sort the list of dependencies, write a dependency file, and
+	 * return the list of dependencies.
 	 * 
-	 * @param googleBaseFile the base.js file that is in the google closure library
-	 * @param inputs the set of input files to parse for provides and requires
-	 * @param paths to additional resources that will have provides and requires
-	 * @param outputFile the output file to write to
+	 * @param googleBaseFile
+	 *            the base.js file that is in the google closure library
+	 * @param inputs
+	 *            the set of input files to parse for provides and requires
+	 * @param paths
+	 *            to additional resources that will have provides and requires
+	 * @param depsFile
+	 *            the deps file
+	 * @param requiresFile
+	 *            the requires file
 	 * @return the list of calculated dependencies, just in case it is needed
-	 * @throws IOException if there is a problem reading from any dependencies or writing the depenency file
+	 * @throws IOException
+	 *             if there is a problem reading from any dependencies or
+	 *             writing the depenency file
 	 */
 	public static List<File> executeCalcDeps(final File googleBaseFile,
-			final Collection<File> inputs, final Collection<File> paths, final File depsFile,
-			final File requiresFile)
-			throws IOException {
+			final Collection<File> inputs, final Collection<File> paths,
+			final File depsFile, final File requiresFile) throws IOException {
 		LOGGER.debug("Finding Closure dependencies...");
 		List<DependencyInfo> sortedDeps = calculateDependencies(googleBaseFile,
 				inputs, paths);
@@ -269,7 +309,7 @@ public final class CalcDeps {
 			LOGGER.debug("Outputting Closure dependency requires file...");
 			outputRequires(googleBaseFile, sortedDeps, requiresFile);
 		}
-		
+
 		LOGGER.debug("Closure dependencies created");
 		return pullFilesFromDeps(sortedDeps);
 	}

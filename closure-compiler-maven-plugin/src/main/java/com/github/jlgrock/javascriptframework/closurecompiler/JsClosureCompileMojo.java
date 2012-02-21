@@ -62,11 +62,16 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * Create the dependencies JS file.
 	 * 
+	 * @param baseLocation
+	 *            the location of base.js
 	 * @param src
 	 *            the location of the source files
-	 * @param combinedInternal
-	 *            the set of combined internal files (internal maven
-	 *            dependencies, closure library, and source files)
+	 * @param interns
+	 *            the internal dependencies
+	 * @param depsFile
+	 *            the location of the deps file
+	 * @param requiresFile
+	 *            the location of the requires file
 	 * @return the list of dependencies, in dependency order
 	 * @throws MojoExecutionException
 	 *             if the dependency generator is not able to make a file
@@ -74,9 +79,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to any of the files
 	 */
 	private static List<File> createDepsAndRequiresJS(final File baseLocation,
-			final Collection<File> src, 
-			final Collection<File> interns, final File depsFile, 
-			final File requiresFile) throws MojoExecutionException, IOException {
+			final Collection<File> src, final Collection<File> interns,
+			final File depsFile, final File requiresFile)
+			throws MojoExecutionException, IOException {
 
 		// TODO when they fix the visibility rules in the DepsGenerator, replace
 		// it with Google's version
@@ -84,10 +89,20 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		LOGGER.debug("src files: " + src);
 		LOGGER.debug("intern files: " + interns);
 		LOGGER.debug("deps file location: " + depsFile);
-		
-		return CalcDeps.executeCalcDeps(baseLocation, src, interns, depsFile, requiresFile);
+
+		return CalcDeps.executeCalcDeps(baseLocation, src, interns, depsFile,
+				requiresFile);
 	}
-	
+
+	/**
+	 * Get the location of base.js.
+	 * 
+	 * @param closureLibraryLocation
+	 *            the location of the google library
+	 * @return the base.js file reference
+	 * @throws MojoExecutionException
+	 *             If it couldn't find base.js
+	 */
 	private static File getBaseLocation(final File closureLibraryLocation)
 			throws MojoExecutionException {
 		File baseLocation = new File(closureLibraryLocation.getAbsoluteFile()
@@ -208,7 +223,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @required
 	 */
 	private String generatedAssertJS;
-	
+
 	/**
 	 * The file produced that allows inclusion of assert into non-closure based
 	 * systems.
@@ -288,6 +303,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * Extract internal dependency libraries, source to the location specified
 	 * in the settings. Then create the deps to be loaded first.
 	 * 
+	 * @param source
+	 *            the collection of source files
 	 * @return the list of the files that are extracted (plus the generated deps
 	 *         file)
 	 * @throws MojoExecutionException
@@ -315,6 +332,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		return combinedInternal;
 	}
 
+	/**
+	 * Calculates the Source file collection.
+	 * 
+	 * @param sourceDir
+	 *            the source directory to scan
+	 * @param internsLocation
+	 *            the internal dependency
+	 * @return the set of files calculated
+	 */
 	private Set<File> calculateSourceFiles(final File sourceDir,
 			final File internsLocation) {
 		InclusionStrategy strategy = InclusionStrategy
@@ -339,6 +365,11 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * Run the compiler on the calculated dependencies, input files, and
 	 * external files.
 	 * 
+	 * @param allSources
+	 *            the source files to compile
+	 * @param externs
+	 *            the external dependency javascript files
+	 * @return true if the compile works, false otherwise
 	 * @throws MojoExecutionException
 	 *             if the options are set incorrectly for the compiler
 	 * @throws MojoFailureException
@@ -347,9 +378,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws IOException
 	 *             if there is a problem reading or writing to the files
 	 */
-	private boolean compile(Collection<JSSourceFile> allSources,
-			Collection<JSSourceFile> externs) throws MojoExecutionException,
-			MojoFailureException, IOException {
+	private boolean compile(final Collection<JSSourceFile> allSources,
+			final Collection<JSSourceFile> externs)
+			throws MojoExecutionException, MojoFailureException, IOException {
 		CompilationLevel compilationLevel = null;
 		try {
 			compilationLevel = CompilationLevel.valueOf(compileLevel);
@@ -423,9 +454,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			// gather externs for both asserts and debug
 			Collection<JSSourceFile> externs = calculateExternFiles();
 
-			//get base location for closure library
+			// get base location for closure library
 			File baseLocation = getBaseLocation(closureLibraryLocation);
-			
+
 			// create assert file
 			Collection<File> assertSourceFiles = calculateSourceFiles(
 					JsarRelativeLocations
@@ -435,8 +466,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			File assertFile = getGeneratedAssertJS();
 			File assertRequiresFile = getGeneratedAssertRequiresJS();
 			Collection<File> assertInternFiles = calculateInternalFiles(assertSourceFiles);
-			createDepsAndRequiresJS(baseLocation, 
-					assertSourceFiles, assertInternFiles, assertFile, assertRequiresFile);
+			createDepsAndRequiresJS(baseLocation, assertSourceFiles,
+					assertInternFiles, assertFile, assertRequiresFile);
 
 			// create debug file
 			File debugFile = getGeneratedDebugJS();
@@ -447,17 +478,18 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					JsarRelativeLocations
 							.getInternsLocation(frameworkTargetDirectory));
 			Collection<File> debugInternFiles = calculateInternalFiles(sourceFiles);
-			List<File> debugDepsFiles = createDepsAndRequiresJS(baseLocation, 
+			List<File> debugDepsFiles = createDepsAndRequiresJS(baseLocation,
 					sourceFiles, debugInternFiles, debugFile, debugRequiresFile);
 
-			//create testing file
+			// create testing file
 			File testDepsFile = getGeneratedTestJS();
 			Collection<File> srcAndTest = new HashSet<File>();
 			srcAndTest.addAll(assertSourceFiles);
-			srcAndTest.addAll(FileListBuilder.buildFilteredList(testSourceDirectory, "js"));
-			createDepsAndRequiresJS(baseLocation, 
-					srcAndTest, assertInternFiles, testDepsFile, null);
-			
+			srcAndTest.addAll(FileListBuilder.buildFilteredList(
+					testSourceDirectory, "js"));
+			createDepsAndRequiresJS(baseLocation, srcAndTest,
+					assertInternFiles, testDepsFile, null);
+
 			// create file collection for compilation
 			List<File> debugFiles = new ArrayList<File>();
 			debugFiles.add(getBaseLocation(closureLibraryLocation));
@@ -484,6 +516,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 	}
 
+	/**
+	 * @return the generated assert javascript file
+	 */
 	private File getGeneratedAssertJS() {
 		return new File(
 				JsarRelativeLocations
@@ -491,20 +526,29 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				generatedAssertJS);
 	}
 
+	/**
+	 * @return the generated debug javascript file
+	 */
 	private File getGeneratedDebugJS() {
 		return new File(
 				JsarRelativeLocations
 						.getDebugDepsLocation(frameworkTargetDirectory),
 				generatedDebugJS);
 	}
-	
+
+	/**
+	 * @return the generated test javascript file
+	 */
 	private File getGeneratedTestJS() {
 		return new File(
 				JsarRelativeLocations
 						.getTestDepsLocation(frameworkTargetDirectory),
 				generatedAssertJS);
 	}
-	
+
+	/**
+	 * @return the generated assert requires javascript file
+	 */
 	private File getGeneratedAssertRequiresJS() {
 		return new File(
 				JsarRelativeLocations
@@ -512,6 +556,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				generatedAssertRequiresJS);
 	}
 
+	/**
+	 * @return the generated debug requires javascript file
+	 */
 	private File getGeneratedDebugRequiresJS() {
 		return new File(
 				JsarRelativeLocations

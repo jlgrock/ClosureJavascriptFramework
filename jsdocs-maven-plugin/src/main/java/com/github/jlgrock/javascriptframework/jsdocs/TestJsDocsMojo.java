@@ -25,7 +25,7 @@ public class TestJsDocsMojo extends JsDocsMojo {
     private File reportOutputDirectory;
 
 	@Override
-	public ArrayList<File> getSourceDirectories() {
+	public final ArrayList<File> getSourceDirectories() {
 		if (sourceDirectories == null) {
 			ArrayList<File> srcDirs = new ArrayList<File>();
 			srcDirs.add(new File(getBaseDir(), "src/test/javascript"));
@@ -38,12 +38,12 @@ public class TestJsDocsMojo extends JsDocsMojo {
 	/**
 	 * @return the output directory for the report
 	 */
-	public File getReportOutputDirectory() {
+	public final File getReportOutputDirectory() {
 		return reportOutputDirectory;
 	}
 
 	@Override
-    protected String getClassifier() {
+	protected final String getClassifier() {
         return "test-jsdocs";
     }
 }

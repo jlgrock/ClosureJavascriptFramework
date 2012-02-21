@@ -36,11 +36,13 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 			.getLogger(AbstractJsDocsMojo.class);
 
 	/**
-	 * The name of the destination dir, which is where is is stored under the reporting directory.
+	 * The name of the destination dir, which is where is is stored under the
+	 * reporting directory.
+	 * 
 	 * @parameter default-value="jsapidocs"
 	 */
 	private String destDir;
-	
+
 	/**
 	 * Where to extract the jsdoc-toolkit javascript to.
 	 * 
@@ -111,39 +113,43 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	private File outputDirectory;
 
 	/**
-	 * Use to identify the base directory of the project.  This should not be modified.
-	 * default-value="${basedir}"
+	 * Use to identify the base directory of the project. This should not be
+	 * modified. default-value="${basedir}"
 	 */
 	private File baseDir;
-	
-	protected File getBaseDir() {
+
+	/**
+	 * @return the base directory
+	 */
+	protected final File getBaseDir() {
 		return baseDir;
 	}
+
 	/**
 	 * @return the caseSensitive
 	 */
-	public boolean isCaseSensitive() {
+	public final boolean isCaseSensitive() {
 		return caseSensitive;
 	}
 
 	/**
 	 * @return the useNamespacedFiles
 	 */
-	public boolean isUseNamespacedFiles() {
+	public final boolean isUseNamespacedFiles() {
 		return useNamespacedFiles;
 	}
 
 	/**
 	 * @return the template
 	 */
-	public File getTemplate() {
+	public final File getTemplate() {
 		return template;
 	}
 
 	/**
 	 * @return the includePrivate
 	 */
-	public boolean isIncludePrivate() {
+	public final boolean isIncludePrivate() {
 		return includePrivate;
 	}
 
@@ -157,20 +163,20 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	/**
 	 * @return the toolkitExtractDirectory
 	 */
-	public File getToolkitExtractDirectory() {
+	public final File getToolkitExtractDirectory() {
 		return toolkitExtractDirectory;
 	}
 
 	/**
 	 * @return finalName
 	 */
-	protected String getFinalName() {
+	protected final String getFinalName() {
 		return finalName;
 	}
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		System.out.println("starting report execution...");
+	public final void execute() throws MojoExecutionException, MojoFailureException {
+		LOGGER.debug("starting report execution...");
 		MojoLogAppender.beginLogging(this);
 		try {
 			createJsDocs();
@@ -183,7 +189,13 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 		}
 	}
 
-	protected void createJsDocs() throws MavenReportException, IOException {
+	/**
+	 * Creates the js docs.
+	 * 
+	 * @throws MavenReportException if there is a problem in the creation of jsdocs
+	 * @throws IOException if there is a problem writing the files
+	 */
+	protected final void createJsDocs() throws MavenReportException, IOException {
 		// check params
 		if (isSkip()) {
 			LOGGER.info("Skipping javadoc generation");
@@ -196,8 +208,7 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 			LOGGER.debug("adding files from the " + dir.getAbsoluteFile());
 			files.addAll(FileListBuilder.buildFilteredList(dir, "js"));
 		}
-		AbstractJsDocsMojo
-				.extractJSDocToolkit(getToolkitExtractDirectory());
+		AbstractJsDocsMojo.extractJSDocToolkit(getToolkitExtractDirectory());
 		if (!getTemplate().exists()) {
 			throw new MavenReportException("The template specified at '"
 					+ getTemplate().getAbsolutePath()
@@ -216,26 +227,44 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 
 		File archiveOutputDir = getArchiveOutputDirectory();
 		if (archiveOutputDir != null) {
-			LOGGER.debug("creating archive at " + new File(archiveOutputDir, getFinalName() + "-jsdocs.jsar").getAbsolutePath());
-			ZipUtils.zipFolder(getOutputDirectory(), new File(archiveOutputDir, getFinalName() + "-jsdocs.jsar"));
+			LOGGER.debug("creating archive at "
+					+ new File(archiveOutputDir, getFinalName()
+							+ "-jsdocs.jsar").getAbsolutePath());
+			ZipUtils.zipFolder(getOutputDirectory(), new File(archiveOutputDir,
+					getFinalName() + "-jsdocs.jsar"));
 			LOGGER.info("archive created.");
 		}
 	}
 
+	/**
+	 * Extract the jsdoc toolkit to a local dir.
+	 * @param extractDirectory the directory to extract to
+	 * @throws IOException if there is a problem extracting or writing files
+	 */
 	private static void extractJSDocToolkit(final File extractDirectory)
 			throws IOException {
 		ZipUtils.unzip(ResourceIO.getResourceAsZipStream("jsdoctoolkit.zip"),
 				extractDirectory);
 	}
 
-	protected void executeJSDocs(final List<String> args)
+	/**
+	 * Execute the jsdoc toolkit executable.
+	 * @param args the list of arguments for the jsdoc toolkit
+	 * @throws MavenReportException for any reporting exception
+	 */
+	protected final void executeJSDocs(final List<String> args)
 			throws MavenReportException {
 		LOGGER.info("Executing with the following params: '"
 				+ args.toString().replaceAll(",", "") + "'");
 		Main.exec(args.toArray(new String[0]));
 	}
 
-	protected List<String> createArgumentStack(final Set<File> files) {
+	/**
+	 * Create a list of arguments for the jsdoc toolkit.
+	 * @param files the files to create jsdocs for
+	 * @return the list of arguments
+	 */
+	protected final List<String> createArgumentStack(final Set<File> files) {
 		List<String> args = new ArrayList<String>();
 
 		// tell run.js its path
@@ -248,7 +277,8 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 		}
 
 		// set the output directory
-		args.add("-d=" + getOutputDirectory().getAbsolutePath() + File.separator + getDestDir());
+		args.add("-d=" + getOutputDirectory().getAbsolutePath()
+				+ File.separator + getDestDir());
 
 		// add template
 		args.add("-t=" + getTemplate());
@@ -264,22 +294,23 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Will output the console jsdoc creation logs to log4j
+	 * Will output the console jsdoc creation logs to log4j.
 	 */
-	protected void setConsoleOuput() {
+	protected final void setConsoleOuput() {
 		Log4jOutputStream l4jos = new Log4jOutputStream(LOGGER, Level.INFO);
 		PrintStream ps = new PrintStream(l4jos, true);
 		Main.setOut(ps);
 	}
 
 	/**
-	 * Archive the directory of the jsdocs
+	 * Archive the directory of the jsdocs.
 	 * 
-	 * @param location
-	 *            the location
+	 * @param archiveDir
+	 *            the location to write the archive
 	 * @throws IOException
+	 * 			  If there is a problem unzipping to the directory
 	 */
-	protected void archive(final File archiveDir) throws IOException {
+	protected final void archive(final File archiveDir) throws IOException {
 		File archiveFile = new File(archiveDir, getFinalName() + "-"
 				+ getClassifier() + ".jsar");
 		ZipUtils.zipFolder(getOutputDirectory(), archiveFile);
@@ -304,12 +335,13 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	}
 
 	/**
-	 * @param outputDirectoryIn the outputDirectory to set it to
+	 * @param outputDirectoryIn
+	 *            the outputDirectory to set it to
 	 */
 	public final void setOutputDirectory(final File outputDirectoryIn) {
 		outputDirectory = outputDirectoryIn;
 	}
-	
+
 	/**
 	 * The classifier that will be used for the file name.
 	 * 
@@ -328,9 +360,8 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	/**
 	 * @return destDir
 	 */
-	public String getDestDir() {
+	public final String getDestDir() {
 		return destDir;
 	}
-
 
 }

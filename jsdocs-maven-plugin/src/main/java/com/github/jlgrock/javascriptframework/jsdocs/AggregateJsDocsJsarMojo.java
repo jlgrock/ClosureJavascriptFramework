@@ -11,7 +11,7 @@ package com.github.jlgrock.javascriptframework.jsdocs;
 public class AggregateJsDocsJsarMojo extends JsDocsJsarMojo {
 
 	@Override
-	protected boolean isAggregator() {
+	protected final boolean isAggregator() {
 		return true;
 	}
 }

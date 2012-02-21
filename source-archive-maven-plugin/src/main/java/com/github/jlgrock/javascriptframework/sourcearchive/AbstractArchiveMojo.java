@@ -61,9 +61,9 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	/**
 	 * Remove target directories before starting work.
 	 * 
-	 * @throws IOException 
+	 * @throws IOException if unable to delete
 	 */
-	protected void cleanup() throws IOException {
+	protected final void cleanup() throws IOException {
 		File assemblyDesc = new File(assemblyDescriptorLocation);
 		if (assemblyDesc.exists()) {
 			if (assemblyDesc.isDirectory()) {
@@ -77,7 +77,7 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	/**
 	 * Copy the descriptor over to do the type of archiving required.
 	 * 
-	 * @throws IOException 
+	 * @throws IOException if there is a problem copying
 	 */
 	protected final void copyDescriptorResource() throws IOException {
 		LOGGER.info("copying default descriptor to \""
@@ -424,14 +424,8 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 */
 	private boolean ignorePermissions;
 
-	/**
-	 * Create the binary distribution.
-	 * 
-	 * @throws MojoExecutionException 
-	 * @throws MojoFailureException 
-	 * 
-	 */
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	@Override
+	public final void execute() throws MojoExecutionException, MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
 			// TODO this should only really be extending the
@@ -580,7 +574,7 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 * 
 	 * @return execution root
 	 */
-	protected boolean isThisTheExecutionRoot() {
+	protected final boolean isThisTheExecutionRoot() {
 		LOGGER.debug("Root Folder:" + mavenSession.getExecutionRootDirectory());
 		LOGGER.debug("Current Folder:" + basedir);
 		final boolean result = mavenSession.getExecutionRootDirectory()
@@ -599,7 +593,7 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 * 
 	 * @return assembly archiver
 	 */
-	protected AssemblyArchiver getAssemblyArchiver() {
+	protected final AssemblyArchiver getAssemblyArchiver() {
 		return assemblyArchiver;
 	}
 
@@ -608,16 +602,12 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 * 
 	 * @return assembly reader
 	 */
-	protected AssemblyReader getAssemblyReader() {
+	protected final AssemblyReader getAssemblyReader() {
 		return assemblyReader;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return basedir
-	 */
-	public File getBasedir() {
+	@Override
+	public final File getBasedir() {
 		return basedir;
 	}
 
@@ -627,7 +617,7 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 * @deprecated This has been replaced by {@link #getDescriptors()}
 	 */
 	@Deprecated
-	public String getDescriptor() {
+	public final String getDescriptor() {
 		return descriptor;
 	}
 
@@ -637,149 +627,85 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 * @deprecated This has been replaced by {@link #getDescriptorReferences()}
 	 */
 	@Deprecated
-	public String getDescriptorId() {
+	public final String getDescriptorId() {
 		return descriptorId;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return descriptor ref
-	 */
-	public String[] getDescriptorReferences() {
+	@Override
+	public final String[] getDescriptorReferences() {
 		return descriptorRefs;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public File getDescriptorSourceDirectory() {
+	@Override
+	public final File getDescriptorSourceDirectory() {
 		return descriptorSourceDirectory;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public String[] getDescriptors() {
+	@Override
+	public final String[] getDescriptors() {
 		return descriptors;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
+	@Override
 	public abstract MavenProject getProject();
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public File getSiteDirectory() {
+	@Override
+	public final File getSiteDirectory() {
 		return siteDirectory;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isSiteIncluded() {
+	@Override
+	public final boolean isSiteIncluded() {
 		return includeSite;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public String getFinalName() {
+	@Override
+	public final String getFinalName() {
 		return finalName;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isAssemblyIdAppended() {
+	@Override
+	public final boolean isAssemblyIdAppended() {
 		return appendAssemblyId;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public String getTarLongFileMode() {
+	@Override
+	public final String getTarLongFileMode() {
 		return tarLongFileMode;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public File getOutputDirectory() {
+	@Override
+	public final File getOutputDirectory() {
 		return outputDirectory;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public MavenArchiveConfiguration getJarArchiveConfiguration() {
+	@Override
+	public final MavenArchiveConfiguration getJarArchiveConfiguration() {
 		return archive;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public File getWorkingDirectory() {
+	@Override
+	public final File getWorkingDirectory() {
 		return workDirectory;
 	}
 
-	/**
-	 * Accessor.
-	 *  
-	 * @return x
-	 */
-	public ArtifactRepository getLocalRepository() {
+	@Override
+	public final ArtifactRepository getLocalRepository() {
 		return localRepository;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public File getTemporaryRootDirectory() {
+	@Override
+	public final File getTemporaryRootDirectory() {
 		return tempRoot;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public File getArchiveBaseDirectory() {
+	@Override
+	public final File getArchiveBaseDirectory() {
 		return archiveBaseDirectory;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public List<String> getFilters() {
+	@Override
+	public final List<String> getFilters() {
 		if (filters == null) {
 			filters = getProject().getBuild().getFilters();
 			if (filters == null) {
@@ -789,95 +715,85 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 		return filters;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public List<MavenProject> getReactorProjects() {
+	@Override
+	public final List<MavenProject> getReactorProjects() {
 		return reactorProjects;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public String getClassifier() {
+	@Override
+	public final String getClassifier() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
-	 * Accessor.
-	 * 
-	 * @return x
+	 * @return projectHelper
 	 */
-	protected MavenProjectHelper getProjectHelper() {
+	protected final MavenProjectHelper getProjectHelper() {
 		return projectHelper;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param appendAssemblyId 
+	 * @param appendAssemblyIdIn the value to change to
 	 */
-	public void setAppendAssemblyId(final boolean appendAssemblyId) {
-		this.appendAssemblyId = appendAssemblyId;
+	public final void setAppendAssemblyId(final boolean appendAssemblyIdIn) {
+		this.appendAssemblyId = appendAssemblyIdIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param archive  
+	 * @param archiveIn the value to change to
 	 */
-	public void setArchive(final MavenArchiveConfiguration archive) {
-		this.archive = archive;
+	public final void setArchive(final MavenArchiveConfiguration archiveIn) {
+		this.archive = archiveIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param archiveBaseDirectory 
+	 * @param archiveBaseDirectoryIn the value to change to
 	 */
-	public void setArchiveBaseDirectory(final File archiveBaseDirectory) {
-		this.archiveBaseDirectory = archiveBaseDirectory;
+	public final void setArchiveBaseDirectory(final File archiveBaseDirectoryIn) {
+		this.archiveBaseDirectory = archiveBaseDirectoryIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param assemblyArchiver 
+	 * @param assemblyArchiverIn the value to change to
 	 */
-	public void setAssemblyArchiver(final AssemblyArchiver assemblyArchiver) {
-		this.assemblyArchiver = assemblyArchiver;
+	public final void setAssemblyArchiver(final AssemblyArchiver assemblyArchiverIn) {
+		this.assemblyArchiver = assemblyArchiverIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param assemblyReader 
+	 * @param assemblyReaderIn the value to change to
 	 */
-	public void setAssemblyReader(final AssemblyReader assemblyReader) {
-		this.assemblyReader = assemblyReader;
+	public final void setAssemblyReader(final AssemblyReader assemblyReaderIn) {
+		this.assemblyReader = assemblyReaderIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param basedir 
+	 * @param basedirIn the value to change to
 	 */
-	public void setBasedir(final File basedir) {
-		this.basedir = basedir;
+	public final void setBasedir(final File basedirIn) {
+		this.basedir = basedirIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param classifier 
+	 * @param classifierIn the value to change to
 	 */
-	public void setClassifier(final String classifier) {
-		this.classifier = classifier;
+	public final void setClassifier(final String classifierIn) {
+		this.classifier = classifierIn;
 	}
 
 	/**
@@ -886,8 +802,8 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 * @deprecated This has been replaced by {@link #setDescriptors(String[])}
 	 */
 	@Deprecated
-	public void setDescriptor(final String descriptor) {
-		this.descriptor = descriptor;
+	public final void setDescriptor(final String descriptorIn) {
+		this.descriptor = descriptorIn;
 	}
 
 	/**
@@ -897,233 +813,131 @@ public abstract class AbstractArchiveMojo extends AbstractMojo implements
 	 *             {@link #setDescriptorRefs(String[])}
 	 */
 	@Deprecated
-	public void setDescriptorId(final String descriptorId) {
-		this.descriptorId = descriptorId;
+	public final void setDescriptorId(final String descriptorIdIn) {
+		this.descriptorId = descriptorIdIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param descriptorRefs 
+	 * @param descriptorRefsIn  the value to change to
 	 */
-	public void setDescriptorRefs(final String[] descriptorRefs) {
-		this.descriptorRefs = descriptorRefs;
+	public final void setDescriptorRefs(final String[] descriptorRefsIn) {
+		this.descriptorRefs = descriptorRefsIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param descriptors 
+	 * @param descriptorsIn the value to change to
 	 */
-	public void setDescriptors(final String[] descriptors) {
-		this.descriptors = descriptors;
+	public final void setDescriptors(final String[] descriptorsIn) {
+		this.descriptors = descriptorsIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param descriptorSourceDirectory 
+	 * @param descriptorSourceDirectoryIn the value to change to
 	 */
-	public void setDescriptorSourceDirectory(
-			final File descriptorSourceDirectory) {
-		this.descriptorSourceDirectory = descriptorSourceDirectory;
+	public final void setDescriptorSourceDirectory(
+			final File descriptorSourceDirectoryIn) {
+		this.descriptorSourceDirectory = descriptorSourceDirectoryIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param filters 
+	 * @param filtersIn the value to change to
 	 */
-	public void setFilters(final List<String> filters) {
-		this.filters = filters;
+	public final void setFilters(final List<String> filtersIn) {
+		this.filters = filtersIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param finalName 
+	 * @param finalNameIn the value to change to
 	 */
-	public void setFinalName(final String finalName) {
-		this.finalName = finalName;
+	public final void setFinalName(final String finalNameIn) {
+		this.finalName = finalNameIn;
+	}
+
+	
+	/**
+	 * Mutator.
+	 * 
+	 * @param tempRootIn the value to change to
+	 */
+	public final void setTempRoot(final File tempRootIn) {
+		this.tempRoot = tempRootIn;
 	}
 
 	/**
 	 * Mutator.
 	 * 
-	 * @param includeSite 
+	 * @param workDirectoryIn the value to change to
 	 */
-	public void setIncludeSite(final boolean includeSite) {
-		this.includeSite = includeSite;
+	public final void setWorkDirectory(final File workDirectoryIn) {
+		this.workDirectory = workDirectoryIn;
 	}
 
-	/**
-	 * Mutator.
-	 * 
-	 * @param localRepository 
-	 */
-	public void setLocalRepository(final ArtifactRepository localRepository) {
-		this.localRepository = localRepository;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param outputDirectory 
-	 */
-	public void setOutputDirectory(final File outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param projectHelper 
-	 */
-	public void setProjectHelper(final MavenProjectHelper projectHelper) {
-		this.projectHelper = projectHelper;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param reactorProjects 
-	 */
-	public void setReactorProjects(final List<MavenProject> reactorProjects) {
-		this.reactorProjects = reactorProjects;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param siteDirectory 
-	 */
-	public void setSiteDirectory(final File siteDirectory) {
-		this.siteDirectory = siteDirectory;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param tarLongFileMode 
-	 */
-	public void setTarLongFileMode(final String tarLongFileMode) {
-		this.tarLongFileMode = tarLongFileMode;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param tempRoot 
-	 */
-	public void setTempRoot(final File tempRoot) {
-		this.tempRoot = tempRoot;
-	}
-
-	/**
-	 * Mutator.
-	 * 
-	 * @param workDirectory 
-	 */
-	public void setWorkDirectory(final File workDirectory) {
-		this.workDirectory = workDirectory;
-	}
-
-	/**
-	 * Accessor.
-	 * 
-	 * @return x 
-	 */
-	public List<ArtifactRepository> getRemoteRepositories() {
+	@Override
+	public final List<ArtifactRepository> getRemoteRepositories() {
 		return remoteRepositories;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x 
-	 */
-	public boolean isDryRun() {
+	@Override
+	public final boolean isDryRun() {
 		return dryRun;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isIgnoreDirFormatExtensions() {
+	@Override
+	public final boolean isIgnoreDirFormatExtensions() {
 		return ignoreDirFormatExtensions;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isIgnoreMissingDescriptor() {
+	@Override
+	public final boolean isIgnoreMissingDescriptor() {
 		return ignoreMissingDescriptor;
 	}
 
 	/**
-	 * Accessor.
+	 * Mutator.
 	 * 
-	 * @param ignoreMissingDescriptor  
+	 * @param ignoreMissingDescriptorIn the value to change to
 	 */
-	public void setIgnoreMissingDescriptor(final boolean ignoreMissingDescriptor) {
-		this.ignoreMissingDescriptor = ignoreMissingDescriptor;
+	public final void setIgnoreMissingDescriptor(final boolean ignoreMissingDescriptorIn) {
+		this.ignoreMissingDescriptor = ignoreMissingDescriptorIn;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public MavenSession getMavenSession() {
+	@Override
+	public final MavenSession getMavenSession() {
 		return mavenSession;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public String getArchiverConfig() {
+	@Override
+	public final String getArchiverConfig() {
 		return archiverConfig == null ? null : archiverConfig.toString();
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public MavenFileFilter getMavenFileFilter() {
+	@Override
+	public final MavenFileFilter getMavenFileFilter() {
 		return mavenFileFilter;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isUpdateOnly() {
+	@Override
+	public final boolean isUpdateOnly() {
 		return updateOnly;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isUseJvmChmod() {
+	@Override
+	public final boolean isUseJvmChmod() {
 		return useJvmChmod;
 	}
 
-	/**
-	 * Accessor.
-	 * 
-	 * @return x
-	 */
-	public boolean isIgnorePermissions() {
+	@Override
+	public final boolean isIgnorePermissions() {
 		return ignorePermissions;
 	}
 }

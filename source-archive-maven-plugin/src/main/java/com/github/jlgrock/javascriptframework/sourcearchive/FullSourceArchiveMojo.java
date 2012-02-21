@@ -1,6 +1,5 @@
 package com.github.jlgrock.javascriptframework.sourcearchive;
 
-import org.apache.log4j.Logger;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -16,11 +15,6 @@ import org.apache.maven.project.MavenProject;
  */
 public class FullSourceArchiveMojo extends AbstractArchiveMojo {
 
-	/**
-	 * The Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(FullSourceArchiveMojo.class);
-	
 	/**
 	 * The resource to assemble with.
 	 */

@@ -9,9 +9,16 @@ import com.google.javascript.jscomp.DiagnosticGroups;
  * 
  */
 public enum StrictLevel {
+	/**
+	 * The predefined option that is verbose.
+	 */
 	VERBOSE;
 
-	public void setOptionsForWarningLevel(CompilerOptions options) {
+	/**
+	 * Set one of the predefined Warning levels.
+	 * @param options the predefined option
+	 */
+	public void setOptionsForWarningLevel(final CompilerOptions options) {
 		switch (this) {
 		case VERBOSE:
 			addVerboseWarnings(options);
@@ -27,7 +34,7 @@ public enum StrictLevel {
 	 * @param options
 	 *            The CompilerOptions object to set the options on.
 	 */
-	private static void addVerboseWarnings(CompilerOptions options) {
+	private static void addVerboseWarnings(final CompilerOptions options) {
 		options.checkTypes = true;
 		options.checkSuspiciousCode = true;
 		options.checkUnreachableCode = CheckLevel.ERROR;

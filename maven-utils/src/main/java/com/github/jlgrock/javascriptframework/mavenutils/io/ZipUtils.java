@@ -29,6 +29,12 @@ public class ZipUtils {
 	static final Logger LOGGER = Logger.getLogger(ZipUtils.class);
 	
 	/**
+	 * Private Constructor for utility classes.
+	 */
+	private ZipUtils() {
+	}
+	
+	/**
 	 * The default buffer size for reading.
 	 */
 	private static final int BUFFER_SIZE = 1024;
@@ -39,7 +45,7 @@ public class ZipUtils {
 	 * @param destinationFile the archive file that you would like to create
 	 * @throws IOException If unable to read files from the inFolder or write to the destinationFile
 	 */
-	public final static void zipFolder(final File inFolder, final File destinationFile) throws IOException {
+	public static final void zipFolder(final File inFolder, final File destinationFile) throws IOException {
 		BufferedInputStream in = null;
 		byte[] data = new byte[BUFFER_SIZE];
 
@@ -118,6 +124,7 @@ public class ZipUtils {
 	 * Unzip Zipfile contents matching zipEntryName to a directory.
 	 * 
 	 * @param zis the stream of the zipFile to extract artifacts from
+	 * @param zipEntryName the name of the file within the zip to extract
 	 * @param outputDir the location to put the artifacts from the zipfile
 	 * @throws IOException if unable to read from the zip stream
 	 */

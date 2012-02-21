@@ -20,7 +20,7 @@ public class TestJsDocsJsarMojo extends TestJsDocsMojo {
 	/**
 	 * @return jsarOutputDirectory
 	 */
-	protected File getArchiveOutputDirectory() {
+	protected final File getArchiveOutputDirectory() {
 		return jsarOutputDirectory;
 	}
 	

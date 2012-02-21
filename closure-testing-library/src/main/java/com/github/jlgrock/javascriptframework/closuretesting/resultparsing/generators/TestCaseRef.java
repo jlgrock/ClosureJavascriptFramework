@@ -33,7 +33,7 @@ public class TestCaseRef {
 	private final File testFileLocation;
 
 	/**
-	 * A set of files that will serve as script tag includes to the test case
+	 * A set of files that will serve as script tag includes to the test case.
 	 */
 	private final Set<File> testDeps;
 
@@ -84,6 +84,8 @@ public class TestCaseRef {
 	 *            the location of the test file
 	 * @param testCase
 	 *            the file to be written
+	 * @param testDepsIn
+	 *            the set of files that will serve as script tag includes to the test case
 	 */
 	public TestCaseRef(final File closureLocation, final File depsLocation,
 			final File testFile, final File testCase, final Set<File> testDepsIn) {

@@ -46,12 +46,12 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 	private boolean skipGoogleExtraction;
 	
 	@Override
-	public MavenProject getProject() {
+	public final MavenProject getProject() {
 		return project;
 	}
 
 	@Override
-	protected void extractDependencies() throws IOException {
+	protected final void extractDependencies() throws IOException {
 		File location;
 
 		@SuppressWarnings("unchecked")
@@ -89,7 +89,7 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 	/**
 	 * @return the skipExtraction
 	 */
-	public boolean isSkipExtraction() {
+	public final boolean isSkipExtraction() {
 		return skipGoogleExtraction;
 	}
 }
