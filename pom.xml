@@ -156,6 +156,16 @@
 				</executions>
 			</plugin -->
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.6</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.2</version>
+			</plugin>
 			<!-- Check Style: Make sure that it matches basic formatting and usage 
 						requirements -->
 			<plugin>
