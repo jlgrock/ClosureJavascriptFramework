@@ -1,6 +1,8 @@
 package com.github.jlgrock.javascriptframework.closurecompiler;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
 import com.google.common.base.Charsets;
+import com.google.common.io.Closeables;
 import com.google.common.io.Files;
 import com.google.javascript.jscomp.CommandLineRunner;
 import com.google.javascript.jscomp.CompilationLevel;
@@ -283,6 +286,22 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private File testSourceDirectory;
 
 	/**
+	 * Will wrap the code in whatever you put in here. It uses '%output%' to
+	 * define what your code is. An example of this would be
+	 * "(function() {%output% window['my']['namespace'] = my.namespace;})();",
+	 * which would wrap the entire code in an anonymous function.
+	 * 
+	 * @parameter default-value=""
+	 * @required
+	 */
+	private String outputWrapper = "";
+
+	/**
+	 * The string to match the code fragment in the outputWrapper parameter.
+	 */
+	private static final String OUTPUT_WRAPPER_MARKER = "%output%";
+
+	/**
 	 * Extract external dependency libraries to the location specified in the
 	 * settings.
 	 * 
@@ -439,7 +458,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				compiledFilename);
 		Files.createParentDirs(compiledFile);
 		Files.touch(compiledFile);
-		Files.write(compiler.toSource(), compiledFile, Charsets.UTF_8);
+		JsClosureCompileMojo.writeOutput(compiledFile, compiler, outputWrapper,
+				OUTPUT_WRAPPER_MARKER);
+		
 		return true;
 	}
 
@@ -513,6 +534,66 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					"Unable to closure compile files: " + e.getMessage());
 		} finally {
 			MojoLogAppender.endLogging();
+		}
+	}
+
+	/**
+	 * Will write the output file, including the wrapper around the code, if any
+	 * exist.
+	 * 
+	 * @param outFile
+	 *            The file to write to
+	 * @param compiler
+	 *            The google compiler
+	 * @param wrapper
+	 *            the string to wrap around the code (using the codePlaceholder)
+	 * @param codePlaceholder
+	 *            the identifier for the code
+	 * @throws IOException
+	 *             when the file cannot be written to.
+	 */
+	static void writeOutput(final File outFile, final Compiler compiler,
+			final String wrapper, final String codePlaceholder)
+			throws IOException {
+		FileWriter out = new FileWriter(outFile);
+		String code = compiler.toSource();
+		boolean threw = true;
+		try {
+			int pos = wrapper.indexOf(codePlaceholder);
+			LOGGER.debug("wrapper = " + wrapper);
+			if (pos != -1) {
+				String prefix = "";
+	
+				if (pos > 0) {
+					prefix = wrapper.substring(0, pos);
+					LOGGER.debug("prefix" + prefix);
+					out.append(prefix);
+				}
+	
+				out.append(code);
+	
+				int suffixStart = pos + codePlaceholder.length();
+				if (suffixStart != wrapper.length()) {
+					LOGGER.debug("suffix" + wrapper.substring(suffixStart));
+					// Something after placeholder?
+					out.append(wrapper.substring(suffixStart));
+				}
+				// Make sure we always end output with a line feed.
+				out.append('\n');
+	
+				// If we have a source map, adjust its offsets to match
+				// the code WITHIN the wrapper.
+				if (compiler != null && compiler.getSourceMap() != null) {
+					compiler.getSourceMap().setWrapperPrefix(prefix);
+				}
+	
+			} else {
+				out.append(code);
+				out.append('\n');
+			}
+			threw = false;
+		} finally {
+			Closeables.close(out, threw);
 		}
 	}
 
