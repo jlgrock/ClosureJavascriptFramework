@@ -12,8 +12,8 @@
 					<generate-test-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-test-dependency</generate-test-sources>
 					<test>com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test</test>
 					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
-					<package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:jsar</package>
 					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
+					<package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:jsar</package>
 					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
 				</phases>
 			</configuration>
