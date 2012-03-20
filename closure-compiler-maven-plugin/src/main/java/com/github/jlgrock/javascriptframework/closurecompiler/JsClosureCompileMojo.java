@@ -1,6 +1,5 @@
 package com.github.jlgrock.javascriptframework.closurecompiler;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,7 +20,6 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStre
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
-import com.google.common.base.Charsets;
 import com.google.common.io.Closeables;
 import com.google.common.io.Files;
 import com.google.javascript.jscomp.CommandLineRunner;
@@ -292,7 +290,6 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * which would wrap the entire code in an anonymous function.
 	 * 
 	 * @parameter default-value=""
-	 * @required
 	 */
 	private String outputWrapper = "";
 
