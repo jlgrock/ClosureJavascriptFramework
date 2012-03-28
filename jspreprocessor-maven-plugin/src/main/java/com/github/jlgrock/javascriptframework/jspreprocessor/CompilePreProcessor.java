@@ -14,7 +14,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 
@@ -29,12 +28,6 @@ import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
  * @threadSafe
  */
 public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
-	/**
-	 * The Logger.
-	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(CompilePreProcessor.class);
-
 	/**
 	 * The pattern that matches requires, provides, and assignment operators.
 	 * Basically, the only ways you should be using $assert statements other
@@ -139,6 +132,7 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 		boolean singleLineComments = false;
 		boolean commentBlock = false;
 		int parenthesisCount = 0;
+		@SuppressWarnings("unused")
 		int curlyBraceCount = 0;
 		int brackets = 0;
 		boolean doubleQuotes = false;
@@ -186,9 +180,8 @@ public class CompilePreProcessor extends AbstractPreProcessorFrameworkMojo {
 			if (parenthesisCount == 1 && expressionChar == ',' && brackets == 0
 					&& !doubleQuotes && !singleQuotes) {
 				commaBreak = true;
-			}
 			// determine whether and which string to append to
-			else if (parenthesisCount > 1
+			} else if (parenthesisCount > 1
 					|| (parenthesisCount == 1 && expressionChar != ')')) {
 				if (!commaBreak) {
 					sb1.append(expressionChar);

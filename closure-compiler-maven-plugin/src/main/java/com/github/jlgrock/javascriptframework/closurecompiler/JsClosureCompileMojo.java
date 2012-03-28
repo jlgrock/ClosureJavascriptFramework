@@ -319,6 +319,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * Extract internal dependency libraries, source to the location specified
 	 * in the settings. Then create the deps to be loaded first.
 	 * 
+	 * @param internsLocation
+	 *            the location of the interns files
 	 * @param source
 	 *            the collection of source files
 	 * @return the list of the files that are extracted (plus the generated deps
@@ -328,11 +330,10 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws IOException
 	 *             if there is a problem reading or extracting the files
 	 */
-	private Collection<File> calculateInternalFiles(
+	private Collection<File> calculateInternalFiles(final File internsLocation,
 			final Collection<File> source) throws MojoExecutionException,
 			IOException {
-		Set<File> internalSourceFiles = listFiles(JsarRelativeLocations
-				.getInternsLocation(frameworkTargetDirectory));
+		Set<File> internalSourceFiles = listFiles(internsLocation);
 		LOGGER.debug("number of internal dependency files:"
 				+ internalSourceFiles.size());
 
@@ -457,7 +458,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		Files.touch(compiledFile);
 		JsClosureCompileMojo.writeOutput(compiledFile, compiler, outputWrapper,
 				OUTPUT_WRAPPER_MARKER);
-		
+
 		return true;
 	}
 
@@ -480,10 +481,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					JsarRelativeLocations
 							.getAssertionSourceLocation(frameworkTargetDirectory),
 					JsarRelativeLocations
-							.getInternsLocation(frameworkTargetDirectory));
+							.getInternsAssertLocation(frameworkTargetDirectory));
 			File assertFile = getGeneratedAssertJS();
 			File assertRequiresFile = getGeneratedAssertRequiresJS();
-			Collection<File> assertInternFiles = calculateInternalFiles(assertSourceFiles);
+			Collection<File> assertInternFiles = calculateInternalFiles(
+					JsarRelativeLocations
+							.getInternsAssertLocation(frameworkTargetDirectory),
+					assertSourceFiles);
 			createDepsAndRequiresJS(baseLocation, assertSourceFiles,
 					assertInternFiles, assertFile, assertRequiresFile);
 
@@ -494,8 +498,11 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					JsarRelativeLocations
 							.getDebugSourceLocation(frameworkTargetDirectory),
 					JsarRelativeLocations
-							.getInternsLocation(frameworkTargetDirectory));
-			Collection<File> debugInternFiles = calculateInternalFiles(sourceFiles);
+							.getInternsDebugLocation(frameworkTargetDirectory));
+			Collection<File> debugInternFiles = calculateInternalFiles(
+					JsarRelativeLocations
+							.getInternsDebugLocation(frameworkTargetDirectory),
+					sourceFiles);
 			List<File> debugDepsFiles = createDepsAndRequiresJS(baseLocation,
 					sourceFiles, debugInternFiles, debugFile, debugRequiresFile);
 
@@ -560,15 +567,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			LOGGER.debug("wrapper = " + wrapper);
 			if (pos != -1) {
 				String prefix = "";
-	
+
 				if (pos > 0) {
 					prefix = wrapper.substring(0, pos);
 					LOGGER.debug("prefix" + prefix);
 					out.append(prefix);
 				}
-	
+
 				out.append(code);
-	
+
 				int suffixStart = pos + codePlaceholder.length();
 				if (suffixStart != wrapper.length()) {
 					LOGGER.debug("suffix" + wrapper.substring(suffixStart));
@@ -577,13 +584,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				}
 				// Make sure we always end output with a line feed.
 				out.append('\n');
-	
+
 				// If we have a source map, adjust its offsets to match
 				// the code WITHIN the wrapper.
 				if (compiler != null && compiler.getSourceMap() != null) {
 					compiler.getSourceMap().setWrapperPrefix(prefix);
 				}
-	
+
 			} else {
 				out.append(code);
 				out.append('\n');

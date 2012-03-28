@@ -123,7 +123,7 @@ public class ArtifactExtractor {
 			final Set<? extends Artifact> filteredArtifacts,
 			final File outputDirectory) throws IOException {
 		for (Artifact artifact : filteredArtifacts) {
-			LOGGER.debug("Processing artifact" + artifact.getArtifactId());
+			LOGGER.debug("Processing artifact \"" + artifact.getArtifactId() + "\"");
 			File file = artifact.getFile();
 			InputStream is = new FileInputStream(file);
 			ZipInputStream zis = new ZipInputStream(is);

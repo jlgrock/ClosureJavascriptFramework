@@ -90,7 +90,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the debug deps folder
 	 */
 	public static final File getDebugDepsLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_DEBUG_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_DEBUG_LOCATION);
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the assert deps folder
 	 */
 	public static final File getAssertDepsLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERT_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_ASSERT_LOCATION);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the debug requires folder
 	 */
 	public static final File getDebugRequiresLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_DEBUG_REQUIRES_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_DEBUG_REQUIRES_LOCATION);
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the assert requires folder
 	 */
 	public static final File getAssertRequiresLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERT_REQUIRES_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_ASSERT_REQUIRES_LOCATION);
 	}
 	
 	/**
@@ -162,7 +162,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the assertion source folder
 	 */
 	public static final File getAssertionSourceLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_ASSERTION_SOURCE_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_ASSERTION_SOURCE_LOCATION);
 	}
 	
 	/**
@@ -171,7 +171,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the debug source folder
 	 */
 	public static final File getDebugSourceLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_PROCESSED_SOURCE_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_PROCESSED_SOURCE_LOCATION);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class JsarRelativeLocations {
 	 * @return the path to the externs folder
 	 */
 	public static final File getExternsLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_EXTERN_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_EXTERN_LOCATION);
 	}
 	
 	/**
@@ -192,6 +192,23 @@ public class JsarRelativeLocations {
 		return new File(frameworkLocation, JSAR_INTERN_LOCATION);
 	}
 	
+	/**
+	 * Build the path to the interns (internal dependencies) relative to the frameworkLocation.
+	 * @param frameworkLocation the folder to be relative from
+	 * @return the path to the interns (internal dependencies) folder
+	 */
+	public static final File getInternsDebugLocation(final File frameworkLocation) {
+		return new File(getInternsLocation(frameworkLocation), JSAR_PROCESSED_SOURCE_LOCATION);
+	}
+	
+	/**
+	 * Build the path to the interns (internal dependencies) relative to the frameworkLocation.
+	 * @param frameworkLocation the folder to be relative from
+	 * @return the path to the interns (internal dependencies) folder
+	 */
+	public static final File getInternsAssertLocation(final File frameworkLocation) {
+		return new File(getInternsLocation(frameworkLocation), JSAR_ASSERTION_SOURCE_LOCATION);
+	}
 	/**
 	 * Build the path to the output location to the frameworkLocation.
 	 * @param frameworkLocation the folder to be relative from
@@ -207,6 +224,6 @@ public class JsarRelativeLocations {
 	 * @return the path to the compiled output location folder
 	 */
 	public static final File getCompileLocation(final File frameworkLocation) {
-		return new File(new File(frameworkLocation, JSAR_OUTPUT_LOCATION), JSAR_COMPILE_LOCATION);
+		return new File(getOutputLocation(frameworkLocation), JSAR_COMPILE_LOCATION);
 	}
 }

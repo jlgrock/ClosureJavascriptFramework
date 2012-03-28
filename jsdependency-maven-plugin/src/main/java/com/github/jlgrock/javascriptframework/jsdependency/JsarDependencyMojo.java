@@ -58,11 +58,19 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 		Set<Artifact> artifactSet = (Set<Artifact>) getProject().getArtifacts();
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(artifactSet);
 		
-		// extract internal dependencies
 		location = JsarRelativeLocations
 				.getInternsLocation(getFrameworkTargetDirectory());
-		LOGGER.info("Extracting internal dependencies to location \""
-				+ location.getAbsolutePath() + "\"");
+		
+		// extract internal assert dependencies
+		LOGGER.info("Extracting internal assert dependencies to location \""
+				+ location.getAbsolutePath() + File.separator + JsarRelativeLocations.JSAR_ASSERTION_SOURCE_LOCATION + "\"");
+		extractJSArtifacts.extract(
+				JsarRelativeLocations.JSAR_ASSERTION_SOURCE_LOCATION + "/",
+				PackagingType.JSAR, ScopeType.COMPILE, location);
+		
+		// extract internal debug dependencies
+		LOGGER.info("Extracting internal debug dependencies to location \""
+				+ location.getAbsolutePath() + File.separator + JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "\"");
 		extractJSArtifacts.extract(
 				JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
 				PackagingType.JSAR, ScopeType.COMPILE, location);
