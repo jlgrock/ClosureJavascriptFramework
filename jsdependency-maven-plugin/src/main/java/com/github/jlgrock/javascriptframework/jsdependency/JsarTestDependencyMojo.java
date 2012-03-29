@@ -40,7 +40,21 @@ public class JsarTestDependencyMojo extends AbstractDependencyMojo {
 	public final MavenProject getProject() {
 		return project;
 	}
-
+	
+	/**
+	 * The default directory to extract dependency files to. This will do
+	 * anything with a classifier that is unspecified or "internal".
+	 * 
+	 * @parameter default-value=
+	 *            "${project.build.directory}${file.separator}javascriptFramework"
+	 */
+	private File frameworkTargetDirectory;
+	
+	@Override
+	public final File getFrameworkTargetDirectory() {
+		return frameworkTargetDirectory;
+	}
+	
 	@Override
 	protected final void extractDependencies() throws IOException {
 		File location;

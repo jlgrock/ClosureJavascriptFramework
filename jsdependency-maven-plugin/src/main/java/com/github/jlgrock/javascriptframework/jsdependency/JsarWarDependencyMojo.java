@@ -6,15 +6,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
 import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
-import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.PackagingType;
@@ -27,13 +24,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType;
  * @phase initialize
  * @requiresDependencyResolution compile
  */
-public class JsarWarDependencyMojo extends AbstractMojo {
-	/**
-	 * The Logger.
-	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(JsarWarDependencyMojo.class);
-
+public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 	/**
 	 * The Maven Project.
 	 * 
@@ -44,12 +35,10 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	private MavenProject project;
 
 	/**
-	 * If you are using a local version of the library, you can skip the google
-	 * library extraction.
-	 * 
-	 * @parameter default-value="false"
+	 * The Logger.
 	 */
-	private boolean skipExtraction;
+	private static final Logger LOGGER = Logger
+			.getLogger(JsarWarDependencyMojo.class);
 
 	/**
 	 * Whether or not to expand the debug and assertion library. This can be
@@ -86,84 +75,49 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 	 * @parameter default-value="true"
 	 */
 	private boolean includeRequiresFiles;
-	
+
 	/**
 	 * The default directory to extract dependency files to. This will do
 	 * anything with a classifier that is unspecified or "internal".
 	 * 
 	 * @parameter default-value=
 	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript"
+	 * @parameter expression=
+	 * 			  "target.directory"
 	 */
 	private File frameworkTargetDirectory;
-	
+
 	/**
 	 * The default directory to extract dependency files to. This will do
 	 * anything with a classifier that is unspecified or "internal".
 	 * 
 	 * @parameter default-value=
 	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript${file.separator}compiled"
+	 * @parameter expression=
+	 * 			  "compiled.target.directory"
 	 */
 	private File compiledFileDirectory;
+
 	
-	/**
-	 * @return the maven project
-	 */
-	public final MavenProject getProject() {
-		return project;
-	}
 	
-	@Override
-	public final void execute() throws MojoExecutionException,
-			MojoFailureException {
-		MojoLogAppender.beginLogging(this);
-		try {
-			LOGGER.info("Creating output directory at location \""
-					+ getFrameworkTargetDirectory().getAbsolutePath() + "\".");
-			DirectoryIO
-					.createDir(getFrameworkTargetDirectory().getParentFile());
-
-			extractDependencies();
-
-		} catch (Exception e) {
-			throw new MojoExecutionException(
-					"Unable to access artifact dependency object: "
-							+ e.getMessage());
-		} finally {
-			MojoLogAppender.endLogging();
-		}
-	}
-
 	/**
 	 * Extract the dependencies from the jsar to the appropriate location(s).
 	 * 
-	  * @throws IOException
+	 * @throws IOException
 	 *             if there is a problem reading the artifact
+	 * @throws MojoFailureException from any Mojo API specific calls
+	 * @throws MojoExecutionException from any Mojo API specific calls
 	 */
-	protected final void extractDependencies() throws IOException {
+	@SuppressWarnings("unchecked")
+	protected final void extractDependencies() throws IOException, MojoFailureException, MojoExecutionException {
 		File location;
 
-		//for debugging files, get transitive dependencies
-		@SuppressWarnings("unchecked")
-		Set<Artifact> artifactSet = getProject().getArtifacts();
+		Set<Artifact> artifactSet = getArtifactSet();
+		extractInterns(extractAssert, extractDebug);
+		extractExterns(artifactSet);
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(
 				artifactSet);
-
-		// extract internal dependencies to assert dir
-		location = JsarRelativeLocations.getInternsLocation(getFrameworkTargetDirectory());
-		LOGGER.info("Extracting internal dependencies to location \""
-				+ location.getAbsolutePath() + "\"");
-		extractJSArtifacts.extract(
-				JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
-				PackagingType.JSAR, ScopeType.ANY, location);
-
-		// extract extern files
-		location = JsarRelativeLocations.getExternsLocation(getFrameworkTargetDirectory());
-		LOGGER.info("Extracting external dependencies to location \""
-				+ location.getAbsolutePath() + "\"");
-		extractJSArtifacts.extract(JsarRelativeLocations.JSAR_EXTERN_LOCATION
-				+ "/", PackagingType.JSAR, ScopeType.ANY, location);
-
-		if (!skipExtraction) {
+		if (!isSkipGoogleExtraction()) {
 			// extract google dependencies (if needed) - it could be provided by
 			// something else
 			LOGGER.info("Extracting google closure library to location \""
@@ -172,14 +126,15 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 					ResourceIO.getResourceAsZipStream("closure-library.zip"),
 					getFrameworkTargetDirectory());
 		}
-		
-		//for the rest of this, only get specified dependency (not transitive)
-		
-		@SuppressWarnings("unchecked")
-		Set<Artifact> artifactSetNonTransitive = getProject().getDependencyArtifacts();
+
+		// for the rest of this, only get specified dependency (not transitive)
+		Set<Artifact> artifactSetNonTransitive = getProject()
+				.getDependencyArtifacts();
 		extractJSArtifacts = new ArtifactExtractor(artifactSetNonTransitive);
+
 		
-		location = JsarRelativeLocations.getOutputLocation(getFrameworkTargetDirectory());
+		location = JsarRelativeLocations
+				.getOutputLocation(getFrameworkTargetDirectory());
 		if (extractAssert) {
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_ASSERT_LOCATION + "/",
@@ -188,7 +143,7 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_ASSERTION_SOURCE_LOCATION + "/",
 					PackagingType.JSAR, ScopeType.ANY, location);
-			
+
 			if (includeRequiresFiles) {
 				location = JsarRelativeLocations
 						.getOutputLocation(getFrameworkTargetDirectory());
@@ -202,11 +157,11 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_DEBUG_LOCATION + "/",
 					PackagingType.JSAR, ScopeType.ANY, location);
-			
+
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
 					PackagingType.JSAR, ScopeType.ANY, location);
-			
+
 			if (includeRequiresFiles) {
 				location = JsarRelativeLocations
 						.getOutputLocation(getFrameworkTargetDirectory());
@@ -224,12 +179,25 @@ public class JsarWarDependencyMojo extends AbstractMojo {
 					PackagingType.JSAR, ScopeType.ANY, compiledFileDirectory);
 		}
 	}
-	
-	/**
-	 * @return frameworkTargetDirectory
-	 */
+
+	@Override
 	public final File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
+	}
+	
+	@Override
+	public final MavenProject getProject() {
+		return project;
+	}
+
+	/**
+	 * @return the artifact set
+	 */
+	@SuppressWarnings("unchecked")
+	public final Set<Artifact> getArtifactSet() {
+		// for debugging files, get transitive dependencies
+		Set<Artifact> artifactSet = getProject().getArtifacts();
+		return artifactSet;
 	}
 
 }
