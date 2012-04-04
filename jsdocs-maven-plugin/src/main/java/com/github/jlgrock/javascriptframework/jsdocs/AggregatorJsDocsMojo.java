@@ -11,44 +11,34 @@ import org.apache.maven.plugin.MojoFailureException;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 
 /**
- * Generates javascript docs from the jsdoc-toolkit (the final version) and
- * stores them into a js archive.
+ * Generates javascript docs from the jsdoc-toolkit (the final version).
  * 
- * @goal jsar
+ * @goal aggregate-jsdoc
  * 
  */
-public class JsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
+public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
 	/**
-	 * The Logger.
+	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger
-			.getLogger(JsDocsJsarMojo.class);
-	
-	/**
-	 * Specifies the directory where the generated jar file will be put.
-	 * 
-	 * @parameter default-value="${project.build.directory}"
-	 */
-	private File jsarOutputDirectory;
+			.getLogger(AggregatorJsDocsMojo.class);
 
 	@Override
-	public final File getArchiveOutputDirectory() {
-		return jsarOutputDirectory;
+	public final String getClassifier() {
+		return "jsdocs";
 	}
 
 	@Override
-	public final void execute() throws MojoExecutionException, MojoFailureException {
+	public final void execute() throws MojoExecutionException,
+			MojoFailureException {
 		LOGGER.debug("starting report execution...");
 		MojoLogAppender.beginLogging(this);
 		try {
-			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
+			ReportGenerator
+					.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
 			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
-			File innerDestDir = getArchiveOutputDirectory();
-			if (innerDestDir.exists()) {
-				AbstractJsDocsMojo.generateArchive(this, innerDestDir, getFinalName() + "-" + getClassifier() + ".jsar");
-			}
 		} catch (Exception e) {
 			LOGGER.error("There was an error in the execution of the report: "
 					+ e.getMessage(), e);
@@ -57,12 +47,9 @@ public class JsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 			MojoLogAppender.endLogging();
 		}
 	}
-	
-	
 
 	@Override
-	public final String getClassifier() {
-		return "jsdocs";
+	public final File getArchiveOutputDirectory() {
+		return null;
 	}
-
 }

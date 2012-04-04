@@ -14,16 +14,16 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender
  * Generates javascript docs from the jsdoc-toolkit (the final version) and
  * stores them into a js archive.
  * 
- * @goal jsar
+ * @goal aggregate-jsar
  * 
  */
-public class JsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
+public class AggregatorJsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 	/**
 	 * The Logger.
 	 */
 	private static final Logger LOGGER = Logger
-			.getLogger(JsDocsJsarMojo.class);
-	
+			.getLogger(AggregatorJsDocsJsarMojo.class);
+
 	/**
 	 * Specifies the directory where the generated jar file will be put.
 	 * 
@@ -37,17 +37,20 @@ public class JsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 	}
 
 	@Override
-	public final void execute() throws MojoExecutionException, MojoFailureException {
+	public final void execute() throws MojoExecutionException,
+			MojoFailureException {
 		LOGGER.debug("starting report execution...");
 		MojoLogAppender.beginLogging(this);
 		try {
-			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
+			ReportGenerator
+					.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
 			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
 			File innerDestDir = getArchiveOutputDirectory();
 			if (innerDestDir.exists()) {
-				AbstractJsDocsMojo.generateArchive(this, innerDestDir, getFinalName() + "-" + getClassifier() + ".jsar");
+				AbstractJsDocsMojo.generateArchive(this, innerDestDir,
+						getFinalName() + "-" + getClassifier() + ".jsar");
 			}
 		} catch (Exception e) {
 			LOGGER.error("There was an error in the execution of the report: "
@@ -57,8 +60,6 @@ public class JsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 			MojoLogAppender.endLogging();
 		}
 	}
-	
-	
 
 	@Override
 	public final String getClassifier() {

@@ -2,25 +2,23 @@ package com.github.jlgrock.javascriptframework.jsdocs;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.maven.archiver.MavenArchiveConfiguration;
+import org.apache.maven.archiver.MavenArchiver;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReportException;
-import org.mozilla.javascript.tools.shell.Main;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
+import org.codehaus.plexus.archiver.jar.ManifestException;
 
-import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
 import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
-import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStream;
-import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
-import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
 
 /**
  * The abstract jsdoc creation class.
@@ -36,12 +34,24 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 			.getLogger(AbstractJsDocsMojo.class);
 
 	/**
-	 * The name of the destination dir, which is where is is stored under the
-	 * reporting directory.
-	 * 
-	 * @parameter default-value="jsapidocs"
+	 * Includes all generated JsDoc files.
 	 */
-	private String destDir;
+	private static final String[] DEFAULT_INCLUDES = new String[] { "**/**" };
+
+	/**
+	 * Excludes all processing files.
+	 * 
+	 * @see AbstractJavadocMojo#DEBUG_JAVADOC_SCRIPT_NAME
+	 * @see AbstractJavadocMojo#OPTIONS_FILE_NAME
+	 * @see AbstractJavadocMojo#PACKAGES_FILE_NAME
+	 * @see AbstractJavadocMojo#ARGFILE_FILE_NAME
+	 * @see AbstractJavadocMojo#FILES_FILE_NAME
+	 */
+	private static final String[] DEFAULT_EXCLUDES = new String[] {};
+
+	// ///////////////////////////////////////////////////////////////////////
+	// Maven Specific Variables
+	// ///////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Where to extract the jsdoc-toolkit javascript to.
@@ -51,44 +61,11 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	private File toolkitExtractDirectory;
 
 	/**
-	 * Whether the file selection patterns should be case sensitive. Default is
-	 * <code>true</code>.
-	 * 
-	 * @parameter default-value="true"
+	 * @return the toolkitExtractDirectory
 	 */
-	private boolean caseSensitive;
-
-	/**
-	 * Use package name along with a file name in the report. Default is false
-	 * (using old style)
-	 * 
-	 * @parameter expression="false"
-	 */
-	private boolean useNamespacedFiles;
-
-	/**
-	 * The directory for the JSDoc template to use. The default is the JSDocs
-	 * "jsdoc" that is defined by the jsdoc toolkit
-	 * 
-	 * @parameter 
-	 *            expression="${project.build.directory}/jsdoctoolkit24/templates/jsdoc"
-	 */
-	private File template;
-
-	/**
-	 * Whether to include symbols tagged as private. Default is
-	 * <code>false</code>.
-	 * 
-	 * @parameter default-value="false"
-	 */
-	private boolean includePrivate;
-
-	/**
-	 * Specifies whether the Jsdoc generation should be skipped.
-	 * 
-	 * @parameter default-value="false"
-	 */
-	private boolean skip;
+	public final File getToolkitExtractDirectory() {
+		return toolkitExtractDirectory;
+	}
 
 	/**
 	 * Specifies the filename that will be used for the generated jar file.
@@ -100,21 +77,17 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	private String finalName;
 
 	/**
-	 * Specifies the destination directory where javadoc saves the generated
-	 * HTML files. <br/>
-	 * See <a href=
-	 * "http://download.oracle.com/javase/1.4.2/docs/tooldocs/windows/javadoc.html#d"
-	 * >d</a>. <br/>
-	 * 
-	 * @parameter expression="${destDir}" alias="destDir"
-	 *            default-value="${project.build.directory}/apidocs"
-	 * @required
+	 * @return finalName
 	 */
-	private File outputDirectory;
+	protected final String getFinalName() {
+		return finalName;
+	}
 
 	/**
-	 * Use to identify the base directory of the project. This should not be
-	 * modified. default-value="${basedir}"
+	 * Use to identify the base directory of the project.
+	 * 
+	 * @parameter default-value="${basedir}"
+	 * @readonly
 	 */
 	private File baseDir;
 
@@ -126,206 +99,151 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	}
 
 	/**
-	 * @return the caseSensitive
-	 */
-	public final boolean isCaseSensitive() {
-		return caseSensitive;
-	}
-
-	/**
-	 * @return the useNamespacedFiles
-	 */
-	public final boolean isUseNamespacedFiles() {
-		return useNamespacedFiles;
-	}
-
-	/**
-	 * @return the template
-	 */
-	public final File getTemplate() {
-		return template;
-	}
-
-	/**
-	 * @return the includePrivate
-	 */
-	public final boolean isIncludePrivate() {
-		return includePrivate;
-	}
-
-	/**
-	 * @return skip
-	 */
-	private boolean isSkip() {
-		return skip;
-	}
-
-	/**
-	 * @return the toolkitExtractDirectory
-	 */
-	public final File getToolkitExtractDirectory() {
-		return toolkitExtractDirectory;
-	}
-
-	/**
-	 * @return finalName
-	 */
-	protected final String getFinalName() {
-		return finalName;
-	}
-
-	@Override
-	public final void execute() throws MojoExecutionException, MojoFailureException {
-		LOGGER.debug("starting report execution...");
-		MojoLogAppender.beginLogging(this);
-		try {
-			createJsDocs();
-		} catch (Exception e) {
-			LOGGER.error("There was an error in the execution of the report: "
-					+ e.getMessage(), e);
-			throw new MojoExecutionException(e.getMessage(), e);
-		} finally {
-			MojoLogAppender.endLogging();
-		}
-	}
-
-	/**
-	 * Creates the js docs.
+	 * The classifier that will be used for the file name.
 	 * 
-	 * @throws MavenReportException if there is a problem in the creation of jsdocs
-	 * @throws IOException if there is a problem writing the files
+	 * @return the classifier
 	 */
-	protected final void createJsDocs() throws MavenReportException, IOException {
-		// check params
-		if (isSkip()) {
-			LOGGER.info("Skipping javadoc generation");
-			return;
-		}
-		// run the report
-		ArrayList<File> sourceDirs = getSourceDirectories();
-		Set<File> files = new HashSet<File>();
-		for (File dir : sourceDirs) {
-			LOGGER.debug("adding files from the " + dir.getAbsoluteFile());
-			files.addAll(FileListBuilder.buildFilteredList(dir, "js"));
-		}
-		AbstractJsDocsMojo.extractJSDocToolkit(getToolkitExtractDirectory());
-		if (!getTemplate().exists()) {
-			throw new MavenReportException("The template specified at '"
-					+ getTemplate().getAbsolutePath()
-					+ "' does not exist.  Please correct before running.");
-		}
-		setConsoleOuput();
-		if (isAggregator()) {
-			// TODO do something to aggregate
-		}
-		LOGGER.info("Running javadocs reports to location '"
-				+ getOutputDirectory().getAbsolutePath() + "'.");
-		List<String> args = createArgumentStack(files);
-		LOGGER.info("argument stack created.");
-		executeJSDocs(args);
-		LOGGER.info("JsDoc Reporting completed.");
-
-		File archiveOutputDir = getArchiveOutputDirectory();
-		if (archiveOutputDir != null) {
-			LOGGER.debug("creating archive at "
-					+ new File(archiveOutputDir, getFinalName()
-							+ "-jsdocs.jsar").getAbsolutePath());
-			ZipUtils.zipFolder(getOutputDirectory(), new File(archiveOutputDir,
-					getFinalName() + "-jsdocs.jsar"));
-			LOGGER.info("archive created.");
-		}
-	}
+	protected abstract String getClassifier();
 
 	/**
-	 * Extract the jsdoc toolkit to a local dir.
-	 * @param extractDirectory the directory to extract to
-	 * @throws IOException if there is a problem extracting or writing files
-	 */
-	private static void extractJSDocToolkit(final File extractDirectory)
-			throws IOException {
-		ZipUtils.unzip(ResourceIO.getResourceAsZipStream("jsdoctoolkit.zip"),
-				extractDirectory);
-	}
-
-	/**
-	 * Execute the jsdoc toolkit executable.
-	 * @param args the list of arguments for the jsdoc toolkit
-	 * @throws MavenReportException for any reporting exception
-	 */
-	protected final void executeJSDocs(final List<String> args)
-			throws MavenReportException {
-		LOGGER.info("Executing with the following params: '"
-				+ args.toString().replaceAll(",", "") + "'");
-		Main.exec(args.toArray(new String[0]));
-	}
-
-	/**
-	 * Create a list of arguments for the jsdoc toolkit.
-	 * @param files the files to create jsdocs for
-	 * @return the list of arguments
-	 */
-	protected final List<String> createArgumentStack(final Set<File> files) {
-		List<String> args = new ArrayList<String>();
-
-		// tell run.js its path
-		args.add(getToolkitExtractDirectory() + File.separator + "app"
-				+ File.separator + "run.js");
-
-		// if you want to include private, set this flag.
-		if (isIncludePrivate()) {
-			args.add("-p");
-		}
-
-		// set the output directory
-		args.add("-d=" + getOutputDirectory().getAbsolutePath()
-				+ File.separator + getDestDir());
-
-		// add template
-		args.add("-t=" + getTemplate());
-
-		// add files argument(s)
-		for (File f : files) {
-			args.add(f.getAbsolutePath());
-		}
-
-		args.add("-j=" + getToolkitExtractDirectory() + File.separator + "app"
-				+ File.separator + "run.js");
-		return args;
-	}
-
-	/**
-	 * Will output the console jsdoc creation logs to log4j.
-	 */
-	protected final void setConsoleOuput() {
-		Log4jOutputStream l4jos = new Log4jOutputStream(LOGGER, Level.INFO);
-		PrintStream ps = new PrintStream(l4jos, true);
-		Main.setOut(ps);
-	}
-
-	/**
-	 * Archive the directory of the jsdocs.
+	 * Path to the default MANIFEST file to use. It will be used if
+	 * <code>useDefaultManifestFile</code> is set to <code>true</code>.
 	 * 
-	 * @param archiveDir
-	 *            the location to write the archive
-	 * @throws IOException
-	 * 			  If there is a problem unzipping to the directory
+	 * @parameter 
+	 *            expression="${project.build.outputDirectory}/META-INF/MANIFEST.MF"
+	 * @required
+	 * @readonly
 	 */
-	protected final void archive(final File archiveDir) throws IOException {
-		File archiveFile = new File(archiveDir, getFinalName() + "-"
-				+ getClassifier() + ".jsar");
-		ZipUtils.zipFolder(getOutputDirectory(), archiveFile);
-		LOGGER.info("archive completed.");
+	private File defaultManifestFile;
+
+	/**
+	 * @return defaultManifestFile
+	 */
+	public final File getDefaultManifestFile() {
+		return defaultManifestFile;
 	}
 
 	/**
-	 * @return the sourceDirectory
+	 * Set this to <code>true</code> to enable the use of the
+	 * <code>defaultManifestFile</code>. <br/>
+	 * 
+	 * @parameter default-value="false"
 	 */
-	public abstract ArrayList<File> getSourceDirectories();
+	private boolean useDefaultManifestFile;
 
 	/**
-	 * @return aggregator
+	 * @return useDefaultManifestFile
 	 */
-	protected abstract boolean isAggregator();
+	public final boolean isUseDefaultManifestFile() {
+		return useDefaultManifestFile;
+	}
+
+	/**
+	 * The Maven Project Object.
+	 * 
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
+	 */
+	private MavenProject project;
+
+	/**
+	 * @return project
+	 */
+	public final MavenProject getProject() {
+		return project;
+	}
+
+	/**
+	 * The archive configuration to use. See <a
+	 * href="http://maven.apache.org/shared/maven-archiver/index.html">Maven
+	 * Archiver Reference</a>.
+	 * 
+	 * @parameter
+	 */
+	private MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
+
+	/**
+	 * @return archive
+	 */
+	public final MavenArchiveConfiguration getArchive() {
+		return archive;
+	}
+
+	/**
+	 * The Jar archiver.
+	 * 
+	 * @component role="org.codehaus.plexus.archiver.Archiver" roleHint="jar"
+	 * @since 2.5
+	 */
+	private JarArchiver jarArchiver;
+
+	/**
+	 * @return archive
+	 */
+	public final JarArchiver getJarArchiver() {
+		return jarArchiver;
+	}
+
+	// ///////////////////////////////////////////////////////////////////////
+	// JSDocToolkit Specific Variables
+	// ///////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Include all functions, even undocumented ones.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean allFunctions;
+
+	/**
+	 * @return allFunctions parameter
+	 */
+	public final boolean isAllFunctions() {
+		return allFunctions;
+	}
+
+	/**
+	 * Ignore all code, only document comments with @name tags. Default value is
+	 * false.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean ignoreCode;
+
+	/**
+	 * @return ignoreCode
+	 */
+	public final boolean isIgnoreCode() {
+		return ignoreCode;
+	}
+
+	/**
+	 * Whether to suppress source code output. Default value is true.
+	 * 
+	 * @parameter default-value="true"
+	 */
+	private boolean includeSourceCode;
+
+	/**
+	 * @return includeSourceCode
+	 */
+	public final boolean isIncludeSourceCode() {
+		return includeSourceCode;
+	}
+
+	/**
+	 * Specifies the destination directory where javadoc saves the generated
+	 * HTML files. <br/>
+	 * See <a href=
+	 * "http://download.oracle.com/javase/1.4.2/docs/tooldocs/windows/javadoc.html#d"
+	 * >d</a>. <br/>
+	 * 
+	 * @parameter expression="${destDir}"
+	 *            default-value="${project.build.directory}/apidocs"
+	 * @required
+	 */
+	private File outputDirectory;
 
 	/**
 	 * @return outputDirectory
@@ -335,33 +253,239 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	}
 
 	/**
-	 * @param outputDirectoryIn
-	 *            the outputDirectory to set it to
+	 * Include symbols tagged as private, underscored and inner symbols. Default
+	 * is <code>false</code>.
+	 * 
+	 * @parameter default-value="false"
 	 */
-	public final void setOutputDirectory(final File outputDirectoryIn) {
-		outputDirectory = outputDirectoryIn;
+	private boolean includePrivate;
+
+	/**
+	 * @return the includePrivate
+	 */
+	public final boolean isIncludePrivate() {
+		return includePrivate;
 	}
 
 	/**
-	 * The classifier that will be used for the file name.
+	 * Descend into src directories. Default Value is 1.
 	 * 
-	 * @return the classifier
+	 * @parameter default-value="1"
 	 */
-	protected abstract String getClassifier();
+	private int recurseDepth;
+
+	/**
+	 * @return recurseDepth;
+	 */
+	public final int getrecurseDepth() {
+		return recurseDepth;
+	}
+
+	/**
+	 * The directory for the JSDoc template to use. The default is the JSDocs
+	 * "jsdoc" that is defined by the jsdoc toolkit
+	 * 
+	 * @parameter default-value=
+	 *            "${project.build.directory}/jsdoctoolkit24/templates/jsdoc"
+	 */
+	private File template;
+
+	/**
+	 * @return the template
+	 */
+	public final File getTemplate() {
+		return template;
+	}
+
+	/**
+	 * Force file names to be unique, but not based on symbol names.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean forceUnique;
+
+	/**
+	 * @return forceUnique
+	 */
+	public final boolean isForceUnique() {
+		return forceUnique;
+	}
+
+	/**
+	 * Create a list of arguments for the jsdoc toolkit.
+	 * 
+	 * @param files
+	 *            the files to create jsdocs for
+	 * @return the list of arguments
+	 * @throws MavenReportException
+	 *             whenever the necessary arguments have been passed in
+	 *             incorrectly or if there is a problem with one of the
+	 *             parameters sent in
+	 */
+	protected final List<String> createArgumentStack(final Set<File> files)
+			throws MavenReportException {
+		List<String> args = new ArrayList<String>();
+
+		// tell run.js its path
+		args.add(getToolkitExtractDirectory() + File.separator + "app"
+				+ File.separator + "run.js");
+
+		if (isAllFunctions()) {
+			args.add("-a");
+		}
+
+		if (isIgnoreCode()) {
+			args.add("-n");
+		}
+
+		args.add("-r=" + Integer.toString(recurseDepth));
+
+		if (getLog().isDebugEnabled()) {
+			args.add("-v");
+		}
+
+		if (!isIncludeSourceCode()) {
+			args.add("-s");
+		}
+
+		if (isIncludePrivate()) {
+			args.add("-p");
+		}
+
+		// set the output directory
+		LOGGER.info("Running javadocs reports to location '"
+				+ getOutputDirectory().getAbsolutePath() + "'.");
+		args.add("-d=" + getOutputDirectory().getAbsolutePath());
+
+		// add template
+		if (!getTemplate().exists()) {
+			throw new MavenReportException("The template specified at '"
+					+ getTemplate().getAbsolutePath()
+					+ "' does not exist.  Please correct before running.");
+		}
+		args.add("-t=" + getTemplate());
+
+		if (isForceUnique()) {
+			args.add("-u");
+		}
+
+		// add files argument(s)
+		for (File f : files) {
+			args.add(f.getAbsolutePath());
+		}
+
+		// TODO
+		// -D="myVar:My value" or --define="myVar:My value"
+		// Multiple. Define a variable, available in JsDoc as JSDOC.opt.D.myVar.
+		//
+		// -E="REGEX" or --exclude="REGEX"
+		// Multiple. Exclude files based on the supplied regex.
+		//
+
+		args.add("-j=" + getToolkitExtractDirectory() + File.separator + "app"
+				+ File.separator + "run.js");
+		return args;
+	}
+
+	/**
+	 * Archive the directory of the jsdocs.
+	 * 
+	 * @param archiveDir
+	 *            the location to write the archive
+	 * @throws IOException
+	 *             If there is a problem unzipping to the directory
+	 */
+	protected final void archive(final File archiveDir) throws IOException {
+		File archiveFile = new File(archiveDir, getFinalName() + "-"
+				+ getClassifier() + ".jsar");
+		ZipUtils.zipFolder(getOutputDirectory(), archiveFile);
+		LOGGER.info("archive completed.");
+	}
+
+	/**
+	 * This will get a listing of all of the files that should be used to create
+	 * the jsdocs.
+	 * 
+	 * @return the set of files
+	 */
+	public abstract Set<File> getSourceFiles();
+
+	/**
+	 * Method that creates the jar file.
+	 * 
+	 * @param mojo
+	 *            the mojo to receive maven specific variables from.
+	 * @param javadocFiles
+	 *            the directory where the generated jar file will be put
+	 * @param jarFileName
+	 *            the filename of the generated jar file
+	 * @return a File object that contains the generated jar file
+	 * @throws ArchiverException
+	 *             if any
+	 * @throws IOException
+	 *             if any
+	 */
+	public static File generateArchive(final AbstractJsDocsMojo mojo,
+			final File javadocFiles, final String jarFileName)
+			throws ArchiverException, IOException {
+		File javadocJar = new File(mojo.getArchiveOutputDirectory(),
+				jarFileName);
+
+		if (javadocJar.exists()) {
+			javadocJar.delete();
+		}
+
+		MavenArchiver archiver = new MavenArchiver();
+		archiver.setArchiver(mojo.getJarArchiver());
+		archiver.setOutputFile(javadocJar);
+
+		File contentDirectory = javadocFiles;
+		if (!contentDirectory.exists()) {
+			mojo.getLog().warn(
+					"JAR will be empty - no content was marked for inclusion!");
+		} else {
+			archiver.getArchiver().addDirectory(contentDirectory,
+					DEFAULT_INCLUDES, DEFAULT_EXCLUDES);
+		}
+
+		List<Resource> resources = mojo.getProject().getBuild().getResources();
+
+		for (Resource r : resources) {
+			if (r.getDirectory().endsWith("maven-shared-archive-resources")) {
+				archiver.getArchiver().addDirectory(new File(r.getDirectory()));
+			}
+		}
+
+		if (mojo.isUseDefaultManifestFile()
+				&& mojo.getDefaultManifestFile().exists()
+				&& mojo.getArchive().getManifestFile() == null) {
+			mojo.getLog().info(
+					"Adding existing MANIFEST to archive. Found under: "
+							+ mojo.getDefaultManifestFile().getPath());
+			mojo.getArchive().setManifestFile(mojo.getDefaultManifestFile());
+		}
+
+		try {
+			// we don't want Maven stuff
+			mojo.getArchive().setAddMavenDescriptor(false);
+			archiver.createArchive(mojo.getProject(), mojo.getArchive());
+		} catch (ManifestException e) {
+			throw new ArchiverException("ManifestException: " + e.getMessage(),
+					e);
+		} catch (DependencyResolutionRequiredException e) {
+			throw new ArchiverException(
+					"DependencyResolutionRequiredException: " + e.getMessage(),
+					e);
+		}
+
+		return javadocJar;
+	}
 
 	/**
 	 * return the file location of where the archive of the jsdocs should be
 	 * placed. This should return null if no archive is expected to be created.
 	 * 
-	 * @return the output directory or null
+	 * @return the output directory or null in the case that it does not archive
 	 */
-	protected abstract File getArchiveOutputDirectory();
-
-	/**
-	 * @return destDir
-	 */
-	public final String getDestDir() {
-		return destDir;
-	}
-
+	public abstract File getArchiveOutputDirectory();
 }

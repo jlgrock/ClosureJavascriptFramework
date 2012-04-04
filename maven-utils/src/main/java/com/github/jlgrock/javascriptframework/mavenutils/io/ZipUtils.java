@@ -101,7 +101,7 @@ public class ZipUtils {
 		File[] files = inFolder.listFiles();
 		for (int i=0; i < files.length; i++) {
 			if (files[i].isDirectory()) {
-				returnCollection.addAll(readDirectory(files[i], relativePath + File.separator + files[i].getName()));
+				returnCollection.addAll(readDirectory(files[i], relativePath + "/" + files[i].getName()));
 			} else if (files[i].isFile()) {
 				returnCollection.add(new RelativeFile(files[i], relativePath));
 			}

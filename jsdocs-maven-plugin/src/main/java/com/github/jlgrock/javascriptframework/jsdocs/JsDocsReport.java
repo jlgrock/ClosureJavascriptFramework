@@ -2,215 +2,398 @@ package com.github.jlgrock.javascriptframework.jsdocs;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
-import org.apache.maven.reporting.MavenReport;
+import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
+
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
+import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
+
+//TODO take a look at http://code.google.com/p/jsdoctk-plugin/ to figure out how to run reports
 
 /**
  * Generates javascript docs from the jsdoc-toolkit (the final version).
  * 
  * @goal jsdoc-report
  */
-public class JsDocsReport extends AbstractJsDocsMojo implements MavenReport {
-
-	/**
-	 * Constructor.
-	 */
-	public JsDocsReport() {
-		LOGGER.debug("initializing JsDocsReport...");
-	}
+public class JsDocsReport extends AbstractMavenReport {
 	/**
 	 * The Logger.
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(JsDocsReport.class);
-
+	
 	/**
-	 * @return the name
+	 * The Maven Project Object.
+	 * 
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
 	 */
-	public final String getName() {
-		return name;
-	}
-
+	private MavenProject project;
+	
 	/**
-	 * @return the description
+	 * <i>Maven Internal</i>: The Doxia Site Renderer.
+	 *
+	 * @component
 	 */
-	public final String getDescription() {
-		return description;
-	}
-
+	private Renderer siteRenderer;
+	
 	/**
-	 * @return the failOnError
+     * The target directory where you want the generated doc to end up.
+     * Changing this to a path outside the reporting outputdir will invalidate
+     * the site, the link to this report will be broken.
+     *
+     * @parameter expression="${project.reporting.outputDirectory}/jsdoc"
+     */
+	private File directory;
+	
+	/**
+	 * The name with which this report will be displayed in the site:site results.
+	 * 
+	 * @parameter expression="jsdoc"
 	 */
-	public final boolean isFailOnError() {
-		return failOnError;
+	private String name;
+	
+	/**
+	 * Where to extract the jsdoc-toolkit javascript to.
+	 * 
+	 * @parameter default-value="${project.build.directory}/jsdoctoolkit24"
+	 */
+	private File toolkitExtractDirectory;
+	
+	/**
+	 * @return the toolkitExtractDirectory
+	 */
+	public final File getToolkitExtractDirectory() {
+		return toolkitExtractDirectory;
 	}
+	
+	/**
+	 * The description with which this report will be shown in the site:site results.
+	 * 
+	 * @parameter expression="This is a JavaDoc-like report for JavaScript files in this immediate project."
+	 */
+	private String description;
+	
 	/**
 	 * The path to the JavaScript source directory). Default is
 	 * src/main/javascript
+	 * 
+	 * @parameter
 	 */
-	private ArrayList<File> sourceDirectories;
+	private Set<File> sourceFiles;
+	
+	/**
+	 * Use to identify the base directory of the project.
+	 * 
+	 * @parameter default-value="${basedir}"
+	 * @readonly
+	 */
+	private File baseDir;
+
+	/**
+	 * @return the base directory
+	 */
+	protected final File getBaseDir() {
+		return baseDir;
+	}
+	
+	// ///////////////////////////////////////////////////////////////////////
+	// JSDocToolkit Specific Variables
+	// ///////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Include all functions, even undocumented ones.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean allFunctions;
+
+	/**
+	 * @return allFunctions parameter
+	 */
+	public final boolean isAllFunctions() {
+		return allFunctions;
+	}
+
+	/**
+	 * Ignore all code, only document comments with @name tags. Default value is
+	 * false.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean ignoreCode;
+
+	/**
+	 * @return ignoreCode
+	 */
+	public final boolean isIgnoreCode() {
+		return ignoreCode;
+	}
+
+	/**
+	 * Whether to suppress source code output. Default value is true.
+	 * 
+	 * @parameter default-value="true"
+	 */
+	private boolean includeSourceCode;
+
+	/**
+	 * @return includeSourceCode
+	 */
+	public final boolean isIncludeSourceCode() {
+		return includeSourceCode;
+	}
 
 	/**
 	 * Specifies the destination directory where javadoc saves the generated
-	 * HTML files.
+	 * HTML files. <br/>
+	 * See <a href=
+	 * "http://download.oracle.com/javase/1.4.2/docs/tooldocs/windows/javadoc.html#d"
+	 * >d</a>. <br/>
 	 * 
-	 * @parameter expression="${reportOutputDirectory}"
-	 *            default-value="${project.reporting.outputDirectory}/jsapidocs"
+	 * @parameter expression="${destDir}"
+	 *            default-value="${project.build.directory}/apidocs"
+	 * @required
 	 */
-	private File reportOutputDirectory;
-	
+	private File outputDirectory;
+
 	/**
-	 * The name of the Javadoc report to be displayed in the Maven Generated
-	 * Reports page (i.e. <code>project-reports.html</code>).
+	 * @return outputDirectory
+	 */
+	public final File getOutputDirectoryFile() {
+		return outputDirectory;
+	}
+
+	/**
+	 * Include symbols tagged as private, underscored and inner symbols. Default
+	 * is <code>false</code>.
 	 * 
-	 * @since 2.1
-	 * @parameter expression="${name}"
+	 * @parameter default-value="false"
 	 */
-	private String name;
+	private boolean includePrivate;
 
-
-    /**
-     * The description of the Javadoc report to be displayed in the Maven Generated Reports page
-     * (i.e. <code>project-reports.html</code>).
-     *
-     * @since 2.1
-     * @parameter expression="${description}"
-     */
-    private String description;
-
-    /**
-     * TODO
-     * Specifies if the build will fail if there are errors during javadoc execution or not.
-     *
-     * @parameter expression="${maven.jsdoc.failOnError}" default-value="true"
-     */
-    private boolean failOnError;
-
-    @Override
-	public String getDescription(final Locale locale) {
-		//return description;
-		return "API Documentation generated by JSDoc Toolkit";
+	/**
+	 * @return the includePrivate
+	 */
+	public final boolean isIncludePrivate() {
+		return includePrivate;
 	}
 
-    @Override
-	public String getName(final Locale locale) {
-		String returnVal;
-		//if (StringUtils.isEmpty(name)) {
-			returnVal = "JSDocsAPI";
-		//} else {
-			//returnVal = name;
-		//}
-		return returnVal;
+	/**
+	 * Descend into src directories. Default Value is 1.
+	 * 
+	 * @parameter default-value="1"
+	 */
+	private int recurseDepth;
+
+	/**
+	 * @return recurseDepth;
+	 */
+	public final int getrecurseDepth() {
+		return recurseDepth;
 	}
 
+	/**
+	 * The directory for the JSDoc template to use. The default is the JSDocs
+	 * "jsdoc" that is defined by the jsdoc toolkit
+	 * 
+	 * @parameter default-value=
+	 *            "${project.build.directory}/jsdoctoolkit24/templates/jsdoc"
+	 */
+	private File template;
+
+	/**
+	 * @return the template
+	 */
+	public final File getTemplate() {
+		return template;
+	}
+
+	/**
+	 * Force file names to be unique, but not based on symbol names.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean forceUnique;
+
+	/**
+	 * @return forceUnique
+	 */
+	public final boolean isForceUnique() {
+		return forceUnique;
+	}
+
+	/**
+	 * Execute the mojo, this is what mvn calls to start this mojo.
+	 * 
+	 * @param localeIn
+	 *            the Locale In
+	 * @throws MavenReportException
+	 *             TODO
+	 */
 	@Override
-	public String getOutputName() {
-		return getDestDir() + File.separator + "index";
-	}
+	protected final void executeReport(final Locale localeIn)
+			throws MavenReportException {
 
-	@Override
-	public boolean isExternalReport() {
-		return true;
-	}
+		//Locale locale = Locale.getDefault();
 
-	/**
-	 * Generates the report.
-	 * @param aSink the sink passed in by maven
-	 * @param aLocale the locale to adjust for
-	 * @throws MavenReportException if there is a problem with the generate
-	 */
-	public final void generate( final org.codehaus.doxia.sink.Sink aSink, final Locale aLocale ) throws MavenReportException {
-		LOGGER.error( "Deprecated API called - not org.apache.maven.doxia.sink.Sink instance and no SinkFactory"
-				+ " available. Please update this plugin." );
-		generate( aSink, null, aLocale );
-	}
-	
-	/**
-	 * Generates the report.
-	 * @param aSink the sink passed in by maven
-	 * @param aLocale the locale to adjust for
-	 * @throws MavenReportException if there is a problem with the generate
-	 */
-	public final void generate( final Sink aSink, final Locale aLocale ) throws MavenReportException {
-		LOGGER.error( "Deprecated API called - no SinkFactory available. Please update this plugin." );
-		generate( aSink, null, aLocale );
-	}
-	
-	/**
-	 * This method is called when the report generation is invoked by maven-site-plugin.
-	 *
-	 * @param aSink the Sink passed by Maven
-	 * @param aSinkFactory the Sink factory passed by Maven
-	 * @param aLocale the locale
-	 * @throws MavenReportException if there are any problems with generation
-	 */
-	public final void generate( final Sink aSink, final SinkFactory aSinkFactory, final Locale aLocale )
-	throws MavenReportException {
-		setOutputDirectory(getReportOutputDirectory());
-		LOGGER.debug("reportingOutputDir: " + getReportOutputDirectory());
-		LOGGER.debug("outputDir: " + getOutputDirectory());
-		LOGGER.debug("outputName: " + getOutputName());
-		LOGGER.debug("getCategoryName: " + getCategoryName());
-		LOGGER.debug("getName: " + getName(null));
-		LOGGER.debug("getDescription: " + getDescription( null ));
-
+		LOGGER.debug("starting report execution...");
+		MojoLogAppender.beginLogging(this);
 		try {
-			execute();
+			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
+			Set<File> sources = getSourceFiles();
+			List<String> args = createArgumentStack(sources);
+			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
 		} catch (Exception e) {
+			LOGGER.error("There was an error in the execution of the report: "
+					+ e.getMessage(), e);
 			throw new MavenReportException(e.getMessage(), e);
+		} finally {
+			MojoLogAppender.endLogging();
 		}
+		
+		// Rename index.htm to index.html, otherwise the site:site goal won't
+		// link properly...
+		File index = new File(directory, "index.htm");
+		if (index.exists()) {
+			index.renameTo(new File(directory, "index.html"));
+		}
+
 	}
 
 	@Override
-	public final File getReportOutputDirectory() {
-		return reportOutputDirectory;
+	protected final String getOutputDirectory() {
+		return getOutputDirectoryFile().getAbsolutePath();
 	}
 
 	@Override
-	public final void setReportOutputDirectory(final File reportOutputDirectoryIn) {
-		reportOutputDirectory = reportOutputDirectoryIn;
+	protected final MavenProject getProject() {
+		return project;
 	}
 
 	@Override
-	public final String getCategoryName() {
-		return "JsDocs";
+	protected final Renderer getSiteRenderer() {
+		return siteRenderer;
 	}
 
 	@Override
-	public final boolean canGenerateReport() {
+	public final String getDescription(final Locale locale) {
+		return description;
+	}
+
+	@Override
+	public final String getName(final Locale locale) {
+		return name;
+	}
+
+	@Override
+	public final String getOutputName() {
+		return directory.getName() + "/index";
+	}
+
+	@Override
+	public final boolean isExternalReport() {
 		return true;
 	}
 
-	@Override
-	public final ArrayList<File> getSourceDirectories() {
-		if (sourceDirectories == null) {
-			ArrayList<File> srcDirs = new ArrayList<File>();
-			srcDirs.add(new File(getBaseDir(), "src/main/javascript"));
-			srcDirs.add(new File(getBaseDir(), "target/javascriptFramework/internDependencies/debugSource"));
-			return srcDirs;
+	/**
+	 * Create a list of arguments for the jsdoc toolkit.
+	 * 
+	 * @param files
+	 *            the files to create jsdocs for
+	 * @return the list of arguments
+	 * @throws MavenReportException
+	 *             whenever the necessary arguments have been passed in
+	 *             incorrectly or if there is a problem with one of the
+	 *             parameters sent in
+	 */
+	protected final List<String> createArgumentStack(final Set<File> files)
+			throws MavenReportException {
+		List<String> args = new ArrayList<String>();
+
+		// tell run.js its path
+		args.add(getToolkitExtractDirectory() + File.separator + "app"
+				+ File.separator + "run.js");
+
+		if (isAllFunctions()) {
+			args.add("-a");
 		}
-		return sourceDirectories;
+
+		if (isIgnoreCode()) {
+			args.add("-n");
+		}
+
+		args.add("-r=" + Integer.toString(recurseDepth));
+
+		if (getLog().isDebugEnabled()) {
+			args.add("-v");
+		}
+
+		if (!isIncludeSourceCode()) {
+			args.add("-s");
+		}
+
+		if (isIncludePrivate()) {
+			args.add("-p");
+		}
+
+		// set the output directory
+		LOGGER.info("Running javadocs reports to location '"
+				+ getOutputDirectoryFile().getAbsolutePath() + "'.");
+		args.add("-d=" + getOutputDirectoryFile().getAbsolutePath());
+
+		// add template
+		if (!getTemplate().exists()) {
+			throw new MavenReportException("The template specified at '"
+					+ getTemplate().getAbsolutePath()
+					+ "' does not exist.  Please correct before running.");
+		}
+		args.add("-t=" + getTemplate());
+
+		if (isForceUnique()) {
+			args.add("-u");
+		}
+
+		// add files argument(s)
+		for (File f : files) {
+			args.add(f.getAbsolutePath());
+		}
+
+		// TODO
+		// -D="myVar:My value" or --define="myVar:My value"
+		// Multiple. Define a variable, available in JsDoc as JSDOC.opt.D.myVar.
+		//
+		// -E="REGEX" or --exclude="REGEX"
+		// Multiple. Exclude files based on the supplied regex.
+		//
+
+		args.add("-j=" + getToolkitExtractDirectory() + File.separator + "app"
+				+ File.separator + "run.js");
+		return args;
 	}
-
-	@Override
-	protected final boolean isAggregator() {
-		return false;
+	
+	/**
+	 * This will get a listing of all of the files that should be used to create
+	 * the jsdocs.
+	 * 
+	 * @return the set of files
+	 */
+	public final Set<File> getSourceFiles() {
+		Set<File> srcFiles = new HashSet<File>();
+		if (sourceFiles == null) {
+			srcFiles.addAll(FileListBuilder.buildFilteredList(new File(getBaseDir(), "src/main/javascript"), "js"));
+		} else {
+			srcFiles = sourceFiles;
+		}
+		return srcFiles;
 	}
-
-	@Override
-	protected final String getClassifier() {
-		return "jsdocs";
-	}
-
-	@Override
-	protected final File getArchiveOutputDirectory() {
-		return null;
-	}
-
-
 }

@@ -1,13 +1,14 @@
 package com.github.jlgrock.javascriptframework.jsdocs;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
-import org.apache.maven.reporting.MavenReportException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+
+import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 
 /**
  * Generates javascript docs from the jsdoc-toolkit (the final version).
@@ -15,89 +16,37 @@ import org.apache.maven.reporting.MavenReportException;
  * @goal jsdoc
  * 
  */
-public class JsDocsMojo extends AbstractJsDocsMojo {
+public class JsDocsMojo extends AbstractJsDocsNonAggMojo {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(JsDocsMojo.class);
 
-	/**
-	 * The path to the JavaScript source directory). Default is
-	 * src/main/javascript
-	 */
-	private ArrayList<File> sourceDirectories;
-
-	/**
-	 * Specifies the destination directory where javadoc saves the generated
-	 * HTML files.
-	 * 
-	 * @parameter expression="${project.reporting.outputDirectory}/jsapidocs"
-	 *            default-value="${project.reporting.outputDirectory}/jsapidocs"
-	 */
-	private File reportOutputDirectory;
-
-	/**
-	 * Constructor.
-	 */
-	public JsDocsMojo() {
-		LOGGER.debug("initialized JsDocsMojo...");
-	}
-
 	@Override
-	public ArrayList<File> getSourceDirectories() {
-		if (sourceDirectories == null) {
-			ArrayList<File> srcDirs = new ArrayList<File>();
-			srcDirs.add(new File(getBaseDir(), "src/main/javascript"));
-			srcDirs.add(new File(getBaseDir(),
-					"target/javascriptFramework/internDependencies/debugSource"));
-			return srcDirs;
-		}
-		return sourceDirectories;
-	}
-
-	@Override
-	protected boolean isAggregator() {
-		return false;
-	}
-
-	@Override
-	protected String getClassifier() {
+	public final String getClassifier() {
 		return "jsdocs";
 	}
-
-	/**
-	 * This method is called when the report generation is invoked by
-	 * maven-site-plugin.
-	 * 
-	 * @param aSink
-	 *            the aSink to write for
-	 * @param aSinkFactory
-	 *            the aSinkFactory provided by Maven
-	 * @param aLocale
-	 *            the local to adjust for
-	 * @throws MavenReportException
-	 *             for any exception
-	 */
-	public final void generate(final Sink aSink,
-			final SinkFactory aSinkFactory, final Locale aLocale)
-			throws MavenReportException {
+	
+	@Override
+	public final void execute() throws MojoExecutionException, MojoFailureException {
+		LOGGER.debug("starting report execution...");
+		MojoLogAppender.beginLogging(this);
 		try {
-			execute();
+			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
+			Set<File> sourceFiles = getSourceFiles();
+			List<String> args = createArgumentStack(sourceFiles);
+			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
 		} catch (Exception e) {
-			throw new MavenReportException(e.getMessage(), e);
+			LOGGER.error("There was an error in the execution of the report: "
+					+ e.getMessage(), e);
+			throw new MojoExecutionException(e.getMessage(), e);
+		} finally {
+			MojoLogAppender.endLogging();
 		}
 	}
-
+	
 	@Override
-	protected File getArchiveOutputDirectory() {
-		// does not archive
+	public final File getArchiveOutputDirectory() {
 		return null;
-	}
-
-	/**
-	 * @return reportOutputDirectory
-	 */
-	protected File getReportOutputDirectory() {
-		return reportOutputDirectory;
 	}
 }
