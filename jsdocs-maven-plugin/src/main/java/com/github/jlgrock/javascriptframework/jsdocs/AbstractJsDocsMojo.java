@@ -233,24 +233,9 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Specifies the destination directory where javadoc saves the generated
-	 * HTML files. <br/>
-	 * See <a href=
-	 * "http://download.oracle.com/javase/1.4.2/docs/tooldocs/windows/javadoc.html#d"
-	 * >d</a>. <br/>
-	 * 
-	 * @parameter expression="${destDir}"
-	 *            default-value="${project.build.directory}/apidocs"
-	 * @required
-	 */
-	private File outputDirectory;
-
-	/**
 	 * @return outputDirectory
 	 */
-	public final File getOutputDirectory() {
-		return outputDirectory;
-	}
+	public abstract File getOutputDirectory();
 
 	/**
 	 * Include symbols tagged as private, underscored and inner symbols. Default

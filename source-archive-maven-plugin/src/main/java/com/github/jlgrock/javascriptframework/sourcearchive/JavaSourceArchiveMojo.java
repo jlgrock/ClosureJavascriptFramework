@@ -10,6 +10,7 @@ import org.apache.maven.project.MavenProject;
  * @author <a href="mailto:grantjl@umich.edu">Justin Grant</a>
  * @requiresProject
  * @goal java-test-source-archive
+ * @phase package
  * @inheritByDefault false
  * @threadSafe
  */

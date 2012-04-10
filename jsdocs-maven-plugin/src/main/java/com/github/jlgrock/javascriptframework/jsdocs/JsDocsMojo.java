@@ -22,6 +22,24 @@ public class JsDocsMojo extends AbstractJsDocsNonAggMojo {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(JsDocsMojo.class);
 
+	/**
+	 * Specifies the destination directory where javadoc saves the generated
+	 * HTML files. <br/>
+	 * See <a href=
+	 * "http://download.oracle.com/javase/1.4.2/docs/tooldocs/windows/javadoc.html#d"
+	 * >d</a>. <br/>
+	 * 
+	 * @parameter expression="${destDir}"
+	 *            default-value="${project.build.directory}/apidocs"
+	 * @required
+	 */
+	private File outputDirectory;
+
+	@Override
+	public final File getOutputDirectory() {
+		return outputDirectory;
+	}
+	
 	@Override
 	public final String getClassifier() {
 		return "jsdocs";

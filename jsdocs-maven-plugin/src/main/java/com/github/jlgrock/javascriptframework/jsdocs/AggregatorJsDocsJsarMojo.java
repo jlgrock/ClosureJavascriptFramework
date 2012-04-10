@@ -15,15 +15,34 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender
  * stores them into a js archive.
  * 
  * @goal aggregate-jsar
- * 
+ * @phase package
  */
-public class AggregatorJsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
+public class AggregatorJsDocsJsarMojo extends AbstractJsDocsAggMojo {
 	/**
 	 * The Logger.
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(AggregatorJsDocsJsarMojo.class);
 
+
+	/**
+	 * Specifies the destination directory where javadoc saves the generated
+	 * HTML files. <br/>
+	 * See <a href=
+	 * "http://download.oracle.com/javase/1.4.2/docs/tooldocs/windows/javadoc.html#d"
+	 * >d</a>. <br/>
+	 * 
+	 * @parameter expression="${destDir}"
+	 *            default-value="${project.build.directory}/apidocs"
+	 * @required
+	 */
+	private File outputDirectory;
+
+	@Override
+	public final File getOutputDirectory() {
+		return outputDirectory;
+	}
+	
 	/**
 	 * Specifies the directory where the generated jar file will be put.
 	 * 

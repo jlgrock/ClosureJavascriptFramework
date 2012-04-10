@@ -13,15 +13,15 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender
 /**
  * Generates javascript docs from the jsdoc-toolkit (the final version).
  * 
- * @goal aggregate-jsdoc
+ * @goal aggregate-test-jsdoc
  * 
  */
-public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
+public class AggregatorJsTestDocsMojo extends AbstractJsDocsAggMojo {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger
-			.getLogger(AggregatorJsDocsMojo.class);
+			.getLogger(AggregatorJsTestDocsMojo.class);
 
 
 	/**
@@ -32,7 +32,7 @@ public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
 	 * >d</a>. <br/>
 	 * 
 	 * @parameter expression="${destDir}"
-	 *            default-value="${project.build.directory}/apidocs"
+	 *            default-value="${project.build.directory}/testapidocs"
 	 * @required
 	 */
 	private File outputDirectory;

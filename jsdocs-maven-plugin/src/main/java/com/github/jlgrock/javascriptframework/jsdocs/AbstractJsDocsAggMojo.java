@@ -54,11 +54,15 @@ public abstract class AbstractJsDocsAggMojo extends AbstractJsDocsMojo {
 	@Override
 	public final Set<File> getSourceFiles() {
 		Set<File> srcFiles = new HashSet<File>();
-		if (sourceFiles == null) {
+		if (sourceFiles == null || sourceFiles.isEmpty()) {
 			srcFiles.addAll(FileListBuilder.buildFilteredList(new File(getBaseDir(), "src/main/javascript"), "js"));
+			LOGGER.info("extracting Aggregation files for documentation.");
 			extractAggFiles();
-			srcFiles.addAll(FileListBuilder.buildFilteredList(getAggregationFilesLocation(), "js"));
+			
+			srcFiles.addAll(FileListBuilder.buildFilteredList(JsarRelativeLocations
+					.getInternsAssertLocation(getAggregationFilesLocation()), "js"));
 		} else {
+			LOGGER.info("sourceFiles provided.");
 			srcFiles = sourceFiles;
 		}
 		return srcFiles;
@@ -77,7 +81,7 @@ public abstract class AbstractJsDocsAggMojo extends AbstractJsDocsMojo {
 
 		File assertLocation = JsarRelativeLocations
 				.getInternsAssertLocation(getAggregationFilesLocation());
-		LOGGER.info("Extracting internal assert dependencies to location \""
+		LOGGER.debug("Extracting internal assert dependencies to location \""
 				+ assertLocation.getAbsolutePath()
 				+ File.separator
 				+ JsarRelativeLocations.JSAR_ASSERTION_SOURCE_LOCATION

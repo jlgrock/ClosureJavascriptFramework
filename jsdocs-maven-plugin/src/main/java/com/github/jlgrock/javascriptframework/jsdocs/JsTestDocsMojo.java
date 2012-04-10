@@ -13,16 +13,14 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender
 /**
  * Generates javascript docs from the jsdoc-toolkit (the final version).
  * 
- * @goal aggregate-jsdoc
+ * @goal test-jsdoc
  * 
  */
-public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
+public class JsTestDocsMojo extends AbstractJsDocsNonAggMojo {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(AggregatorJsDocsMojo.class);
-
+	private static final Logger LOGGER = Logger.getLogger(JsTestDocsMojo.class);
 
 	/**
 	 * Specifies the destination directory where javadoc saves the generated
@@ -32,7 +30,7 @@ public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
 	 * >d</a>. <br/>
 	 * 
 	 * @parameter expression="${destDir}"
-	 *            default-value="${project.build.directory}/apidocs"
+	 *            default-value="${project.build.directory}/testapidocs"
 	 * @required
 	 */
 	private File outputDirectory;
@@ -46,15 +44,13 @@ public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
 	public final String getClassifier() {
 		return "jsdocs";
 	}
-
+	
 	@Override
-	public final void execute() throws MojoExecutionException,
-			MojoFailureException {
+	public final void execute() throws MojoExecutionException, MojoFailureException {
 		LOGGER.debug("starting report execution...");
 		MojoLogAppender.beginLogging(this);
 		try {
-			ReportGenerator
-					.extractJSDocToolkit(getToolkitExtractDirectory());
+			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
 			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
@@ -66,7 +62,7 @@ public class AggregatorJsDocsMojo extends AbstractJsDocsAggMojo {
 			MojoLogAppender.endLogging();
 		}
 	}
-
+	
 	@Override
 	public final File getArchiveOutputDirectory() {
 		return null;
