@@ -10,7 +10,7 @@
 
 	<groupId>com.github.jlgrock.javascript-framework</groupId>
 	<artifactId>maven-javascript-framework-plugins</artifactId>
-	<version>1.11.7-SNAPSHOT</version>
+	<version>1.11.7</version>
 	<packaging>pom</packaging>
 	<name>JavaScript Framework</name>
 	<description>A compilation of javascript plugins written for the explicit purpose to work well with the Google Closure Compiler and the Google Closure Library</description>
