@@ -53,7 +53,7 @@ public class JsDocsMojo extends AbstractJsDocsNonAggMojo {
 			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
-			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
+			ReportGenerator.executeJSDocToolkit(getJsDocAppLocation(), args, getToolkitExtractDirectory());
 		} catch (Exception e) {
 			LOGGER.error("There was an error in the execution of the report: "
 					+ e.getMessage(), e);

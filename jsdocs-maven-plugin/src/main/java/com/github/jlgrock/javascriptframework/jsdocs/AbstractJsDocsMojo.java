@@ -262,7 +262,7 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	/**
 	 * @return recurseDepth;
 	 */
-	public final int getrecurseDepth() {
+	public final int getRecurseDepth() {
 		return recurseDepth;
 	}
 
@@ -297,6 +297,14 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	}
 
 	/**
+	 * The location of the JsDocApplication for use in the JsDocMojos.
+	 * @return the run.js file location
+	 */
+	public final File getJsDocAppLocation() {
+		return new File(new File(getToolkitExtractDirectory(), "app"), "run.js");
+	}
+		
+	/**
 	 * Create a list of arguments for the jsdoc toolkit.
 	 * 
 	 * @param files
@@ -312,8 +320,7 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 		List<String> args = new ArrayList<String>();
 
 		// tell run.js its path
-		args.add(getToolkitExtractDirectory() + File.separator + "app"
-				+ File.separator + "run.js");
+		args.add(getJsDocAppLocation().getAbsolutePath());
 
 		if (isAllFunctions()) {
 			args.add("-a");
@@ -323,7 +330,7 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 			args.add("-n");
 		}
 
-		args.add("-r=" + Integer.toString(recurseDepth));
+		args.add("-r=" + Integer.toString(getRecurseDepth()));
 
 		if (getLog().isDebugEnabled()) {
 			args.add("-v");
@@ -367,8 +374,9 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 		// Multiple. Exclude files based on the supplied regex.
 		//
 
-		args.add("-j=" + getToolkitExtractDirectory() + File.separator + "app"
-				+ File.separator + "run.js");
+		//This must be the last parameter otherwise it will throw the error "The run.js script requires you use jsrun.jar"
+		args.add("-j=" +getJsDocAppLocation().getAbsolutePath());
+		
 		return args;
 	}
 

@@ -44,9 +44,9 @@ public class AggregatorJsDocsJsarMojo extends AbstractJsDocsAggMojo {
 	}
 	
 	/**
-	 * Specifies the directory where the generated jar file will be put.
+	 * Specifies the directory to archive.
 	 * 
-	 * @parameter default-value="${project.build.directory}"
+	 * @parameter default-value="${project.build.directory}/apidocs"
 	 */
 	private File jsarOutputDirectory;
 
@@ -65,7 +65,7 @@ public class AggregatorJsDocsJsarMojo extends AbstractJsDocsAggMojo {
 					.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
-			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
+			ReportGenerator.executeJSDocToolkit(getJsDocAppLocation(), args, getToolkitExtractDirectory());
 			File innerDestDir = getArchiveOutputDirectory();
 			if (innerDestDir.exists()) {
 				AbstractJsDocsMojo.generateArchive(this, innerDestDir,

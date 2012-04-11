@@ -1,6 +1,8 @@
 package com.github.jlgrock.javascriptframework.jsdocs;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
@@ -8,6 +10,10 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.maven.reporting.MavenReportException;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.tools.shell.Global;
 import org.mozilla.javascript.tools.shell.Main;
 
 import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
@@ -25,13 +31,6 @@ public final class ReportGenerator {
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(ReportGenerator.class);
-
-	/**
-	 * Indicates the property to set in Windows/Unix platforms to set relative
-	 * working path. In the case that this fails, this will still resolve and
-	 * create files properly.
-	 */
-	private static final String USER_DIR = "user.dir";
 
 	/**
 	 * Empty constructor for utilities class.
@@ -57,6 +56,8 @@ public final class ReportGenerator {
 	/**
 	 * Execute the jsdoc toolkit executable.
 	 * 
+	 * @param jsDocApp
+	 *            the location of the run.js within the jsDocToolkit
 	 * @param args
 	 *            the list of arguments for the jsdoc toolkit
 	 * @param extractDirectory
@@ -64,22 +65,35 @@ public final class ReportGenerator {
 	 * @throws MavenReportException
 	 *             for any reporting exception
 	 */
-	public static void executeJSDocToolkit(final List<String> args,
-			final File extractDirectory) throws MavenReportException {
-		String tempUserDir = System.getProperty(USER_DIR);
-		LOGGER.info("currently at " + tempUserDir);
+	public static void executeJSDocToolkit(final File jsDocApp,
+			final List<String> args, final File extractDirectory)
+			throws MavenReportException {
 		try {
-			LOGGER.info("changing dir to  " + extractDirectory);
-			System.setProperty(USER_DIR, extractDirectory.getAbsolutePath());
-			LOGGER.info("currently at " + System.getProperty(USER_DIR));
 			setConsoleOuput();
 			LOGGER.info("Executing with the following params: '"
 					+ args.toString().replaceAll(",", "") + "'");
-			Main.exec(args.toArray(new String[0]));
-		} finally {
-			System.setProperty(USER_DIR, tempUserDir);
-			LOGGER.info("JsDocToolkit Reporting completed.");
+
+			Context cx = Context.enter();
+			cx.setLanguageVersion(Context.VERSION_1_6);
+			Global global = new Global();
+			PrintStream sysOut = new PrintStream(new Log4jOutputStream(LOGGER, Level.INFO), true);
+			global.setErr(sysOut);
+			global.setOut(sysOut);
+			global.init(cx);
+			
+			Scriptable argsObj = cx.newArray(global,
+					args.toArray(new Object[] {}));
+			global.defineProperty("arguments", argsObj,
+					ScriptableObject.DONTENUM);
+			cx.evaluateReader(global, new FileReader(jsDocApp), jsDocApp.getName(), 1, null);
+		} catch (FileNotFoundException e) {
+			LOGGER.error("Not able to find jsdoc file at location "
+					+ jsDocApp.getAbsolutePath());
+		} catch (IOException e) {
+			LOGGER.error("Not able to read jsdoc file at location "
+					+ jsDocApp.getAbsolutePath());
 		}
+		LOGGER.info("JsDocToolkit Reporting completed.");
 	}
 
 	/**

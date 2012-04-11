@@ -233,6 +233,14 @@ public class JsDocsReport extends AbstractMavenReport {
 	}
 
 	/**
+	 * The location of the JsDocApplication for use in the JsDocMojos.
+	 * @return the run.js file location
+	 */
+	public final File getJsDocAppLocation() {
+		return new File(new File(getToolkitExtractDirectory(), "app"), "run.js");
+	}
+	
+	/**
 	 * Execute the mojo, this is what mvn calls to start this mojo.
 	 * 
 	 * @param localeIn
@@ -252,7 +260,7 @@ public class JsDocsReport extends AbstractMavenReport {
 			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sources = getSourceFiles();
 			List<String> args = createArgumentStack(sources);
-			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
+			ReportGenerator.executeJSDocToolkit(getJsDocAppLocation(), args, getToolkitExtractDirectory());
 		} catch (Exception e) {
 			LOGGER.error("There was an error in the execution of the report: "
 					+ e.getMessage(), e);
@@ -321,8 +329,7 @@ public class JsDocsReport extends AbstractMavenReport {
 		List<String> args = new ArrayList<String>();
 
 		// tell run.js its path
-		args.add(getToolkitExtractDirectory() + File.separator + "app"
-				+ File.separator + "run.js");
+		args.add(getJsDocAppLocation().getAbsolutePath());
 
 		if (isAllFunctions()) {
 			args.add("-a");
@@ -376,8 +383,7 @@ public class JsDocsReport extends AbstractMavenReport {
 		// Multiple. Exclude files based on the supplied regex.
 		//
 
-		args.add("-j=" + getToolkitExtractDirectory() + File.separator + "app"
-				+ File.separator + "run.js");
+		args.add("-j=" + getJsDocAppLocation().getAbsolutePath());
 		return args;
 	}
 	

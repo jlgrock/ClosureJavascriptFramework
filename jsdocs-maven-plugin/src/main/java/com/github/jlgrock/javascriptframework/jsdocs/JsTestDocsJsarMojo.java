@@ -43,11 +43,12 @@ public class JsTestDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 	}
 	
 	/**
-	 * Specifies the directory where the generated jar file will be put.
+	 * Specifies the directory to archive.
 	 * 
-	 * @parameter default-value="${project.build.directory}"
+	 * @parameter default-value="${project.build.directory}/testapidocs"
 	 */
 	private File jsarOutputDirectory;
+
 
 	@Override
 	public final File getArchiveOutputDirectory() {
@@ -62,7 +63,7 @@ public class JsTestDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 			ReportGenerator.extractJSDocToolkit(getToolkitExtractDirectory());
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
-			ReportGenerator.executeJSDocToolkit(args, getToolkitExtractDirectory());
+			ReportGenerator.executeJSDocToolkit(getJsDocAppLocation(), args, getToolkitExtractDirectory());
 			File innerDestDir = getArchiveOutputDirectory();
 			if (innerDestDir.exists()) {
 				AbstractJsDocsMojo.generateArchive(this, innerDestDir, getFinalName() + "-" + getClassifier() + ".jsar");
