@@ -423,7 +423,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		compilerOptions.setGenerateExports(generateExports);
 
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
-				Level.DEBUG));
+				Level.DEBUG), true);
 		Compiler compiler = new Compiler(ps);
 
 		for (JSSourceFile jsf : allSources) {
@@ -533,7 +533,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		} catch (Exception e) {
 			e.printStackTrace();
 			e.printStackTrace(new PrintStream(new Log4jOutputStream(LOGGER,
-					Level.DEBUG)));
+					Level.DEBUG), true));
 			throw new MojoExecutionException(
 					"Unable to closure compile files: " + e.getMessage());
 		} finally {
