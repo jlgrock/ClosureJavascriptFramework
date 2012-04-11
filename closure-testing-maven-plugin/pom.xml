@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.11.6-SNAPSHOT</version>
+		<version>1.11.6</version>
 	</parent>
 	<artifactId>closure-testing-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
