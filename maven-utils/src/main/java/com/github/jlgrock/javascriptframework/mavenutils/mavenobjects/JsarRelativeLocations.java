@@ -5,7 +5,12 @@ import java.io.File;
 /**
  * A centralized class for calculating relative pathing for the output.
  */
-public class JsarRelativeLocations {
+public final class JsarRelativeLocations {
+	/**
+	 * The location of the closure library files when extracted.
+	 */
+	public static final String CLOSURE_LIBRARY_LOCATION = "closure-library";
+
 	/**
 	 * The location of the extern files in the jsar.
 	 */
@@ -84,6 +89,15 @@ public class JsarRelativeLocations {
 	private JsarRelativeLocations() {
 	}
 
+	/**
+	 * Build the path to the debug deps relative to the frameworkLocation.
+	 * @param frameworkLocation the folder to be relative from
+	 * @return the path to the debug deps folder
+	 */
+	public static final File getClosureLibraryLocation(final File frameworkLocation) {
+		return new File(frameworkLocation, CLOSURE_LIBRARY_LOCATION);
+	}
+	
 	/**
 	 * Build the path to the debug deps relative to the frameworkLocation.
 	 * @param frameworkLocation the folder to be relative from

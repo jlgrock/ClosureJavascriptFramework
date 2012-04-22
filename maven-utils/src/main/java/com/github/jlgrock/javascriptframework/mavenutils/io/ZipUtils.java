@@ -133,7 +133,11 @@ public class ZipUtils {
 		try {
 			while ((entry = zis.getNextEntry()) != null) {
 				if (zipEntryName == null || entry.getName().startsWith(zipEntryName)) {
-					ZipUtils.unzipEntry(zis, entry, outputDir);
+					try {
+						ZipUtils.unzipEntry(zis, entry, outputDir);
+					} finally {
+						zis.closeEntry();
+					}
 				}
 			}
 		} finally {
@@ -180,7 +184,11 @@ public class ZipUtils {
 		BufferedInputStream inputStream = new BufferedInputStream(zis);
 		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 
-		IOUtils.copy(inputStream, outputStream);
-		outputStream.flush();
+		try {
+			IOUtils.copy(inputStream, outputStream);
+			outputStream.flush();
+		} finally {
+			outputStream.close();
+		}
 	}
 }

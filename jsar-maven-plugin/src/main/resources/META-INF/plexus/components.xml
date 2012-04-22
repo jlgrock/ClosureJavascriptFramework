@@ -8,12 +8,42 @@
 				<phases>
 					<generate-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency</generate-sources>
 					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+					<process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
 					<compile>com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors</compile>
 					<generate-test-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-test-dependency</generate-test-sources>
 					<test>com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test</test>
 					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
-					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
 					<package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:jsar</package>
+					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
+					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+				</phases>
+			</configuration>
+		</component>
+		<!-- Augment the current war process, so that if this plugin is activated, it will copy everything from the
+		     Framework directory prior to running the war plugin. -->
+		<component>
+			<role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+			<role-hint>war</role-hint>
+			<implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+			<configuration>
+				<phases>
+              	<generate-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency</generate-sources>
+					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+					<process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+					<compile>
+						com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors,
+						org.apache.maven.plugins:maven-compiler-plugin:compile
+					</compile>
+					<test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile>
+					<generate-test-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-test-dependency</generate-test-sources>
+					<test>
+						org.apache.maven.plugins:maven-surefire-plugin:test,
+						com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test
+					</test>
+					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile</process-classes>
+					<prepare-package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:war-copy</prepare-package>
+					<package>org.apache.maven.plugins:maven-war-plugin:war</package>
+					<install>org.apache.maven.plugins:maven-install-plugin:install</install>
 					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
 				</phases>
 			</configuration>

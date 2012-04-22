@@ -205,7 +205,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			ParseRunner parseRunner = new ParseRunner(files, driver);
 			testCases = parseRunner.parseFiles();
 		} finally {
-			driver.close();
+			driver.quit();
 		}
 		return testCases;
 	}

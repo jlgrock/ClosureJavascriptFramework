@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.jlgrock.javascript-framework</groupId>
+		<artifactId>maven-javascript-framework-plugins</artifactId>
+		<version>1.11.8-SNAPSHOT</version>
+	</parent>
+	<artifactId>source-overlay-maven-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+
+	<dependencies>
+		<!-- Mojo Dependencies -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<!-- Maven Framework Utilities -->
+		<dependency>
+			<groupId>com.github.jlgrock.javascript-framework</groupId>
+			<artifactId>maven-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- Java Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Build Checks -->
+			
+			
+			<!-- Site Reporting -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0-beta-2</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.7</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-surefire-report-plugin</artifactId>
+							<version>2.10</version>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>cobertura-maven-plugin</artifactId>
+							<version>2.5.1</version>
+							<configuration>
+								<check>
+									<haltOnFailure>false</haltOnFailure>
+								</check>
+								<formats>
+									<format>xml</format>
+									<format>html</format>
+								</formats>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-checkstyle-plugin</artifactId>
+							<version>2.7</version>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/jlgrock/JavascriptFramework/issues</url>
+	</issueManagement>
+	<name>Source Overlay Maven Plugin</name>
+	<url>https://github.com/jlgrock/JavascriptFramework</url>
+	<description>A plugin that is used to overlay an entire source directory over another, replacing any files that are duplicated. This is similar to the War Overlay functionality provided by the Mave War Plugin, with the exception that this will do it for the entire source directory rather than just the webapp directory.</description>
+
+</project>

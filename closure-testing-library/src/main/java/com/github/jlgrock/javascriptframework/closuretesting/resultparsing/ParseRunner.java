@@ -99,7 +99,6 @@ public class ParseRunner {
 				testCase = testCaseParser.parse(body);
 			}
 			testCases.add(testCase);
-
 		}
 		return testCases;
 	}

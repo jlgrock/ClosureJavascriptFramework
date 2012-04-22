@@ -21,13 +21,6 @@
 			<version>2.3.1</version>
 		</dependency>
 		
-		<!-- myfaces js plugin -->
-		<dependency>
-			<groupId>org.apache.myfaces.buildtools</groupId>
-			<artifactId>myfaces-javascript-plugin</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		
 		<!-- Maven Framework Utilities -->
 		<dependency>
 			<groupId>com.github.jlgrock.javascript-framework</groupId>

@@ -126,7 +126,7 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 			ParseRunner parseRunner = new ParseRunner(files, driver);
 			testCases = parseRunner.parseFiles();
 		} finally {
-			driver.close();
+			driver.quit();
 		}
 		return testCases;
 	}
