@@ -12,28 +12,34 @@ import org.codehaus.plexus.archiver.jar.Manifest;
 import org.codehaus.plexus.archiver.jar.ManifestException;
 
 /**
- * Custom archiver for ClosureJavascriptFramework dependencies, packaged as "jsar".
+ * Custom archiver for ClosureJavascriptFramework dependencies, packaged as
+ * "jsar".
+ * 
+ * @plexus.component role="org.codehaus.plexus.archiver.Archiver"
+ *                   role-hint="javascript"
+ *                   instantiation-strategy="per-lookup"
  */
 public class JavascriptArchiver extends JarArchiver {
 	/**
-     * Constructor.
-     */
+	 * Constructor.
+	 */
 	public JavascriptArchiver() {
 		super();
-		archiveType = "jsar";
+		archiveType = "javascript";
 	}
 
 	/**
-     * How to create the default manifest.
+	 * How to create the default manifest.
+	 * 
 	 * @param project
 	 *            the maven project
 	 * @throws ManifestException
-	 *            when there is a problem with the manifest
+	 *             when there is a problem with the manifest
 	 * @throws IOException
-	 *            when there is a problem writing the files
+	 *             when there is a problem writing the files
 	 * @throws ArchiverException
-	 *            when there is a problem creating an archive
-     */
+	 *             when there is a problem creating an archive
+	 */
 	public final void createDefaultManifest(final MavenProject project)
 			throws ManifestException, IOException, ArchiverException {
 		Manifest manifest = new Manifest();

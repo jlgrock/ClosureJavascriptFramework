@@ -14,5 +14,14 @@ For help with using the Closure Compiler, you can get information
 from the user groups:
 http://groups.google.com/group/closure-compiler-discuss
 
+For a simple example using the plugin with JQuery, please refer to 
+https://github.com/jlgrock/ClosureFrameworkJQueryExample.
+
+For a simple example using the plugin with Dojo, please refer to 
+https://github.com/jlgrock/ClosureFrameworkDojoExample.
+
+For a simple example using multiple archives to create a library, please refer to 
+https://github.com/jlgrock/ClosureFrameworkLibraryExample.
+
 Authors:
 Justin Grant
