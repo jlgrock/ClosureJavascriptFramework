@@ -10,7 +10,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.apache.myfaces.buildtools.maven2.plugin.javascript.jmt.archive.JavascriptArchiver;
 
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 
