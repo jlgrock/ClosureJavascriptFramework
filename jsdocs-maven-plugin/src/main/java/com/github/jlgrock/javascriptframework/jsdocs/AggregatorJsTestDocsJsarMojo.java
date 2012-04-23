@@ -46,7 +46,7 @@ public class AggregatorJsTestDocsJsarMojo extends AbstractJsDocsAggMojo {
 	/**
 	 * Specifies the directory to archive.
 	 * 
-	 * @parameter default-value="${project.build.directory}/testapidocs"
+	 * @parameter default-value="${project.build.directory}"
 	 */
 	private File jsarOutputDirectory;
 

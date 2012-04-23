@@ -45,7 +45,7 @@ public class JsDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 	/**
 	 * Specifies the directory to archive.
 	 * 
-	 * @parameter default-value="${project.build.directory}/apidocs"
+	 * @parameter default-value="${project.build.directory}"
 	 */
 	private File jsarOutputDirectory;
 
