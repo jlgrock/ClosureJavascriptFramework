@@ -8,6 +8,8 @@
 *.so
 target/
 build/
+release.properties
+*.releaseBackup
 
 # Packages #
 ############
@@ -39,4 +41,4 @@ Thumbs.db
 #############
 .classpath
 .project
-.settings/
+.settings
