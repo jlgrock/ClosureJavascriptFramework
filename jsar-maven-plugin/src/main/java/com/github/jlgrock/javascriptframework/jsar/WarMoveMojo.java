@@ -1,11 +1,7 @@
 package com.github.jlgrock.javascriptframework.jsar;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -23,11 +19,6 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelati
  * @requiresDependencyResolution runtime
  */
 public class WarMoveMojo extends AbstractMojo {
-	/**
-	 * The Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(WarMoveMojo.class);
-
 	/**
 	 * The directory to place compiled files into.
 	 * 
@@ -83,23 +74,13 @@ public class WarMoveMojo extends AbstractMojo {
 	 */
 	private boolean includeCompiled;
 
-	/**
-	 * Whether or not to include the Requires files. This can be set to false if
-	 * not including debug/assert or if when using the debug/assert you are
-	 * using it within a Google closure project.
-	 * 
-	 * @parameter default-value="true"
-	 */
-	private boolean includeRequiresFiles;
-
 	@Override
 	public final void execute() throws MojoExecutionException, MojoFailureException {
 		try {
 			if (includeAssert || includeDebug) {
-				Path topDebugPath = Paths.get(debugDirectory.getAbsolutePath());
-				if(!Files.exists(topDebugPath)){
-		            Files.createDirectories(topDebugPath);
-		        }
+				if (!debugDirectory.exists()) {
+					debugDirectory.mkdirs();
+				}
 				
 				DirectoryIO.copyDirectory(JsarRelativeLocations.getClosureLibraryLocation(frameworkTargetDirectory),
 						JsarRelativeLocations.getClosureLibraryLocation(debugDirectory));
