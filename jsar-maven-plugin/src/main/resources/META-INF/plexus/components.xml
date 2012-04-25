@@ -60,7 +60,7 @@
 					</test>
 					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile
 					</process-classes>
-					<prepare-package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:war-copy
+					<prepare-package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:war-move
 					</prepare-package>
 					<package>org.apache.maven.plugins:maven-war-plugin:war</package>
 					<install>org.apache.maven.plugins:maven-install-plugin:install

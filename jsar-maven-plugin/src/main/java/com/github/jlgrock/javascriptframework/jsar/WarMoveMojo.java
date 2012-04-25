@@ -13,7 +13,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelati
  * A simple extension that copies the necessary files from the "default directory" 
  * to the war staging directory prior to a war packaging.  This is only used in the war lifecycle.
  * 
- * @goal war-copy
+ * @goal war-move
  * @phase pre-package
  * @threadSafe
  * @requiresDependencyResolution runtime
