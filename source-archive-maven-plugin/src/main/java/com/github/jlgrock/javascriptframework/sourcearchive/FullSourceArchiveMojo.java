@@ -14,7 +14,7 @@ import org.apache.maven.project.MavenProject;
  * @inheritByDefault false
  * @threadSafe
  */
-public class FullSourceArchiveMojo extends AbstractArchiveMojo {
+public class FullSourceArchiveMojo extends AbstractSourceArchiveMojo {
 
 	/**
 	 * The resource to assemble with.
