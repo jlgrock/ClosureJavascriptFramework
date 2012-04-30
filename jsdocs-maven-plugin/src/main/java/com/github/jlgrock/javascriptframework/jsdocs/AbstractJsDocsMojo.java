@@ -13,6 +13,7 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -32,6 +33,13 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(AbstractJsDocsMojo.class);
+
+	/**
+	 * Maven ProjectHelper.
+	 * 
+	 * @component
+	 */
+	private MavenProjectHelper projectHelper;
 
 	/**
 	 * Includes all generated JsDoc files.
@@ -474,6 +482,20 @@ public abstract class AbstractJsDocsMojo extends AbstractMojo {
 		return javadocJar;
 	}
 
+	/**
+	 * @return the project helper
+	 */
+	public final MavenProjectHelper getProjectHelper() {
+		return projectHelper;
+	}
+
+	/**
+	 * @return the extension used throughout
+	 */
+	public final String getExtensionFormat() {
+		return "jsar";
+	}
+	
 	/**
 	 * return the file location of where the archive of the jsdocs should be
 	 * placed. This should return null if no archive is expected to be created.

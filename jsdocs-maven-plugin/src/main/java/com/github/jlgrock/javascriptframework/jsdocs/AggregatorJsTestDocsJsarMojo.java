@@ -67,10 +67,12 @@ public class AggregatorJsTestDocsJsarMojo extends AbstractJsDocsAggMojo {
 			List<String> args = createArgumentStack(sourceFiles);
 			ReportGenerator.executeJSDocToolkit(getJsDocAppLocation(), args, getToolkitExtractDirectory());
 			File innerDestDir = getArchiveOutputDirectory();
+			String destFileName = getFinalName() + "-" + getClassifier() + getExtensionFormat();
+			File destFile = null;
 			if (innerDestDir.exists()) {
-				AbstractJsDocsMojo.generateArchive(this, innerDestDir,
-						getFinalName() + "-" + getClassifier() + ".jsar");
+				destFile = AbstractJsDocsMojo.generateArchive(this, innerDestDir, destFileName);
 			}
+			getProjectHelper().attachArtifact(getProject(), getExtensionFormat(), getClassifier(), destFile);
 		} catch (Exception e) {
 			LOGGER.error("There was an error in the execution of the report: "
 					+ e.getMessage(), e);
