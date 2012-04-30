@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.11.12</version>
+		<version>1.11.13-SNAPSHOT</version>
 	</parent>
 	<artifactId>jsdependency-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
