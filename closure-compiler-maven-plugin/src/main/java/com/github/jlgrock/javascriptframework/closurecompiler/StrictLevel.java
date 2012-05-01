@@ -42,7 +42,6 @@ public enum StrictLevel {
 		options.checkSuspiciousCode = true;
 		options.checkSymbols = true;
 		
-		options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
 		options.setAggressiveVarCheck(CheckLevel.ERROR);
 		options.setBrokenClosureRequiresLevel(CheckLevel.ERROR);
 		options.setCheckFunctions(CheckLevel.ERROR);
@@ -55,12 +54,27 @@ public enum StrictLevel {
 		options.setCheckShadowVars(CheckLevel.WARNING);
 		options.setCheckUnreachableCode(CheckLevel.ERROR);
 		
-		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.WARNING);
 
 		options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
 				CheckLevel.ERROR);
+		
+		/**
+		 * Warnings when deprecated, private, or protected are violated.
+		 */
 		options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
 				CheckLevel.ERROR);
+
+		/**
+		 * Warnings when non-deprecated code accesses code that's marked deprecated
+		 */
+		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.ERROR);
+
+		/**
+		 * Warnings when private and protected are violated.
+		 */
+		options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+		
+		
 		options.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.ERROR);
