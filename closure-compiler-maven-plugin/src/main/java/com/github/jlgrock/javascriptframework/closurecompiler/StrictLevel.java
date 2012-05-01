@@ -55,10 +55,10 @@ public enum StrictLevel {
 		options.setCheckShadowVars(CheckLevel.WARNING);
 		options.setCheckUnreachableCode(CheckLevel.ERROR);
 		
-		options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
-				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.WARNING);
 
+		options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
+				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
@@ -70,7 +70,6 @@ public enum StrictLevel {
 		options.setWarningLevel(DiagnosticGroups.CONST, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CONSTANT_PROPERTY,
 				CheckLevel.ERROR);
-		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.DUPLICATE_VARS,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.ES5_STRICT, CheckLevel.ERROR);
