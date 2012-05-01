@@ -64,8 +64,8 @@ public class JsTestDocsJsarMojo extends AbstractJsDocsNonAggMojo {
 			Set<File> sourceFiles = getSourceFiles();
 			List<String> args = createArgumentStack(sourceFiles);
 			ReportGenerator.executeJSDocToolkit(getJsDocAppLocation(), args, getToolkitExtractDirectory());
-			File innerDestDir = getArchiveOutputDirectory();
-			String destFileName = getFinalName() + "-" + getClassifier() + getExtensionFormat();
+			File innerDestDir = getOutputDirectory();
+			String destFileName = getFinalName() + "-" + getClassifier() + "." + getExtensionFormat();
 			File destFile = null;
 			if (innerDestDir.exists()) {
 				destFile = AbstractJsDocsMojo.generateArchive(this, innerDestDir, destFileName);
