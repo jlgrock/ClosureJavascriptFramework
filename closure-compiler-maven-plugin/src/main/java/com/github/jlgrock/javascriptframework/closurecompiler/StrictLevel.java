@@ -57,7 +57,7 @@ public enum StrictLevel {
 		
 		options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
 				CheckLevel.ERROR);
-		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.WARNING);
 
 		options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
 				CheckLevel.ERROR);
