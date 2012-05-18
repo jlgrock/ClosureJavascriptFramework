@@ -91,6 +91,24 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	private List<File> includes;
 
 	/**
+	 * The string for the {preamble} of the testing harness.
+	 * @parameter default-value=""
+	 */
+	private String preamble = "";
+
+	/**
+	 * The string for the {prologue} of the testing harness.
+	 * @parameter default-value=""
+	 */
+	private String prologue = "";
+	
+	/**
+	 * The string for the {epilogue} of the testing harness.
+	 * @parameter default-value=""
+	 */
+	private String epilogue = "";
+
+	/**
 	 * @return the testSourceDirectory
 	 */
 	public final File getTestSourceDirectory() {
@@ -143,6 +161,27 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 */	
 	public final String getCompiledFilename() {
 		return compiledFilename;
+	}
+
+	/**
+	 * @return the preamble block
+	 */
+	public final String getPreamble() {
+		return preamble;
+	}
+
+	/**
+	 * @return the prologue block
+	 */
+	public final String getPrologue() {
+		return prologue;
+	}
+
+	/**
+	 * @return the epilogue block
+	 */
+	public final String getEpilogue() {
+		return epilogue;
 	}
 
 	@Override

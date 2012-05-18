@@ -33,6 +33,21 @@ public class TestCaseGenerator {
 	private final Set<File> testDeps;
 
 	/**
+	 * The preamble for the test.
+	 */
+	private final String preamble;
+
+	/**
+	 * The prologue for the test.
+	 */
+	private final String prologue;
+
+	/**
+	 * The epilogue for the test.
+	 */
+	private final String epilogue;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param closureLocation
@@ -43,14 +58,24 @@ public class TestCaseGenerator {
 	 *            the location of the sourcefile to generate the test off of
 	 * @param testDepsIn
 	 *            the set of external dependencies for testing
+	 * @param preamble
+	 * 			  the preamble to the test case
+	 * @param prologue 
+	 * 			  the prologue to the test case
+	 * @param epilogue
+	 * 			  the epilogue to the test case
 	 */
 	public TestCaseGenerator(final File closureLocation,
 			final File depsLocation, final File sourceFile,
-			final Set<File> testDepsIn) {
+			final Set<File> testDepsIn,
+			final String preamble, final String prologue, final String epilogue) {
 		generatorClosureLocation = closureLocation;
 		generatorSourceFile = sourceFile;
 		generatorDepsLocation = depsLocation;
 		testDeps = testDepsIn;
+		this.preamble = preamble;
+		this.prologue = prologue;
+		this.epilogue = epilogue;
 	}
 
 	/**
@@ -73,7 +98,8 @@ public class TestCaseGenerator {
 				+ File.separator + relPath + File.separator + fns.getName() + ".html";
 		File testCase = new File(outputFilePath);
 		new TestCaseRef(generatorClosureLocation, generatorDepsLocation,
-				generatorSourceFile, testCase, testDeps).writeToFile();
+				generatorSourceFile, testCase, testDeps,
+				preamble, prologue, epilogue).writeToFile();
 		return testCase;
 	}
 }

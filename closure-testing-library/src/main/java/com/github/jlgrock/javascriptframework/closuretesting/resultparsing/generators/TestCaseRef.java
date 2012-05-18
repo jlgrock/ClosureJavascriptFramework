@@ -16,6 +16,16 @@ import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
  */
 public class TestCaseRef {
 	/**
+	 * Constant property to store preamble.
+	 */
+	public static final String PREAMBLE_PROPERTY = "jsframework.testing.preamble";
+
+	/**
+	 * Constant property to store epilogue.
+	 */
+	public static final String EPILOGUE_PROPERTY = "jsframework.testing.epilogue";
+
+	/**
 	 * The location of the closure base file.
 	 */
 	private final File closureBaseLocation;
@@ -48,14 +58,24 @@ public class TestCaseRef {
 	private static final String END_HTML = "</html>";
 
 	/**
-	 * The begin tag for heading with title.
+	 * The begin tag for the head.
 	 */
-	private static final String BEGIN_HEADING = "\t<head>\n\t\t<title>Test for ";
+	private static final String BEGIN_HEAD = "\t<head>\n";
 
 	/**
-	 * The end tag for heading with title.
+	 * The beginning of the title.
 	 */
-	private static final String END_HEADING = "</title>\n\t</head>\n";
+	private static final String BEGIN_TITLE = "\t\t<title>Test for ";
+
+	/**
+	 * The end of the title.
+	 */
+	private static final String END_TITLE = "</title>\n";
+
+	/**
+	 * The end tag for the head.
+	 */
+	private static final String END_HEAD = "\t</head>\n";
 	/**
 	 * The begin tag for body.
 	 */
@@ -74,6 +94,21 @@ public class TestCaseRef {
 	private static final String END_SCRIPT = "\"></script>\n";
 
 	/**
+	 * The preamble for the test.
+	 */
+	private final String preamble;
+
+	/**
+	 * The prologue for the test.
+	 */
+	private final String prologue;
+
+	/**
+	 * The epilogue for the test.
+	 */
+	private final String epilogue;
+
+	/**
 	 * The Constructor.
 	 * 
 	 * @param closureLocation
@@ -86,14 +121,24 @@ public class TestCaseRef {
 	 *            the file to be written
 	 * @param testDepsIn
 	 *            the set of files that will serve as script tag includes to the test case
+	 * @param preamble
+	 * 			  the preamble to the test case
+	 * @param prologue 
+	 * 			  the prologue to the test case
+	 * @param epilogue
+	 * 			  the epilogue to the test case
 	 */
 	public TestCaseRef(final File closureLocation, final File depsLocation,
-			final File testFile, final File testCase, final Set<File> testDepsIn) {
-		closureBaseLocation = closureLocation;
-		testCaseFileLocation = testCase;
-		dependencyLocation = depsLocation;
-		testFileLocation = testFile;
-		testDeps = testDepsIn;
+			final File testFile, final File testCase, final Set<File> testDepsIn,
+			final String preamble, final String prologue, final String epilogue) {
+		this.closureBaseLocation = closureLocation;
+		this.testCaseFileLocation = testCase;
+		this.dependencyLocation = depsLocation;
+		this.testFileLocation = testFile;
+		this.testDeps = testDepsIn;
+		this.preamble = preamble;
+		this.prologue = prologue;
+		this.epilogue = epilogue;
 	}
 
 	/**
@@ -111,15 +156,20 @@ public class TestCaseRef {
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		try {
 			bufferedWriter.write(BEGIN_HTML);
+			bufferedWriter.write(BEGIN_HEAD);
+
+			// preamble
+			bufferedWriter.write(this.preamble);
 
 			// name of the test case
-			bufferedWriter.write(BEGIN_HEADING);
+			bufferedWriter.write(BEGIN_TITLE);
 			String title = StringEscapeUtils
 					.escapeHtml(RelativePath.getRelPathFromBase(
 							testCaseFileLocation, testFileLocation));
 			bufferedWriter.write(title);
-			bufferedWriter.write(END_HEADING);
+			bufferedWriter.write(END_TITLE);
 
+			bufferedWriter.write(END_HEAD);
 			bufferedWriter.write(BEGIN_BODY);
 
 			// test requires
@@ -135,7 +185,11 @@ public class TestCaseRef {
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
 					testCaseFileLocation, closureBaseLocation));
 			bufferedWriter.write(END_SCRIPT);
-			
+		
+			// prologue
+			bufferedWriter.write(this.prologue);
+
+
 			// deps script
 			bufferedWriter.write(BEGIN_SCRIPT);
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
@@ -147,6 +201,9 @@ public class TestCaseRef {
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
 					testCaseFileLocation, testFileLocation));
 			bufferedWriter.write(END_SCRIPT);
+
+			// epilogue 
+			bufferedWriter.write(this.epilogue);
 
 			bufferedWriter.write(END_BODY);
 			bufferedWriter.write(END_HTML);

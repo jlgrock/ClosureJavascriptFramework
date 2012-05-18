@@ -33,6 +33,21 @@ public class SuiteGenerator {
 	private final Set<File> testDependencies;
 
 	/**
+	 * The preamble for the test.
+	 */
+	private final String preamble;
+
+	/**
+	 * The prologue for the test.
+	 */
+	private final String prologue;
+
+	/**
+	 * The epilogue for the test.
+	 */
+	private final String epilogue;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param sourceFilesIn
@@ -44,15 +59,25 @@ public class SuiteGenerator {
 	 *            the location of the generated dependency file
 	 * @param testDependenciesIn
 	 *            the set of test dependencies
+	 * @param preamble
+	 * 			  the preamble to the test case
+	 * @param prologue 
+	 * 			  the prologue to the test case
+	 * @param epilogue
+	 * 			  the epilogue to the test case
 	 */
 	public SuiteGenerator(final Set<File> sourceFilesIn,
 			final File closureLibraryBaseLocationIn, 
 			final File dependencyLocationIn, 
-			final Set<File> testDependenciesIn) {
+			final Set<File> testDependenciesIn,
+			final String preamble, final String prologue, final String epilogue) {
 		sourceFiles = sourceFilesIn;
 		closureLibraryBaseLocation = closureLibraryBaseLocationIn;
 		depsLocation = dependencyLocationIn;
 		testDependencies = testDependenciesIn;
+		this.preamble = preamble;
+		this.prologue = prologue;
+		this.epilogue = epilogue;
 	}
 
 	/**
@@ -64,7 +89,7 @@ public class SuiteGenerator {
 		Set<TestCaseGenerator> testCaseGenerators = new HashSet<TestCaseGenerator>();
 		for (File sourceFile : sourceFiles) {
 			testCaseGenerators.add(new TestCaseGenerator(
-					closureLibraryBaseLocation, depsLocation, sourceFile, testDependencies));
+					closureLibraryBaseLocation, depsLocation, sourceFile, testDependencies, preamble, prologue, epilogue));
 		}
 		return testCaseGenerators;
 	}
