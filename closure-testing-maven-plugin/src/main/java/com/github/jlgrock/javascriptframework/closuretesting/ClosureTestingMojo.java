@@ -165,7 +165,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		
 		
 		SuiteGenerator suite = new SuiteGenerator(fileSet, baseLocation,
-				depsFile, testDeps);
+				depsFile, testDeps, getPreamble(), getPrologue(), getEpilogue());
 		
 		returnFiles.addAll(suite.generateTestFiles(getTestSourceDirectory(), testOutputDir));
 
@@ -177,7 +177,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			getCompiledFilename());
 			
 			SuiteGenerator suiteCompiled = new SuiteGenerator(fileSet, baseLocation,
-					compiledFile, testDeps);
+					compiledFile, testDeps, getPreamble(), getPrologue(), getEpilogue());
 			returnFiles.addAll(suiteCompiled.generateTestFiles(getTestSourceDirectory(), testCompiledOutputDir));
 		}
 

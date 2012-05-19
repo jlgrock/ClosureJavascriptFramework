@@ -21,8 +21,7 @@ public class TestCaseSummaryParser implements IDivParser {
 	/**
 	 * The pattern used to match the summary line.
 	 */
-	private static final String TEST_CASE_PATTERN = ".*Test\\sfor\\s(.*)\\s*\\[(PASSED|FAILED)\\]\\s*";
-
+	private static final String TEST_CASE_PATTERN = "(?:Test for )?(.*) \\[(PASSED|FAILED)\\]";
 
 	@Override
 	public final boolean matches(final TestCase testCase, final String divText) {
