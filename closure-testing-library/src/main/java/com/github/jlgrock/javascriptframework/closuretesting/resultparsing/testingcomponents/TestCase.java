@@ -242,8 +242,8 @@ public class TestCase {
 		StringBuffer sb = new StringBuffer();
 		sb.append(TestCase.NEWLINE);
 		sb.append(TestCase.TEST_CASE_PREFIX);
-		if (getSummary() != null && !getSummary().getRelativeLocation().equals("")) {
-			sb.append(getSummary().getRelativeLocation());
+		if (getSummary() != null && !getLocation().equals("")) {
+			sb.append(getLocation());
 		} else {
 			sb.append("Error.  Could not parse contents of file.  Please review previous errors above for more information.");
 			sb.append(TestCase.NEWLINE);
