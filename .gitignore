@@ -8,6 +8,7 @@
 *.so
 target/
 build/
+bin/
 release.properties
 *.releaseBackup
 
