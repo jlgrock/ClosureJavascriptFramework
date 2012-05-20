@@ -29,6 +29,7 @@ import com.google.javascript.jscomp.CompilerOptions;
 import com.google.javascript.jscomp.JSError;
 import com.google.javascript.jscomp.JSSourceFile;
 import com.google.javascript.jscomp.Result;
+import com.google.javascript.jscomp.SourceFile;
 import com.google.javascript.jscomp.WarningLevel;
 
 /**
@@ -51,9 +52,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *            the collection of files to convert
 	 * @return the list of google formatted objects
 	 */
-	private static List<JSSourceFile> convertToJSSourceFiles(
+	private static List<SourceFile> convertToSourceFiles(
 			final Collection<File> jsFiles) {
-		List<JSSourceFile> jsSourceFiles = new ArrayList<JSSourceFile>();
+		List<SourceFile> jsSourceFiles = new ArrayList<SourceFile>();
 		for (File f : jsFiles) {
 			jsSourceFiles.add(JSSourceFile.fromFile(f));
 		}
@@ -306,13 +307,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws IOException
 	 *             if unable to read the default externs
 	 */
-	private List<JSSourceFile> calculateExternFiles() throws IOException {
+	private List<SourceFile> calculateExternFiles() throws IOException {
 		Set<File> externSourceFiles = listFiles(JsarRelativeLocations
 				.getExternsLocation(frameworkTargetDirectory));
-		List<JSSourceFile> externalJSSourceFiles = convertToJSSourceFiles(externSourceFiles);
-		externalJSSourceFiles.addAll(CommandLineRunner.getDefaultExterns());
-		LOGGER.debug("number of external files:" + externalJSSourceFiles.size());
-		return externalJSSourceFiles;
+		List<SourceFile> externalSourceFiles = convertToSourceFiles(externSourceFiles);
+		externalSourceFiles.addAll(CommandLineRunner.getDefaultExterns());
+		LOGGER.debug("number of external files:" + externalSourceFiles.size());
+		return externalSourceFiles;
 	}
 
 	/**
@@ -395,8 +396,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws IOException
 	 *             if there is a problem reading or writing to the files
 	 */
-	private boolean compile(final Collection<JSSourceFile> allSources,
-			final Collection<JSSourceFile> externs)
+	private boolean compile(final Collection<SourceFile> allSources,
+			final Collection<SourceFile> externs)
 			throws MojoExecutionException, MojoFailureException, IOException {
 		CompilationLevel compilationLevel = null;
 		try {
@@ -426,7 +427,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				Level.DEBUG), true);
 		Compiler compiler = new Compiler(ps);
 
-		for (JSSourceFile jsf : allSources) {
+		for (SourceFile jsf : allSources) {
 			LOGGER.debug("source files: " + jsf.getOriginalPath());
 		}
 
@@ -471,7 +472,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					+ JsarRelativeLocations.getCompileLocation(
 							frameworkTargetDirectory).getAbsolutePath() + "\".");
 			// gather externs for both asserts and debug
-			Collection<JSSourceFile> externs = calculateExternFiles();
+			Collection<SourceFile> externs = calculateExternFiles();
 
 			// get base location for closure library
 			File baseLocation = getBaseLocation(closureLibraryLocation);
@@ -522,7 +523,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			debugFiles.addAll(debugDepsFiles);
 
 			// compile debug into compiled dir
-			boolean result = compile(convertToJSSourceFiles(debugFiles),
+			boolean result = compile(convertToSourceFiles(debugFiles),
 					externs);
 
 			if (!result) {

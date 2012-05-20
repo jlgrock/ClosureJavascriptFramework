@@ -44,14 +44,12 @@ public enum StrictLevel {
 		
 		options.setAggressiveVarCheck(CheckLevel.ERROR);
 		options.setBrokenClosureRequiresLevel(CheckLevel.ERROR);
-		options.setCheckFunctions(CheckLevel.ERROR);
 		options.setCheckGlobalNamesLevel(CheckLevel.ERROR);
 		options.setCheckGlobalThisLevel(CheckLevel.ERROR);
-		options.setCheckMethods(CheckLevel.ERROR);
+		options.setCheckMissingGetCssNameLevel(CheckLevel.ERROR);
 		options.setCheckMissingReturn(CheckLevel.ERROR);
 		options.setCheckProvides(CheckLevel.ERROR);
 		options.setCheckRequires(CheckLevel.ERROR);
-		options.setCheckShadowVars(CheckLevel.WARNING);
 		options.setCheckUnreachableCode(CheckLevel.ERROR);
 		
 
@@ -59,30 +57,33 @@ public enum StrictLevel {
 				CheckLevel.ERROR);
 		
 		/**
-		 * Warnings when deprecated, private, or protected are violated.
+		 * Important Warning Level Settings
 		 */
+		//Warnings when deprecated, private, or protected are violated.
 		options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
 				CheckLevel.ERROR);
-
-		/**
-		 * Warnings when non-deprecated code accesses code that's marked deprecated
-		 */
+		//Warnings when private and protected are violated (seems to work the same as access controls).
+		options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+		//Warnings when non-deprecated code accesses code that's marked deprecated
 		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.ERROR);
 
 		/**
-		 * Warnings when private and protected are violated.
+		 * All other Warning Level Settings
 		 */
-		options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
-		
-		
 		options.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
+				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.CHECK_PROVIDES,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE,
+				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CONST, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CONSTANT_PROPERTY,
+				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.DUPLICATE_VARS,
 				CheckLevel.ERROR);
@@ -105,12 +106,11 @@ public enum StrictLevel {
 		options.setWarningLevel(DiagnosticGroups.TWEAKS, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.TYPE_INVALIDATION,
 				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.UNDEFINED_NAMES,
+				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.UNDEFINED_VARIABLES,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.UNKNOWN_DEFINES,
-				CheckLevel.ERROR);
-		options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE,
-				CheckLevel.ERROR);
-		
+				CheckLevel.ERROR);		
 	}
 }
