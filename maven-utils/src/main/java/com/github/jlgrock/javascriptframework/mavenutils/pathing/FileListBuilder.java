@@ -1,8 +1,8 @@
 package com.github.jlgrock.javascriptframework.mavenutils.pathing;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -32,7 +32,7 @@ public final class FileListBuilder {
 	 *            the directory to start from
 	 * @return the set of filtered files
 	 */
-	public static Set<File> buildList(final File root) {
+	public static List<File> buildList(final File root) {
 		return buildFilteredList(root, null);
 	}
 
@@ -48,14 +48,14 @@ public final class FileListBuilder {
 	 *            the file extension to filter by
 	 * @return the set of filtered files
 	 */
-	public static Set<File> buildFilteredList(final File root,
+	public static List<File> buildFilteredList(final File root,
 			final String extension) {
 		if (extension == null) {
 			LOGGER.debug("building list with no extension filters...");
 		} else {
 			LOGGER.debug("building list with by extension filter \"" + extension + "\"");
 		}
-		Set<File> fileList = null;
+		List<File> fileList = null;
 		if (root.exists()) {
 			DirectoryScanner ds = new DirectoryScanner();
 			ds.setBasedir(root);
@@ -75,7 +75,7 @@ public final class FileListBuilder {
 			
 			fileList = turnRelativeIntoFiles(root, relPaths);
 		} else {
-			fileList = new HashSet<File>();
+			fileList = new ArrayList<File>();
 		}
 		LOGGER.debug("fileList result:" + fileList);
 		return fileList;
@@ -90,8 +90,8 @@ public final class FileListBuilder {
 	 * @return
 	 * 			the set of files created
 	 */
-	public static Set<File> turnRelativeIntoFiles(final File root, final String[] relativePaths) {
-		Set<File> files = new HashSet<File>();
+	public static List<File> turnRelativeIntoFiles(final File root, final String[] relativePaths) {
+		List<File> files = new ArrayList<File>();
 		for (int i = 0; i < relativePaths.length; i++) {
 			File file = new File(root, relativePaths[i]);
 			files.add(file);
