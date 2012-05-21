@@ -2,7 +2,7 @@ package com.github.jlgrock.javascriptframework.jspreprocessor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
@@ -89,7 +89,7 @@ public abstract class AbstractPreProcessorFrameworkMojo extends AbstractMojo {
 	private void copyAndPreprocessDirectory(final File srcDir,
 			final File destDir, final boolean removeAssertions)
 			throws IOException {
-		Set<File> files = FileListBuilder.buildFilteredList(srcDir, "js");
+		List<File> files = FileListBuilder.buildFilteredList(srcDir, "js");
 		for (File file : files) {
 			File copiedFile = makeRelativeFile(file, destDir);
 			copyAndPreprocessFile(file, copiedFile, removeAssertions);
