@@ -1,6 +1,6 @@
 package com.github.jlgrock.javascriptframework.closuretestingreport;
 
-import java.util.Set;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.doxia.sink.Sink;
@@ -39,7 +39,7 @@ public class ClosureTestingReportGenerator extends AbstractMavenReportRenderer {
 	/**
 	 * the parsed test cases, used for writing statistical output.
 	 */
-	private final Set<TestCase> testCases;
+	private final List<TestCase> testCases;
 
 	/**
 	 * Constructor.
@@ -50,9 +50,9 @@ public class ClosureTestingReportGenerator extends AbstractMavenReportRenderer {
 	 *            the parsed test cases, used for writing statistical output
 	 */
 	public ClosureTestingReportGenerator(final Sink sink,
-			final Set<TestCase> testCasesIn) {
+			final List<TestCase> testCasesIn) {
 		super(sink);
-		this.testCases = testCasesIn;
+		testCases = testCasesIn;
 	}
 
 	@Override

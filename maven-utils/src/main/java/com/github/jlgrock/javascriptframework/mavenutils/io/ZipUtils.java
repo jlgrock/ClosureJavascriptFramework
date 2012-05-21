@@ -21,7 +21,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativeFile;
 /**
  * A general usage class for doing zip file and zip stream manipulations.
  */
-public class ZipUtils {
+public final class ZipUtils {
 
 	/**
 	 * The Logger.

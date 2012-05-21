@@ -2,7 +2,7 @@ package com.github.jlgrock.javascriptframework.closuretesting.resultparsing.gene
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileNameSeparator;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
@@ -16,7 +16,7 @@ public class TestCaseGenerator {
 	 * the location of the sourcefile to generate the test off of.
 	 */
 	private final File generatorSourceFile;
-	
+
 	/**
 	 * the location of the closure library.
 	 */
@@ -30,7 +30,7 @@ public class TestCaseGenerator {
 	/**
 	 * the location of the external dependency files.
 	 */
-	private final Set<File> testDeps;
+	private final List<File> testDeps;
 
 	/**
 	 * The preamble for the test.
@@ -58,24 +58,24 @@ public class TestCaseGenerator {
 	 *            the location of the sourcefile to generate the test off of
 	 * @param testDepsIn
 	 *            the set of external dependencies for testing
-	 * @param preamble
-	 * 			  the preamble to the test case
-	 * @param prologue 
-	 * 			  the prologue to the test case
-	 * @param epilogue
-	 * 			  the epilogue to the test case
+	 * @param preambleIn
+	 *            the preamble to the test case
+	 * @param prologueIn
+	 *            the prologue to the test case
+	 * @param epilogueIn
+	 *            the epilogue to the test case
 	 */
 	public TestCaseGenerator(final File closureLocation,
 			final File depsLocation, final File sourceFile,
-			final Set<File> testDepsIn,
-			final String preamble, final String prologue, final String epilogue) {
+			final List<File> testDepsIn, final String preambleIn,
+			final String prologueIn, final String epilogueIn) {
 		generatorClosureLocation = closureLocation;
 		generatorSourceFile = sourceFile;
 		generatorDepsLocation = depsLocation;
 		testDeps = testDepsIn;
-		this.preamble = preamble;
-		this.prologue = prologue;
-		this.epilogue = epilogue;
+		preamble = preambleIn;
+		prologue = prologueIn;
+		epilogue = epilogueIn;
 	}
 
 	/**
@@ -90,16 +90,18 @@ public class TestCaseGenerator {
 	 *             if unable to create the directory or write to the test case
 	 *             file
 	 */
-	public final File createTestCase(final File sourceLocation, final File outputDirectory)
-			throws IOException {
+	public final File createTestCase(final File sourceLocation,
+			final File outputDirectory) throws IOException {
 		FileNameSeparator fns = new FileNameSeparator(generatorSourceFile);
-		String relPath = RelativePath.getRelPathFromBase(sourceLocation, new File(fns.getPath()));
+		String relPath = RelativePath.getRelPathFromBase(sourceLocation,
+				new File(fns.getPath()));
 		String outputFilePath = outputDirectory.getAbsoluteFile()
-				+ File.separator + relPath + File.separator + fns.getName() + ".html";
+				+ File.separator + relPath + File.separator + fns.getName()
+				+ ".html";
 		File testCase = new File(outputFilePath);
 		new TestCaseRef(generatorClosureLocation, generatorDepsLocation,
-				generatorSourceFile, testCase, testDeps,
-				preamble, prologue, epilogue).writeToFile();
+				generatorSourceFile, testCase, testDeps, preamble, prologue,
+				epilogue).writeToFile();
 		return testCase;
 	}
 }

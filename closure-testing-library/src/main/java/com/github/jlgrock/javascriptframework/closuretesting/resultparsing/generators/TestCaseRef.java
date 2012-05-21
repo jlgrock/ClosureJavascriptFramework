@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -45,7 +45,7 @@ public class TestCaseRef {
 	/**
 	 * A set of files that will serve as script tag includes to the test case.
 	 */
-	private final Set<File> testDeps;
+	private final List<File> testDeps;
 
 	/**
 	 * The begin tag for html.
@@ -121,24 +121,24 @@ public class TestCaseRef {
 	 *            the file to be written
 	 * @param testDepsIn
 	 *            the set of files that will serve as script tag includes to the test case
-	 * @param preamble
+	 * @param preambleIn
 	 * 			  the preamble to the test case
-	 * @param prologue 
+	 * @param prologueIn
 	 * 			  the prologue to the test case
-	 * @param epilogue
+	 * @param epilogueIn
 	 * 			  the epilogue to the test case
 	 */
 	public TestCaseRef(final File closureLocation, final File depsLocation,
-			final File testFile, final File testCase, final Set<File> testDepsIn,
-			final String preamble, final String prologue, final String epilogue) {
-		this.closureBaseLocation = closureLocation;
-		this.testCaseFileLocation = testCase;
-		this.dependencyLocation = depsLocation;
-		this.testFileLocation = testFile;
-		this.testDeps = testDepsIn;
-		this.preamble = preamble;
-		this.prologue = prologue;
-		this.epilogue = epilogue;
+			final File testFile, final File testCase, final List<File> testDepsIn,
+			final String preambleIn, final String prologueIn, final String epilogueIn) {
+		closureBaseLocation = closureLocation;
+		testCaseFileLocation = testCase;
+		dependencyLocation = depsLocation;
+		testFileLocation = testFile;
+		testDeps = testDepsIn;
+		preamble = preambleIn;
+		prologue = prologueIn;
+		epilogue = epilogueIn;
 	}
 
 	/**

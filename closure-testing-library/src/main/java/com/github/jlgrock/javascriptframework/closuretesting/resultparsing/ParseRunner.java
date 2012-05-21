@@ -1,8 +1,8 @@
 package com.github.jlgrock.javascriptframework.closuretesting.resultparsing;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -32,7 +32,7 @@ public class ParseRunner {
 	/**
 	 * The files to parse.
 	 */
-	private Set<File> filesToParse;
+	private List<File> filesToParse;
 
 	/**
 	 * The driver to use to execute the web pages.
@@ -47,7 +47,7 @@ public class ParseRunner {
 	 * @param webDriver
 	 *            the webdriver to execute the web pages
 	 */
-	public ParseRunner(final Set<File> files, final WebDriver webDriver) {
+	public ParseRunner(final List<File> files, final WebDriver webDriver) {
 		this.filesToParse = files;
 		this.driver = webDriver;
 	}
@@ -57,8 +57,8 @@ public class ParseRunner {
 	 * 
 	 * @return the set of parsed test cases
 	 */
-	public final Set<TestCase> parseFiles() {
-		Set<TestCase> testCases = new HashSet<TestCase>();
+	public final List<TestCase> parseFiles() {
+		List<TestCase> testCases = new ArrayList<TestCase>();
 		for (File fileToParse : filesToParse) {
 			boolean encounteredError = false;
 			try {
@@ -108,8 +108,8 @@ public class ParseRunner {
 	 * 
 	 * @return the set of parsed test cases
 	 */
-	public final Set<String> parseDump() {
-		Set<String> testCaseResults = new HashSet<String>();
+	public final List<String> parseDump() {
+		List<String> testCaseResults = new ArrayList<String>();
 		for (File fileToParse : filesToParse) {
 			String uri = fileToParse.toURI().toString();
 			LOGGER.debug("parsing file: " + uri);

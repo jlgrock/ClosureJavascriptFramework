@@ -1,8 +1,8 @@
 package com.github.jlgrock.javascriptframework.closuretestingreport;
 
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -98,9 +98,9 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 			throws MavenReportException {
 		MojoLogAppender.beginLogging(this);
 		try {
-			Set<File> files = FileListBuilder.buildFilteredList(getFrameworkTargetDirectory(),
+			List<File> files = FileListBuilder.buildFilteredList(getFrameworkTargetDirectory(),
 					"html");
-			Set<TestCase> testCases = parseFiles(files);
+			List<TestCase> testCases = parseFiles(files);
 			ClosureTestingReportGenerator renderer = new ClosureTestingReportGenerator(
 					getSink(), testCases);
 			renderer.render();
@@ -119,9 +119,9 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 	 *            the files to parse
 	 * @return the set of parsed test cases
 	 */
-	private static Set<TestCase> parseFiles(final Set<File> files) {
+	private static List<TestCase> parseFiles(final List<File> files) {
 		WebDriver driver = new HtmlUnitDriver(true);
-		Set<TestCase> testCases = null;
+		List<TestCase> testCases = null;
 		try {
 			ParseRunner parseRunner = new ParseRunner(files, driver);
 			testCases = parseRunner.parseFiles();

@@ -2,8 +2,8 @@ package com.github.jlgrock.javascriptframework.closuretesting;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -48,9 +48,9 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
-			Set<File> files = generateFiles();
+			List<File> files = generateFiles();
 			if (!isSkipTests()) {
-				Set<TestCase> testCases = parseFiles(files);
+				List<TestCase> testCases = parseFiles(files);
 				boolean encounteredError = checkForFailuresInTestCases(testCases);
 				if (verbose) {
 					printAllRecords(testCases);
@@ -80,7 +80,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 *            the test cases to examine
 	 * @return true if any test case has failed, otherwise false
 	 */
-	private boolean checkForFailuresInTestCases(final Set<TestCase> testCases) {
+	private boolean checkForFailuresInTestCases(final List<TestCase> testCases) {
 		for (TestCase testCase : testCases) {
 			if (testCase.getSummary() == null
 					|| testCase.getSummary().getResult()
@@ -97,7 +97,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 * @param testCases
 	 *            the test cases to output
 	 */
-	private void printAllRecords(final Set<TestCase> testCases) {
+	private void printAllRecords(final List<TestCase> testCases) {
 		StringBuffer sb = new StringBuffer();
 		for (TestCase testCase : testCases) {
 			sb.append(testCase.toString());
@@ -111,7 +111,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 * @param testCases
 	 *            the test cases to examine and print (if there is a failure)
 	 */
-	private void printFailures(final Set<TestCase> testCases) {
+	private void printFailures(final List<TestCase> testCases) {
 		StringBuffer sb = new StringBuffer();
 		for (TestCase testCase : testCases) {
 			if (testCase.getSummary() == null
@@ -130,11 +130,11 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 * @throws IOException
 	 *             if there is a problem reading or writing to the files
 	 */
-	private Set<File> generateFiles() throws IOException {
+	private List<File> generateFiles() throws IOException {
 		File testOutputDir = JsarRelativeLocations.getTestSuiteLocation(getFrameworkTargetDirectory());
 		File testDepsDir = JsarRelativeLocations.getTestLocation(getFrameworkTargetDirectory());
 		File depsFileLocation = JsarRelativeLocations.getTestDepsLocation(getFrameworkTargetDirectory());
-		Set<File> returnFiles = new HashSet<File>();
+		List<File> returnFiles = new ArrayList<File>();
 		
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
 		File baseLocation = new File(getClosureLibrarylocation()
@@ -144,9 +144,9 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 				+ File.separator + "goog" + File.separator + "base.js");
 
 		LOGGER.info("Generating Test Suite");
-		Set<File> fileSet = calculateFileSet();
-		Set<File> testDeps = FileListBuilder.buildFilteredList(testDepsDir, "js");
-		Set<File> depsFileSet = FileListBuilder.buildFilteredList(depsFileLocation, "js");
+		List<File> fileSet = calculateFileSet();
+		List<File> testDeps = FileListBuilder.buildFilteredList(testDepsDir, "js");
+		List<File> depsFileSet = FileListBuilder.buildFilteredList(depsFileLocation, "js");
 		File depsFile = null;
 		if (depsFileSet.size() == 1) {
 			depsFile = depsFileSet.toArray(new File[depsFileSet.size()])[0];
@@ -197,10 +197,10 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 *            the files to parse
 	 * @return the set of test cases received from parsing
 	 */
-	private static Set<TestCase> parseFiles(final Set<File> files) {
+	private static List<TestCase> parseFiles(final List<File> files) {
 		WebDriver driver = new HtmlUnitDriver(true);
 		
-		Set<TestCase> testCases = null;
+		List<TestCase> testCases = null;
 		try {
 			ParseRunner parseRunner = new ParseRunner(files, driver);
 			testCases = parseRunner.parseFiles();
@@ -215,9 +215,9 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 * 
 	 * @return the file set
 	 */
-	private Set<File> calculateFileSet() {
+	private List<File> calculateFileSet() {
 		LOGGER.info("Calculating File Set");
-		Set<File> files = new HashSet<File>();
+		List<File> files = new ArrayList<File>();
 		files.addAll(FileListBuilder.buildFilteredList(
 				getTestSourceDirectory(), "js"));
 		if (getIncludes() != null) {

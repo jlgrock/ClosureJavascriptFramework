@@ -3,6 +3,7 @@ package com.github.jlgrock.javascriptframework.closuretesting.resultparsing.gene
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public class SuiteGenerator {
 	/**
 	 * The set of the source files to convert.
 	 */
-	private final Set<File> sourceFiles;
+	private final List<File> sourceFiles;
 
 	/**
 	 * The location of the closure library base.js.
@@ -26,11 +27,10 @@ public class SuiteGenerator {
 	 */
 	private final File depsLocation;
 
-	
 	/**
-	 * The location of the generated dependency file.
+	 * The location of the generated dependency files.
 	 */
-	private final Set<File> testDependencies;
+	private final List<File> testDependencies;
 
 	/**
 	 * The preamble for the test.
@@ -59,25 +59,25 @@ public class SuiteGenerator {
 	 *            the location of the generated dependency file
 	 * @param testDependenciesIn
 	 *            the set of test dependencies
-	 * @param preamble
-	 * 			  the preamble to the test case
-	 * @param prologue 
-	 * 			  the prologue to the test case
-	 * @param epilogue
-	 * 			  the epilogue to the test case
+	 * @param preambleIn
+	 *            the preamble to the test case
+	 * @param prologueIn
+	 *            the prologue to the test case
+	 * @param epilogueIn
+	 *            the epilogue to the test case
 	 */
-	public SuiteGenerator(final Set<File> sourceFilesIn,
-			final File closureLibraryBaseLocationIn, 
-			final File dependencyLocationIn, 
-			final Set<File> testDependenciesIn,
-			final String preamble, final String prologue, final String epilogue) {
+	public SuiteGenerator(final List<File> sourceFilesIn,
+			final File closureLibraryBaseLocationIn,
+			final File dependencyLocationIn,
+			final List<File> testDependenciesIn, final String preambleIn,
+			final String prologueIn, final String epilogueIn) {
 		sourceFiles = sourceFilesIn;
 		closureLibraryBaseLocation = closureLibraryBaseLocationIn;
 		depsLocation = dependencyLocationIn;
 		testDependencies = testDependenciesIn;
-		this.preamble = preamble;
-		this.prologue = prologue;
-		this.epilogue = epilogue;
+		preamble = preambleIn;
+		prologue = prologueIn;
+		epilogue = epilogueIn;
 	}
 
 	/**
@@ -89,7 +89,8 @@ public class SuiteGenerator {
 		Set<TestCaseGenerator> testCaseGenerators = new HashSet<TestCaseGenerator>();
 		for (File sourceFile : sourceFiles) {
 			testCaseGenerators.add(new TestCaseGenerator(
-					closureLibraryBaseLocation, depsLocation, sourceFile, testDependencies, preamble, prologue, epilogue));
+					closureLibraryBaseLocation, depsLocation, sourceFile,
+					testDependencies, preamble, prologue, epilogue));
 		}
 		return testCaseGenerators;
 	}
@@ -98,19 +99,20 @@ public class SuiteGenerator {
 	 * Creates the set of test files.
 	 * 
 	 * @param sourceLocation
-	 * 			  the location of the testing source, used for relative pathing
+	 *            the location of the testing source, used for relative pathing
 	 * @param outputDirectory
 	 *            the output directory to generate the files to
 	 * @return the set of files created
 	 * @throws IOException
 	 *             if unable to create one or more test cases
 	 */
-	public final Set<File> generateTestFiles(final File sourceLocation, final File outputDirectory)
-			throws IOException {
+	public final Set<File> generateTestFiles(final File sourceLocation,
+			final File outputDirectory) throws IOException {
 		Set<File> outputFiles = new HashSet<File>();
 		Set<TestCaseGenerator> generatedTestCases = generateTestCases();
 		for (TestCaseGenerator testCaseGenerator : generatedTestCases) {
-			File testCase = testCaseGenerator.createTestCase(sourceLocation, outputDirectory);
+			File testCase = testCaseGenerator.createTestCase(sourceLocation,
+					outputDirectory);
 			outputFiles.add(testCase);
 		}
 		return outputFiles;
