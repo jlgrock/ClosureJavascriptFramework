@@ -46,7 +46,7 @@ public enum StrictLevel {
 		options.setBrokenClosureRequiresLevel(CheckLevel.ERROR);
 		options.setCheckGlobalNamesLevel(CheckLevel.ERROR);
 		options.setCheckGlobalThisLevel(CheckLevel.ERROR);
-		options.setCheckMissingGetCssNameLevel(CheckLevel.ERROR);
+		//options.setCheckMissingGetCssNameLevel(CheckLevel.ERROR);
 		options.setCheckMissingReturn(CheckLevel.ERROR);
 		options.setCheckProvides(CheckLevel.ERROR);
 		options.setCheckRequires(CheckLevel.ERROR);
