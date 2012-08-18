@@ -23,7 +23,7 @@ public class TestUnitDriver extends HtmlUnitDriver {
 
 	/**
 	 * The default constructor, which just calls the HTMLUnitDriver constructor.
-	 * @param enableJavascript whether or not to enable Javascript in the driver
+	 * @param enableJavascript whether or not to enable JavaScript in the driver
 	 */
 	public TestUnitDriver(final boolean enableJavascript) {
 		super(enableJavascript);

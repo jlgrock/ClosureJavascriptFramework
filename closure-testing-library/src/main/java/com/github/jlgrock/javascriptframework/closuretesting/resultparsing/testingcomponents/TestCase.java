@@ -390,9 +390,11 @@ public class TestCase {
 	 *            the text of the div
 	 */
 	public final void addToLastTestFailureStatistic(final String divText) {
-		TestFailureStatistic tfs = this.testFailureStatistics
-				.get(this.testFailureStatistics.size() - 1);
-		tfs.addToFailureReasons(divText);
+		if (this.testFailureStatistics.size() > 0) {
+			TestFailureStatistic tfs = this.testFailureStatistics
+					.get(this.testFailureStatistics.size() - 1);
+			tfs.addToFailureReasons(divText);
+		}
 	}
 
 	/**

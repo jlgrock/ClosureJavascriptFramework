@@ -2,7 +2,6 @@ package com.github.jlgrock.javascriptframework.closuretesting.resultparsing;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -33,11 +32,6 @@ public class ParseRunner {
 	private static final Logger LOGGER = Logger.getLogger(ParseRunner.class);
 
 	/**
-	 * The files to parse.
-	 */
-	private List<File> filesToParse;
-
-	/**
 	 * The driver to use to execute the web pages.
 	 */
 	private TestUnitDriver driver;
@@ -59,8 +53,6 @@ public class ParseRunner {
 	 * @return the set of parsed test cases
 	 */
 	public final TestCase parseFile(final File fileToParse) {
-		//TODO int numberOfFailures = 0;
-		
 		TestCase testCase = null;
 		
 		boolean encounteredError = false;
