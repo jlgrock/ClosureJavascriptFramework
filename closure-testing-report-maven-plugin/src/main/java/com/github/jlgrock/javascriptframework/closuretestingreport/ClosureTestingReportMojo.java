@@ -1,6 +1,7 @@
 package com.github.jlgrock.javascriptframework.closuretestingreport;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -9,10 +10,10 @@ import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.ParseRunner;
+import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.TestResultType;
+import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.TestUnitDriver;
 import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testingcomponents.TestCase;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
@@ -100,7 +101,8 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 		try {
 			List<File> files = FileListBuilder.buildFilteredList(getFrameworkTargetDirectory(),
 					"html");
-			List<TestCase> testCases = parseFiles(files);
+			// Reporting will always show all failures
+			List<TestCase> testCases = parseFiles(files, -1);
 			ClosureTestingReportGenerator renderer = new ClosureTestingReportGenerator(
 					getSink(), testCases);
 			renderer.render();
@@ -117,14 +119,25 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 	 * 
 	 * @param files
 	 *            the files to parse
+	 * @param maxFailures
+	 *            the maximum number of failures to allow during the parsing.
 	 * @return the set of parsed test cases
 	 */
-	private static List<TestCase> parseFiles(final List<File> files) {
-		WebDriver driver = new HtmlUnitDriver(true);
-		List<TestCase> testCases = null;
+	private static List<TestCase> parseFiles(final List<File> files,
+			final int maxFailures) {
+		TestUnitDriver driver = new TestUnitDriver(true);
+		List<TestCase> testCases = new ArrayList<TestCase>();
 		try {
-			ParseRunner parseRunner = new ParseRunner(files, driver);
-			testCases = parseRunner.parseFiles();
+			ParseRunner parseRunner = new ParseRunner(driver);
+			for (File file : files) {
+				TestCase testCase = parseRunner.parseFile(file);
+				if (!testCase.getResult().equals(TestResultType.PASSED)) {
+					testCases.add(testCase);
+				}
+				if (testCases.size() > maxFailures && maxFailures != -1) {
+					break;
+				}
+			}
 		} finally {
 			driver.quit();
 		}

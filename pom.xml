@@ -49,6 +49,7 @@
 		<groovy.full.version>1.7.5</groovy.full.version>
 		<spock.to.groovy.version>0.4-groovy-1.7</spock.to.groovy.version>
 		<target.jdk>1.5</target.jdk>
+		<selenium.version>2.24.1</selenium.version>
 	</properties>
 
 	<dependencies>

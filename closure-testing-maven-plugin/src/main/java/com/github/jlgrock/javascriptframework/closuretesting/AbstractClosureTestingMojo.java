@@ -107,6 +107,14 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 * @parameter default-value=""
 	 */
 	private String epilogue = "";
+	
+	/**
+	 * The maximum number of test case failures before failing 
+	 * the build.  -1 indicates unlimited.
+	 * 
+	 * @parameter default-value="5"
+	 */
+	private int maximumFailures;
 
 	/**
 	 * @return the testSourceDirectory
@@ -186,5 +194,13 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 
 	@Override
 	public abstract void execute() throws MojoExecutionException, MojoFailureException;
+
+	/**
+	 * @return the maximum number of failures allowed before failing the build.  By limiting this, it will
+	 * speed up the build if there are many failures.
+	 */
+	public int getMaximumFailures() {
+		return maximumFailures;
+	}
 
 }

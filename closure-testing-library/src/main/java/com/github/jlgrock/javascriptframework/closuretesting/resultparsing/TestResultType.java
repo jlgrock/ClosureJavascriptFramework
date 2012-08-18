@@ -10,7 +10,7 @@ public enum TestResultType {
 	/**
 	 * Possible results of tests.
 	 */
-	PASSED("PASSED"), FAILED("FAILED");
+	PASSED("PASSED"), FAILED("FAILED"), TIMED_OUT, UNABLE_TO_EXECUTE, BAD_OUTPUT, SCRIPT_ERROR;
 	
 	/**
 	 * The string equivalent.
@@ -26,7 +26,9 @@ public enum TestResultType {
 	static {
 		MAP_BY_NAME = new HashMap<String, TestResultType>();
 		for (TestResultType type : values()) {
-			MAP_BY_NAME.put(type.name, type);
+			if (type.name != null) {
+				MAP_BY_NAME.put(type.name, type);
+			}
 		}
 	}
 	
@@ -37,6 +39,12 @@ public enum TestResultType {
 	 */
 	TestResultType(final String nameIn) {
 		this.name = nameIn;
+	}
+	
+	/**
+	 * Constructor.  Used for objects that don't take strings.
+	 */
+	TestResultType() {
 	}
 
 	/**

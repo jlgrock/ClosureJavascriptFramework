@@ -19,17 +19,17 @@ public class TestTimingStatisticParser implements IDivParser {
 	/**
 	 * The position of the time.
 	 */
-	private static int TIME_POSITION = 1;
+	private static final int TIME_POSITION = 1;
 
 	/**
 	 * The position of the measurement.
 	 */
-	private static int MEASUREMENT_POSITION = 2;
+	private static final int MEASUREMENT_POSITION = 2;
 	
 	/**
 	 * The position of the number of files.
 	 */
-	private static int NUM_FILES_POSITION = 3;
+	private static final int NUM_FILES_POSITION = 3;
 	
 	/**
 	 * pattern matches "# passed, # failed".

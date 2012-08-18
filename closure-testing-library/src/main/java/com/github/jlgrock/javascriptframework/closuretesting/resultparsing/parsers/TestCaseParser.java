@@ -1,5 +1,6 @@
 package com.github.jlgrock.javascriptframework.closuretesting.resultparsing.parsers;
 
+import java.io.File;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -28,9 +29,10 @@ public final class TestCaseParser {
 
 	/**
 	 * Constructor.
+	 * @param fileBasedOn the file that the test case is run on.
 	 */
-	public TestCaseParser() {
-		testCase = new TestCase();
+	public TestCaseParser(final File fileBasedOn) {
+		testCase = new TestCase(fileBasedOn);
 	}
 
 	/**

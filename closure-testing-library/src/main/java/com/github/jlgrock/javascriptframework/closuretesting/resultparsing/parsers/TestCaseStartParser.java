@@ -22,22 +22,22 @@ public class TestCaseStartParser implements IDivParser {
 	/**
 	 * The position of the hour.
 	 */
-	private static int HOUR_POSITION = 1;
+	private static final int HOUR_POSITION = 1;
 
 	/**
 	 * The position of the minute.
 	 */
-	private static int MINUTE_POSITION = 2;
+	private static final int MINUTE_POSITION = 2;
 	
 	/**
 	 * The position of the second.
 	 */
-	private static int SECOND_POSITION = 3;
+	private static final int SECOND_POSITION = 3;
 
 	/**
 	 * The position of the millisecond.
 	 */
-	private static int MILLISECOND_POSITION = 4;
+	private static final int MILLISECOND_POSITION = 4;
 	
 	/**
 	 * pattern matches "[time] Start".

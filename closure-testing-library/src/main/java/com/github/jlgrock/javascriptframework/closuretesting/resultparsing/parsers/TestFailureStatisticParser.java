@@ -27,32 +27,32 @@ public class TestFailureStatisticParser implements IDivParser {
 	/**
 	 * The position of the hour.
 	 */
-	private static int HOUR_POSITION = 1;
+	private static final int HOUR_POSITION = 1;
 
 	/**
 	 * The position of the minute.
 	 */
-	private static int MINUTE_POSITION = 2;
+	private static final int MINUTE_POSITION = 2;
 	
 	/**
 	 * The position of the second.
 	 */
-	private static int SECOND_POSITION = 3;
+	private static final int SECOND_POSITION = 3;
 
 	/**
 	 * The position of the millisecond.
 	 */
-	private static int MILLISECOND_POSITION = 4;
+	private static final int MILLISECOND_POSITION = 4;
 	
 	/**
 	 * The position of the parsed name.
 	 */
-	private static int PARSED_NAME_POSITION = 5;
+	private static final int PARSED_NAME_POSITION = 5;
 	
 	/**
 	 * The position of the parsed result.
 	 */
-	private static int PARSED_RESULT_POSITION = 6;
+	private static final int PARSED_RESULT_POSITION = 6;
 	
 	/**
 	 * pattern matches "[time] testname : PASSED/FAILED".

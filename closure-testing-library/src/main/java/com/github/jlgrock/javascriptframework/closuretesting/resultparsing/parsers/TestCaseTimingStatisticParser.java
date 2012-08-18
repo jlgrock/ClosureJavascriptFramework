@@ -19,22 +19,22 @@ public class TestCaseTimingStatisticParser implements IDivParser {
 	/**
 	 * The position of the hour.
 	 */
-	private static int NUMBER_RUN_POSITION = 1;
+	private static final int NUMBER_RUN_POSITION = 1;
 
 	/**
 	 * The position of the minute.
 	 */
-	private static int NUMBER_TOTAL_POSITION = 2;
+	private static final int NUMBER_TOTAL_POSITION = 2;
 	
 	/**
 	 * The position of the time value.
 	 */
-	private static int TIME_VALUE_POSITION = 3;
+	private static final int TIME_VALUE_POSITION = 3;
 
 	/**
 	 * The position of the time units.
 	 */
-	private static int TIME_UNITS_POSITION = 4;
+	private static final int TIME_UNITS_POSITION = 4;
 	
 	/**
 	 * pattern matches "# ms/test.  # files loaded."
