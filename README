@@ -6,6 +6,9 @@ for scaling and modularity.
 For more information, please refer to the website at the location:
 https://github.com/jlgrock/ClosureJavascriptFramework/wiki
 
+For the Maven docs, please refer to:
+http://jlgrock.github.com/ClosureJavascriptFramework/
+
 For information about the Google Closure Compiler, please check out the
 documentation here:
 http://code.google.com/closure/compiler/
@@ -25,3 +28,6 @@ https://github.com/jlgrock/ClosureFrameworkLibraryExample.
 
 Authors:
 Justin Grant
+
+Contributors:
+David Souther
