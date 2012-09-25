@@ -7,25 +7,35 @@
 			</implementation>
 			<configuration>
 				<phases>
-					<generate-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency
+					<generate-sources>
+						com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:${project.version}:js-dependency
 					</generate-sources>
-					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources
+					<process-resources>
+						org.apache.maven.plugins:maven-resources-plugin:resources
 					</process-resources>
-					<process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources
+					<process-test-resources>
+						org.apache.maven.plugins:maven-resources-plugin:testResources
 					</process-test-resources>
-					<compile>com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors
+					<compile>
+						com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:${project.version}:compile-preprocessors
 					</compile>
-					<generate-test-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-test-dependency
+					<generate-test-sources>
+						com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:${project.version}:js-test-dependency
 					</generate-test-sources>
-					<test>com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test
+					<test>
+						com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:${project.version}:js-closure-test
 					</test>
-					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile
+					<process-classes>
+						com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:${project.version}:js-closure-compile
 					</process-classes>
-					<package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:jsar
+					<package>
+						com.github.jlgrock.javascript-framework:jsar-maven-plugin:${project.version}:jsar
 					</package>
-					<install>org.apache.maven.plugins:maven-install-plugin:install
+					<install>
+						org.apache.maven.plugins:maven-install-plugin:install
 					</install>
-					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy
+					<deploy>
+						org.apache.maven.plugins:maven-deploy-plugin:deploy
 					</deploy>
 				</phases>
 			</configuration>
@@ -40,32 +50,43 @@
 			</implementation>
 			<configuration>
 				<phases>
-					<generate-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-dependency
+					<generate-sources>
+						com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:${project.version}:js-dependency
 					</generate-sources>
-					<process-resources>org.apache.maven.plugins:maven-resources-plugin:resources
+					<process-resources>
+						org.apache.maven.plugins:maven-resources-plugin:resources
 					</process-resources>
-					<process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources
+					<process-test-resources>
+						org.apache.maven.plugins:maven-resources-plugin:testResources
 					</process-test-resources>
 					<compile>
-						com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:compile-preprocessors,
+						com.github.jlgrock.javascript-framework:jspreprocessor-maven-plugin:${project.version}:compile-preprocessors,
 						org.apache.maven.plugins:maven-compiler-plugin:compile
 					</compile>
-					<test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile
+					<test-compile>
+						org.apache.maven.plugins:maven-compiler-plugin:testCompile
 					</test-compile>
-					<generate-test-sources>com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:js-test-dependency
+					<generate-test-sources>
+						com.github.jlgrock.javascript-framework:jsdependency-maven-plugin:${project.version}:js-test-dependency
 					</generate-test-sources>
 					<test>
 						org.apache.maven.plugins:maven-surefire-plugin:test,
-						com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:js-closure-test
+						com.github.jlgrock.javascript-framework:closure-testing-maven-plugin:${project.version}:js-closure-test
 					</test>
-					<process-classes>com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:js-closure-compile
+					<process-classes>
+						com.github.jlgrock.javascript-framework:closure-compiler-maven-plugin:${project.version}:js-closure-compile
 					</process-classes>
-					<prepare-package>com.github.jlgrock.javascript-framework:jsar-maven-plugin:war-move
+					<prepare-package>
+						com.github.jlgrock.javascript-framework:jsar-maven-plugin:${project.version}:war-move
 					</prepare-package>
-					<package>org.apache.maven.plugins:maven-war-plugin:war</package>
-					<install>org.apache.maven.plugins:maven-install-plugin:install
+					<package>
+						org.apache.maven.plugins:maven-war-plugin:war
+					</package>
+					<install>
+						org.apache.maven.plugins:maven-install-plugin:install
 					</install>
-					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy
+					<deploy>
+						org.apache.maven.plugins:maven-deploy-plugin:deploy
 					</deploy>
 				</phases>
 			</configuration>
@@ -84,7 +105,7 @@
 				<packaging>jsar</packaging>
 			</configuration>
 		</component>
-		
+
 		<component>
 			<role>org.codehaus.plexus.archiver.UnArchiver</role>
 			<role-hint>javascript</role-hint>
@@ -92,13 +113,14 @@
 				com.github.jlgrock.javascriptframework.jsar.JavascriptUnArchiver
 			</implementation>
 			<description>
-				Custom archiver for javascript dependencies, packaged as "jsar"
+				Custom archiver for javascript dependencies, packaged as
+				"jsar"
 				(JavaScript ARchive), that are simply a jar of scripts and
 				resources.
 			</description>
 			<isolated-realm>false</isolated-realm>
 		</component>
-		
+
 		<component>
 			<role>org.codehaus.plexus.archiver.Archiver</role>
 			<role-hint>javascript</role-hint>
@@ -107,8 +129,8 @@
 			</implementation>
 			<instantiation-strategy>per-lookup</instantiation-strategy>
 			<description>
-				Custom archiver for javascript dependencies, packaged as "jsar"
-				(JavaScript ARchive), that are simply a jar of scripts and
+				Custom archiver for javascript dependencies, packaged as
+				"jsar" (JavaScript ARchive), that are simply a jar of scripts and
 				resources.
 			</description>
 			<isolated-realm>false</isolated-realm>

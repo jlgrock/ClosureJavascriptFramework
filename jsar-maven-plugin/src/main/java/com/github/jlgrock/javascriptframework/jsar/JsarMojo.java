@@ -10,6 +10,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 
@@ -66,20 +67,6 @@ public class JsarMojo extends AbstractMojo {
 	 * The default file excludes array.
 	 */
 	private static final String[] DEFAULT_EXCLUDES = new String[] { "**/package.html" };
-
-	/**
-	 * The default file includes array.
-	 */
-	private static final String[] DEFAULT_INCLUDES = new String[] { "**/**" };
-
-	/**
-	 * List of files to include. Specified as fileset patterns which are
-	 * relative to the input directory whose contents is being packaged into the
-	 * JSAR.
-	 * 
-	 * @parameter
-	 */
-	private String[] includes;
 
 	/**
 	 * List of files to exclude. Specified as fileset patterns which are
@@ -236,7 +223,11 @@ public class JsarMojo extends AbstractMojo {
 			File compiledDirectory = JsarRelativeLocations
 					.getOutputLocation(getFrameworkTargetDirectory());
 
-			archiver.getArchiver().addDirectory(compiledDirectory);
+			//Add files, minus exclusions (such as externs)
+			DefaultFileSet fs = new DefaultFileSet();
+			fs.setDirectory(compiledDirectory);
+			fs.setExcludes(getExcludes());
+			archiver.getArchiver().addFileSet(fs);
 
 			// add manifest
 			File existingManifest = getDefaultManifestFile();
@@ -251,7 +242,6 @@ public class JsarMojo extends AbstractMojo {
 
 			return jsarFile;
 		} catch (Exception e) {
-			// TODO: improve error handling
 			throw new MojoExecutionException("Error assembling JSAR", e);
 		}
 	}
@@ -267,17 +257,6 @@ public class JsarMojo extends AbstractMojo {
 		} else {
 			getProject().getArtifact().setFile(jsarFile);
 		}
-	}
-
-	/**
-	 * @return the array of includes, or the default includes if they have not
-	 *         been set.
-	 */
-	private String[] getIncludes() {
-		if (includes != null && includes.length > 0) {
-			return includes;
-		}
-		return DEFAULT_INCLUDES;
 	}
 
 	/**
