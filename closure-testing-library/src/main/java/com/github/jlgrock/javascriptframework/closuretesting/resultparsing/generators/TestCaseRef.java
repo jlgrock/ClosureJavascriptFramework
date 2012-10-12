@@ -186,16 +186,16 @@ public class TestCaseRef {
 					testCaseFileLocation, closureBaseLocation));
 			bufferedWriter.write(END_SCRIPT);
 		
-			// prologue
-			bufferedWriter.write(this.prologue);
-
-
 			// deps script
 			bufferedWriter.write(BEGIN_SCRIPT);
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
 					testCaseFileLocation, dependencyLocation));
 			bufferedWriter.write(END_SCRIPT);
 			
+			// prologue
+			bufferedWriter.write(this.prologue);
+
+
 			// test case
 			bufferedWriter.write(BEGIN_SCRIPT);
 			bufferedWriter.write(RelativePath.getRelPathFromBase(
