@@ -17,6 +17,11 @@ import com.gargoylesoftware.htmlunit.javascript.JavaScriptErrorListener;
  */
 public class TestUnitDriver extends HtmlUnitDriver {
 	/**
+	 * Used to define the error to the user when there is a timeout.
+	 */
+	private static final String TIMEOUT_PREFIX = "execution time exceeded maximum amount of time of ";
+	
+	/**
 	 * A variable for storing the first exception encountered.
 	 */
 	private Exception exception = null;
@@ -70,8 +75,7 @@ public class TestUnitDriver extends HtmlUnitDriver {
 			public void timeoutError(final HtmlPage htmlPage,
 					final long allowedTime, final long executionTime) {
 				setException(new TimeoutException(
-						"execution time exceeded maximum amount of time of "
-								+ String.valueOf(allowedTime) + "."));
+						TIMEOUT_PREFIX + String.valueOf(allowedTime)));
 			}
 
 			@Override

@@ -224,10 +224,9 @@ public final class CalcDeps {
 			final HashSet<File> seenList,
 			final ArrayList<DependencyInfo> resultList) {
 		if (!searchSet.containsKey(requireNamespace)) {
-			LOGGER.error("Problem with require in file '" + inputFile.getName()
-					+ "'.  Can't find a goog.require for '" + requireNamespace
-					+ "'"); // TODO add the file that this comes from at a later
-							// point to improve clarity
+			LOGGER.error("Problem with require in file '" + inputFile.getAbsolutePath()
+					+ "'. Found goog.require for '" + requireNamespace
+					+ "', but did not find a corresponding goog.provide.");
 		}
 		DependencyInfo dep = searchSet.get(requireNamespace);
 		if (!seenList.contains(dep.getFile())) {
