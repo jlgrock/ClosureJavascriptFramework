@@ -3,7 +3,14 @@ package com.github.jlgrock.javascriptframework.closuretesting;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -42,9 +49,10 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			List<File> files = generateFiles();
 			if (!isSkipTests()) {
 				List<TestCase> testCases = parseFiles(files,
-						getMaximumFailures());
-				
-				//Encountered Error(s)
+						getMaximumFailures(), getTestTimeoutSeconds(),
+						getMaxTestThreads());
+
+				// Encountered Error(s)
 				if (testCases.size() > 0) {
 					printFailures(testCases);
 					throw new MojoFailureException(
@@ -152,39 +160,116 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 
 		return returnFiles;
 	}
-	
+
 	/**
 	 * Parse the files created.
 	 * 
 	 * @param files
 	 *            the files to parse
+	 * @param maxThreads
+	 *            the maximum number of threads to spawn for test execution
 	 * @param maxFailures
 	 *            the maximum number of failures to allow during the parsing.
+	 * @param testTimeoutSeconds
+	 *            the maximum number of seconds to execute before deciding that
+	 *            a test case has failed.
 	 * @return the set of test cases received from parsing
 	 */
 	private static List<TestCase> parseFiles(final List<File> files,
-			final int maxFailures) {
-		LOGGER.info("Parsing Test Files...");
-		TestUnitDriver driver = new TestUnitDriver(true);
-		
-		List<TestCase> testCases = new ArrayList<TestCase>();
-		//This list will contain more more test cases than is specified in maxFailures.
-		try {
-			ParseRunner parseRunner = new ParseRunner(driver);
-			for (File file : files) {
-				TestCase testCase = parseRunner.parseFile(file);
-				if (!testCase.getResult().equals(TestResultType.PASSED)) {
-					testCases.add(testCase);
+			final int maxFailures, final long testTimeoutSeconds,
+			final int maxThreads) {
+		final List<TestCase> failures = new ArrayList<TestCase>();
+		int fileCount = (files != null ? files.size() : 0);
+		int threadCount = Math.min(fileCount, maxThreads);
+		LOGGER.info(String.format("Parsing %d Test Files (%d threads)...",
+				fileCount, threadCount));
+
+		if (fileCount > 0) {
+			// create a synchronized list so test threads can determine whether
+			// or not
+			// the maximum failure count has reached and threads do not attempt
+			// simultaneous
+			// writes to the underlying failures list; we do this separately so
+			// we don't return
+			// the synchronized list to the calling method
+			final List<TestCase> syncFailures = Collections
+					.synchronizedList(failures);
+			// initialize the thread pool for test execution, using a fixed-size
+			// thread pool if multiple threads are specified and
+			// a single-threaded pool if running in serial mode
+			final ExecutorService threadPool = (maxThreads > 1 ? Executors
+					.newFixedThreadPool(threadCount) : Executors
+					.newSingleThreadExecutor());
+			// initialize the ParseRunner queue; one ParseRunner per thread
+			final BlockingQueue<ParseRunner> runnerQueue = new ArrayBlockingQueue<ParseRunner>(
+					threadCount);
+			for (int idx = 0; idx < threadCount; idx++) {
+				runnerQueue.add(new ParseRunner(new TestUnitDriver(true),
+						testTimeoutSeconds));
+			}
+
+			// the latch that will be used as the control gate to indicate tests
+			// have completed
+			final CountDownLatch latch = new CountDownLatch(fileCount);
+
+			for (final File file : files) {
+				final Callable<Void> testTask = new Callable<Void>() {
+					@Override
+					public Void call() throws Exception {
+						// if we have reached the maximum number of failures,
+						// return without testing
+						if (maxFailures > 0) {
+							synchronized (syncFailures) {
+								if (syncFailures.size() > maxFailures) {
+									latch.countDown();
+									return null;
+								}
+							}
+						}
+
+						// get the next available ParseRunner
+						final ParseRunner runner = runnerQueue.take();
+						try {
+							final TestCase testCase = runner.parseFile(file);
+							if (!TestResultType.PASSED.equals(testCase
+									.getResult())) {
+								synchronized (syncFailures) {
+									syncFailures.add(testCase);
+								}
+							}
+						} finally {
+							if (runner != null) {
+								runnerQueue.put(runner);
+							}
+							latch.countDown();
+						}
+						return null;
+					}
+				};
+				threadPool.submit(testTask);
+			}
+
+			// stop the thread pool, preventing additional tasks from being
+			// submitted
+			threadPool.shutdown();
+			// wait for all test cases to complete execution
+			try {
+				latch.await();
+			} catch (InterruptedException ie) {
+				// attempt to stop execution gracefully
+				threadPool.shutdownNow();
+			} finally {
+				// clean up test resources
+				if (runnerQueue.size() != threadCount) {
+					throw new IllegalStateException(
+							"ParseRunners were not properly returned to the queue.");
 				}
-				if (testCases.size() > maxFailures && maxFailures != -1) {
-					break;
+				while (!runnerQueue.isEmpty()) {
+					runnerQueue.remove().quit();
 				}
 			}
-			//driver.close()
-		} finally {
-			driver.quit();
 		}
-		return testCases;
+		return failures;
 	}
 
 	/**

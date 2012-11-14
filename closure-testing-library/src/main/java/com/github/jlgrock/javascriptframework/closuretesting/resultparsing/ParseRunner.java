@@ -22,11 +22,6 @@ import com.github.jlgrock.javascriptframework.closuretesting.resultparsing.testi
  */
 public class ParseRunner {
 	/**
-	 * The maximum time to wait for the page to load.
-	 */
-	private static final int MAX_TIME_TO_WAIT_FOR_LOAD = 10;
-
-	/**
 	 * The Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ParseRunner.class);
@@ -37,19 +32,27 @@ public class ParseRunner {
 	private TestUnitDriver driver;
 
 	/**
+	 * The configurable amount of time to test an individual file.
+	 */
+	private long testTimeoutSeconds;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param webDriver
 	 *            the webdriver to execute the web pages
+	 * @param testTimeoutSeconds 
 	 */
-	public ParseRunner(final TestUnitDriver webDriver) {
+	public ParseRunner(final TestUnitDriver webDriver, long testTimeoutSeconds) {
 		this.driver = webDriver;
+		this.testTimeoutSeconds = testTimeoutSeconds;
 	}
 
 	/**
 	 * Parse the files.
 	 * 
-	 * @param fileToParse File to parse
+	 * @param fileToParse
+	 *            File to parse
 	 * @return the set of parsed test cases
 	 */
 	public final TestCase parseFile(final File fileToParse) {
@@ -61,7 +64,7 @@ public class ParseRunner {
 			String uri = fileToParse.toURI().toString();
 			LOGGER.debug("parsing file: " + uri);
 			driver.get(uri);
-			(new WebDriverWait(driver, MAX_TIME_TO_WAIT_FOR_LOAD))
+			(new WebDriverWait(driver, testTimeoutSeconds))
 					.until(new ExpectedCondition<WebElement>() {
 						@Override
 						public WebElement apply(final WebDriver d) {
@@ -106,5 +109,12 @@ public class ParseRunner {
 			testCase = testCaseParser.parse(body);
 		}
 		return testCase;
+	}
+	
+	/**
+	 * Closes all test resources required by this parse runner.
+	 */
+	public void quit() {
+		driver.quit();
 	}
 }
