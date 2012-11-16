@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,6 +31,8 @@ import com.google.javascript.jscomp.JSError;
 import com.google.javascript.jscomp.JSSourceFile;
 import com.google.javascript.jscomp.Result;
 import com.google.javascript.jscomp.SourceFile;
+import com.google.javascript.jscomp.SourceMap.DetailLevel;
+import com.google.javascript.jscomp.SourceMap.Format;
 import com.google.javascript.jscomp.WarningLevel;
 
 /**
@@ -38,6 +41,21 @@ import com.google.javascript.jscomp.WarningLevel;
  * @phase compile
  */
 public class JsClosureCompileMojo extends AbstractMojo {
+	/**
+	 * What extension to use for the source map file.
+	 */
+	private static final String SOURCE_MAP_EXTENSION = ".smap";
+
+	/**
+	 * The actual base path for the debug scripts in a web-container.
+	 */
+	private static final String WEB_CONTAINER_JAVASCRIPT_PATH = "\\/javascript\\/debug";
+
+	/**
+	 * The path to the source map folder in a web-container.
+	 */
+	private static final String WEB_CONTAINER_SOURCEMAP_PATH = "/javascript/compiled/";
+
 	/**
 	 * The Logger.
 	 */
@@ -295,6 +313,11 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private String outputWrapper = "";
 
 	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean generateSourceMap;
+
+	/**
 	 * The string to match the code fragment in the outputWrapper parameter.
 	 */
 	private static final String OUTPUT_WRAPPER_MARKER = "%output%";
@@ -397,8 +420,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private boolean compile(final List<SourceFile> allSources,
-			final List<SourceFile> externs)
-			throws MojoExecutionException, MojoFailureException, IOException {
+			final List<SourceFile> externs) throws MojoExecutionException,
+			MojoFailureException, IOException {
 		CompilationLevel compilationLevel = null;
 		try {
 			compilationLevel = CompilationLevel.valueOf(compileLevel);
@@ -423,6 +446,18 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
 
+		File sourceMapFile = null;
+		if (generateSourceMap) {
+			sourceMapFile = new File(
+					JsarRelativeLocations
+							.getCompileLocation(frameworkTargetDirectory),
+					compiledFilename + SOURCE_MAP_EXTENSION);
+			compilerOptions.setSourceMapFormat(Format.V3);
+			compilerOptions.setSourceMapDetailLevel(DetailLevel.ALL);
+			compilerOptions.setSourceMapOutputPath(sourceMapFile
+					.getAbsolutePath());
+		}
+
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG), true);
 		Compiler compiler = new Compiler(ps);
@@ -435,10 +470,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		try {
 			LOGGER.debug("externJSSourceFiles: " + externs);
 			LOGGER.debug("allSources: " + allSources);
-			result = compiler.compile(
-					externs,
-					allSources,
-					compilerOptions);
+			result = compiler.compile(externs, allSources, compilerOptions);
 		} catch (Exception e) {
 			LOGGER.error("There was a problem with the compile.  Please review input.");
 			e.printStackTrace();
@@ -457,8 +489,16 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				compiledFilename);
 		Files.createParentDirs(compiledFile);
 		Files.touch(compiledFile);
-		JsClosureCompileMojo.writeOutput(compiledFile, compiler, outputWrapper,
-				OUTPUT_WRAPPER_MARKER);
+		if (generateSourceMap) {
+			JsClosureCompileMojo.writeOutput(compiledFile, compiler,
+					outputWrapper, OUTPUT_WRAPPER_MARKER, sourceMapFile);
+			JsClosureCompileMojo.writeSourceMap(compiledFile, sourceMapFile,
+					frameworkTargetDirectory, result, outputWrapper,
+					OUTPUT_WRAPPER_MARKER);
+		} else {
+			JsClosureCompileMojo.writeOutput(compiledFile, compiler,
+					outputWrapper, OUTPUT_WRAPPER_MARKER);
+		}
 
 		return true;
 	}
@@ -523,8 +563,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			debugFiles.addAll(debugDepsFiles);
 
 			// compile debug into compiled dir
-			boolean result = compile(convertToSourceFiles(debugFiles),
-					externs);
+			boolean result = compile(convertToSourceFiles(debugFiles), externs);
 
 			if (!result) {
 				String message = "Google Closure Compilation failure.  Please review errors to continue.";
@@ -560,6 +599,29 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	static void writeOutput(final File outFile, final Compiler compiler,
 			final String wrapper, final String codePlaceholder)
 			throws IOException {
+		writeOutput(outFile, compiler, wrapper, codePlaceholder, null);
+	}
+
+	/**
+	 * Will write the output file, including the wrapper around the code, if any
+	 * exist.
+	 * 
+	 * @param outFile
+	 *            The file to write to
+	 * @param compiler
+	 *            The google compiler
+	 * @param wrapper
+	 *            the string to wrap around the code (using the codePlaceholder)
+	 * @param codePlaceholder
+	 *            the identifier for the code
+	 * @param sourceMapFile
+	 *            The file containing the source map information, can be null
+	 * @throws IOException
+	 *             when the file cannot be written to.
+	 */
+	static void writeOutput(final File outFile, final Compiler compiler,
+			final String wrapper, final String codePlaceholder,
+			final File sourceMapFile) throws IOException {
 		FileWriter out = new FileWriter(outFile);
 		String code = compiler.toSource();
 		boolean threw = true;
@@ -584,22 +646,95 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					out.append(wrapper.substring(suffixStart));
 				}
 				// Make sure we always end output with a line feed.
-				out.append('\n');
-
-				// If we have a source map, adjust its offsets to match
-				// the code WITHIN the wrapper.
-				if (compiler != null && compiler.getSourceMap() != null) {
-					compiler.getSourceMap().setWrapperPrefix(prefix);
-				}
-
 			} else {
 				out.append(code);
-				out.append('\n');
 			}
+			if (sourceMapFile != null) {
+				out.append('\n');
+				out.append("//@ sourceMappingURL="
+						+ WEB_CONTAINER_SOURCEMAP_PATH
+						+ sourceMapFile.getName());
+			}
+			out.append('\n');
 			threw = false;
 		} finally {
 			Closeables.close(out, threw);
 		}
+	}
+
+	/**
+	 * Will write the sourceMap to a output file, will also change the prefix in
+	 * the source map if needed.
+	 * 
+	 * @param originalFile
+	 *            The source file, just used to determine the path and name of
+	 *            the source map file
+	 * @param outputFile
+	 *            The output file where to place the source map content
+	 * @param frameworkTargetDirectory
+	 *            The base directory that contains the output files
+	 * @param result
+	 *            The google compiler result
+	 * @param wrapper
+	 *            the string to wrap around the code (using the codePlaceholder)
+	 * @param codePlaceholder
+	 *            the identifier for the code
+	 * @throws IOException
+	 *             when the file cannot be written to.
+	 */
+	static void writeSourceMap(File originalFile, File outputFile,
+			File frameworkTargetDirectory, Result result, String wrapper,
+			String codePlaceholder) throws IOException {
+		if (result.sourceMap != null) {
+			boolean threw = true;
+			Files.touch(outputFile);
+			StringWriter out = new StringWriter();
+			FileWriter fOut = new FileWriter(outputFile);
+			try {
+				int pos = wrapper.indexOf(codePlaceholder);
+				LOGGER.debug("wrapper = " + wrapper);
+				if (pos != -1) {
+					String prefix = "";
+					if (pos > 0) {
+						prefix = wrapper.substring(0, pos);
+						LOGGER.debug("prefix" + prefix);
+					}
+					if (result != null && result.sourceMap != null) {
+						result.sourceMap.setWrapperPrefix(prefix);
+					}
+				}
+				result.sourceMap.appendTo(out, originalFile.getName());
+				String sourceMap = normalizeFilePahts(out,
+						frameworkTargetDirectory);
+				fOut.append(sourceMap);
+				fOut.append('\n');
+				threw = false;
+			} finally {
+				Closeables.close(out, threw);
+				Closeables.close(fOut, threw);
+			}
+		} else {
+			LOGGER.warn("There is no source map present in the result!");
+		}
+	}
+
+	/**
+	 * Replaces the file paths in the source map with the actual paths.
+	 * 
+	 * @param out
+	 *            The writer containing the source map.
+	 * @param oldTargetDirectory
+	 *            The current path to replace.
+	 * @return the normalized source map
+	 * 
+	 */
+	private static String normalizeFilePahts(StringWriter out,
+			File oldTargetDirectory) {
+		StringBuffer sourceBuffer = out.getBuffer();
+		String sourceMap = sourceBuffer.toString();
+		sourceMap = sourceMap.replaceAll(oldTargetDirectory.getAbsolutePath(),
+				WEB_CONTAINER_JAVASCRIPT_PATH);
+		return sourceMap;
 	}
 
 	/**
