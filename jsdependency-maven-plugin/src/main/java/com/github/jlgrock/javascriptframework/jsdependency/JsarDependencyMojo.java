@@ -63,7 +63,7 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 			// extract google dependencies (if needed)
 			LOGGER.info("Extracting google closure library to location \""
 					+ getClosureExtractLibDirectory().getAbsolutePath() + "\"");
-			ZipInputStream zis = ResourceIO.getResourceAsZipStream("closure-library.zip");
+			ZipInputStream zis = ResourceIO.getResourceAsZipStream("closure-library-r2180.zip");
 			try {
 				ZipUtils.unzip(zis, getClosureExtractLibDirectory());
 			} finally {
