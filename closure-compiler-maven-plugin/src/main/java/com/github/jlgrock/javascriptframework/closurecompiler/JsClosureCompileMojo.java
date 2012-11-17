@@ -49,7 +49,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * The actual base path for the debug scripts in a web-container.
 	 */
-	private static final String WEB_CONTAINER_JAVASCRIPT_PATH = "\\/javascript\\/debug";
+	private static final String WEB_CONTAINER_JAVASCRIPT_PATH = "/javascript/debug";
 
 	/**
 	 * The path to the source map folder in a web-container.
@@ -732,7 +732,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			File oldTargetDirectory) {
 		StringBuffer sourceBuffer = out.getBuffer();
 		String sourceMap = sourceBuffer.toString();
-		sourceMap = sourceMap.replaceAll(oldTargetDirectory.getAbsolutePath(),
+		sourceMap = sourceMap.replace(oldTargetDirectory.getAbsolutePath(),
 				WEB_CONTAINER_JAVASCRIPT_PATH);
 		return sourceMap;
 	}
