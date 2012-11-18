@@ -20,7 +20,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType;
  * @phase test
  * @requiresDependencyResolution test
  */
-public class JsarTestDependencyMojo extends AbstractDependencyMojo {
+public final class JsarTestDependencyMojo extends AbstractDependencyMojo {
 	/**
 	 * The Logger.
 	 */
@@ -37,7 +37,7 @@ public class JsarTestDependencyMojo extends AbstractDependencyMojo {
 	private MavenProject project;
 
 	@Override
-	public final MavenProject getProject() {
+	public MavenProject getProject() {
 		return project;
 	}
 	
@@ -51,12 +51,12 @@ public class JsarTestDependencyMojo extends AbstractDependencyMojo {
 	private File frameworkTargetDirectory;
 	
 	@Override
-	public final File getFrameworkTargetDirectory() {
+	public File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
 	}
 	
 	@Override
-	protected final void extractDependencies() throws IOException {
+	protected void extractDependencies() throws IOException {
 		File location;
 
 		@SuppressWarnings("unchecked")

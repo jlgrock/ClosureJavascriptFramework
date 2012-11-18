@@ -19,7 +19,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
  * @phase compile
  * @requiresDependencyResolution runtime
  */
-public class JsarDependencyMojo extends AbstractDependencyMojo {
+public final class JsarDependencyMojo extends AbstractDependencyMojo {
 	/**
 	 * The Logger.
 	 */
@@ -36,7 +36,7 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 	private MavenProject project;
 
 	@Override
-	public final MavenProject getProject() {
+	public MavenProject getProject() {
 		return project;
 	}
 	/**
@@ -49,14 +49,14 @@ public class JsarDependencyMojo extends AbstractDependencyMojo {
 	private File frameworkTargetDirectory;
 	
 	@Override
-	public final File getFrameworkTargetDirectory() {
+	public File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected final void extractDependencies() throws IOException, MojoFailureException, MojoExecutionException {
-		extractInterns(true, true);
+	protected void extractDependencies() throws IOException, MojoFailureException, MojoExecutionException {
+		extractInterns(true);
 		extractExterns(getProject().getArtifacts());
 		
 		if (!isSkipGoogleExtraction()) {

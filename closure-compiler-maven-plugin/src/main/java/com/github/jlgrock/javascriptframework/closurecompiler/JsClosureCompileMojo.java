@@ -21,6 +21,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStre
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
+import com.github.jlgrock.javascriptframework.mavenutils.pathing.RelativePath;
 import com.google.common.io.Closeables;
 import com.google.common.io.Files;
 import com.google.javascript.jscomp.CommandLineRunner;
@@ -28,7 +29,6 @@ import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.Compiler;
 import com.google.javascript.jscomp.CompilerOptions;
 import com.google.javascript.jscomp.JSError;
-import com.google.javascript.jscomp.JSSourceFile;
 import com.google.javascript.jscomp.Result;
 import com.google.javascript.jscomp.SourceFile;
 import com.google.javascript.jscomp.SourceMap.DetailLevel;
@@ -45,11 +45,6 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * What extension to use for the source map file.
 	 */
 	private static final String SOURCE_MAP_EXTENSION = ".smap";
-
-	/**
-	 * The actual base path for the debug scripts in a web-container.
-	 */
-	private static final String WEB_CONTAINER_JAVASCRIPT_PATH = "/javascript/debug";
 
 	/**
 	 * The path to the source map folder in a web-container.
@@ -74,7 +69,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			final List<File> jsFiles) {
 		List<SourceFile> jsSourceFiles = new ArrayList<SourceFile>();
 		for (File f : jsFiles) {
-			jsSourceFiles.add(JSSourceFile.fromFile(f));
+			jsSourceFiles.add(SourceFile.fromFile(f));
 		}
 		return jsSourceFiles;
 	}
@@ -490,8 +485,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		Files.createParentDirs(compiledFile);
 		Files.touch(compiledFile);
 		if (generateSourceMap) {
+			String sourcemapLocation = RelativePath.getRelPathFromBase(
+					sourceMapFile, JsarRelativeLocations
+							.getDebugDepsLocation(frameworkTargetDirectory));
+
 			JsClosureCompileMojo.writeOutput(compiledFile, compiler,
-					outputWrapper, OUTPUT_WRAPPER_MARKER, sourceMapFile);
+					outputWrapper, OUTPUT_WRAPPER_MARKER, sourcemapLocation,
+					sourceMapFile);
 			JsClosureCompileMojo.writeSourceMap(compiledFile, sourceMapFile,
 					frameworkTargetDirectory, result, outputWrapper,
 					OUTPUT_WRAPPER_MARKER);
@@ -599,7 +599,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	static void writeOutput(final File outFile, final Compiler compiler,
 			final String wrapper, final String codePlaceholder)
 			throws IOException {
-		writeOutput(outFile, compiler, wrapper, codePlaceholder, null);
+		writeOutput(outFile, compiler, wrapper, codePlaceholder, null, null);
 	}
 
 	/**
@@ -614,6 +614,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *            the string to wrap around the code (using the codePlaceholder)
 	 * @param codePlaceholder
 	 *            the identifier for the code
+	 * @param pathToSourceMapFile
+	 *            the path to the source map, which is placed in the output
 	 * @param sourceMapFile
 	 *            The file containing the source map information, can be null
 	 * @throws IOException
@@ -621,7 +623,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	static void writeOutput(final File outFile, final Compiler compiler,
 			final String wrapper, final String codePlaceholder,
-			final File sourceMapFile) throws IOException {
+			final String pathToSourceMapFile, final File sourceMapFile)
+			throws IOException {
 		FileWriter out = new FileWriter(outFile);
 		String code = compiler.toSource();
 		boolean threw = true;
@@ -651,9 +654,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			}
 			if (sourceMapFile != null) {
 				out.append('\n');
-				out.append("//@ sourceMappingURL="
-						+ WEB_CONTAINER_SOURCEMAP_PATH
-						+ sourceMapFile.getName());
+				out.append("//@ sourceMappingURL=" + sourceMapFile.getName());
 			}
 			out.append('\n');
 			threw = false;
@@ -682,9 +683,10 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws IOException
 	 *             when the file cannot be written to.
 	 */
-	static void writeSourceMap(File originalFile, File outputFile,
-			File frameworkTargetDirectory, Result result, String wrapper,
-			String codePlaceholder) throws IOException {
+	static void writeSourceMap(final File originalFile, final File outputFile,
+			final File frameworkTargetDirectory, final Result result,
+			final String wrapper, final String codePlaceholder)
+			throws IOException {
 		if (result.sourceMap != null) {
 			boolean threw = true;
 			Files.touch(outputFile);
@@ -703,9 +705,15 @@ public class JsClosureCompileMojo extends AbstractMojo {
 						result.sourceMap.setWrapperPrefix(prefix);
 					}
 				}
+
+				// SourceMap relativeMap = Collections.result.sourceMap;
+
 				result.sourceMap.appendTo(out, originalFile.getName());
-				String sourceMap = normalizeFilePahts(out,
+
+				String sourceMap = normalizeFilePaths(
+						out,
 						frameworkTargetDirectory);
+
 				fOut.append(sourceMap);
 				fOut.append('\n');
 				threw = false;
@@ -723,17 +731,24 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * 
 	 * @param out
 	 *            The writer containing the source map.
-	 * @param oldTargetDirectory
+	 * @param frameworkTargetDirectory
 	 *            The current path to replace.
 	 * @return the normalized source map
+	 * @throws IOException if there is a problem reading the files 
 	 * 
 	 */
-	private static String normalizeFilePahts(StringWriter out,
-			File oldTargetDirectory) {
+	private static String normalizeFilePaths(final StringWriter out,
+			final File frameworkTargetDirectory) throws IOException {
 		StringBuffer sourceBuffer = out.getBuffer();
 		String sourceMap = sourceBuffer.toString();
-		sourceMap = sourceMap.replace(oldTargetDirectory.getAbsolutePath(),
-				WEB_CONTAINER_JAVASCRIPT_PATH);
+		String relPath = RelativePath
+				.getRelPathFromBase(
+						JsarRelativeLocations
+								.getCompileLocation(frameworkTargetDirectory),
+						frameworkTargetDirectory);
+		sourceMap = sourceMap
+				.replace(frameworkTargetDirectory.getAbsolutePath() + File.separator,
+						relPath);
 		return sourceMap;
 	}
 

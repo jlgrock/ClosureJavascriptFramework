@@ -24,7 +24,7 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType;
  * @phase initialize
  * @requiresDependencyResolution compile
  */
-public class JsarWarDependencyMojo extends AbstractDependencyMojo {
+public final class JsarWarDependencyMojo extends AbstractDependencyMojo {
 	/**
 	 * The Maven Project.
 	 * 
@@ -41,11 +41,15 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 			.getLogger(JsarWarDependencyMojo.class);
 
 	/**
-	 * Whether or not to expand the debug and assertion library. This can be
-	 * useful when including files for an api. When doing this, make sure to
-	 * include the appropriate internal dependencies and closure compiler.
+	 * Old functionality: Whether or not to expand the debug and assertion
+	 * library. This can be useful when including files for an api. When doing
+	 * this, make sure to include the appropriate internal dependencies and
+	 * closure compiler.
 	 * 
 	 * @parameter default-value="true"
+	 * @deprecated in 1.15.0 - Due to the new SourceMap functionality, the debug
+	 *             code must be available at all times. This parameter no longer
+	 *             does anything.
 	 */
 	private boolean extractDebug;
 
@@ -73,6 +77,9 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 	 * using it within a Google closure project.
 	 * 
 	 * @parameter default-value="true"
+	 * @deprecated in 1.15.0 - Due to the new SourceMap functionality, the debug
+	 *             code must be available at all times. This parameter no longer
+	 *             does anything.
 	 */
 	private boolean includeRequiresFiles;
 
@@ -82,8 +89,7 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 	 * 
 	 * @parameter default-value=
 	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript"
-	 * @parameter expression=
-	 * 			  "target.directory"
+	 * @parameter expression= "target.directory"
 	 */
 	private File frameworkTargetDirectory;
 
@@ -91,29 +97,40 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 	 * The default directory to extract dependency files to. This will do
 	 * anything with a classifier that is unspecified or "internal".
 	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript${file.separator}compiled"
-	 * @parameter expression=
-	 * 			  "compiled.target.directory"
+	 * Please note that as SourceMapping from new packages may be places into
+	 * the compiledFileDirectory in older version, they will be unusable, as the
+	 * pathing will be incorrect.
+	 * 
+	 * If this parameter is set, it will throw a MojoException and will not
+	 * continue.
+	 * 
+	 * @deprecated in 1.15.0 - This is no longer something that can be broken
+	 *             out of the targetFrameworkDirectory. The compiled files will
+	 *             always be in the compiled folder of the
+	 *             targetFrameworkDirectory. This is due to SourceMapping, which
+	 *             allows you to map compiled code back to the original
+	 *             uncompiled code.
 	 */
 	private File compiledFileDirectory;
 
-	
-	
 	/**
 	 * Extract the dependencies from the jsar to the appropriate location(s).
 	 * 
 	 * @throws IOException
 	 *             if there is a problem reading the artifact
-	 * @throws MojoFailureException from any Mojo API specific calls
-	 * @throws MojoExecutionException from any Mojo API specific calls
+	 * @throws MojoFailureException
+	 *             from any Mojo API specific calls
+	 * @throws MojoExecutionException
+	 *             from any Mojo API specific calls
 	 */
 	@SuppressWarnings("unchecked")
-	protected final void extractDependencies() throws IOException, MojoFailureException, MojoExecutionException {
-		File location;
+	protected void extractDependencies() throws IOException,
+			MojoFailureException, MojoExecutionException {
+		File location = JsarRelativeLocations
+				.getOutputLocation(getFrameworkTargetDirectory());
 
 		Set<Artifact> artifactSet = getArtifactSet();
-		extractInterns(extractAssert, extractDebug);
+		extractInterns(extractAssert);
 		extractExterns(artifactSet);
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(
 				artifactSet);
@@ -123,7 +140,7 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 			LOGGER.info("Extracting google closure library to location \""
 					+ getFrameworkTargetDirectory().getAbsolutePath() + "\"");
 			ZipUtils.unzip(
-					ResourceIO.getResourceAsZipStream("closure-library.zip"),
+					ResourceIO.getResourceAsZipStream("closure-library-r2180.zip"),
 					getFrameworkTargetDirectory());
 		}
 
@@ -132,9 +149,6 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 				.getDependencyArtifacts();
 		extractJSArtifacts = new ArtifactExtractor(artifactSetNonTransitive);
 
-		
-		location = JsarRelativeLocations
-				.getOutputLocation(getFrameworkTargetDirectory());
 		if (extractAssert) {
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_ASSERT_LOCATION + "/",
@@ -144,49 +158,45 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 					JsarRelativeLocations.JSAR_ASSERTION_SOURCE_LOCATION + "/",
 					PackagingType.JSAR, ScopeType.ANY, location);
 
-			if (includeRequiresFiles) {
-				location = JsarRelativeLocations
-						.getOutputLocation(getFrameworkTargetDirectory());
-				extractJSArtifacts.extract(
-						JsarRelativeLocations.JSAR_ASSERT_REQUIRES_LOCATION
-								+ "/", PackagingType.JSAR, ScopeType.ANY,
-						location);
-			}
-		}
-		if (extractDebug) {
+			
 			extractJSArtifacts.extract(
-					JsarRelativeLocations.JSAR_DEBUG_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.ANY, location);
-
-			extractJSArtifacts.extract(
-					JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.ANY, location);
-
-			if (includeRequiresFiles) {
-				location = JsarRelativeLocations
-						.getOutputLocation(getFrameworkTargetDirectory());
-				extractJSArtifacts.extract(
-						JsarRelativeLocations.JSAR_DEBUG_REQUIRES_LOCATION
-								+ "/", PackagingType.JSAR, ScopeType.ANY,
-						location);
-			}
+					JsarRelativeLocations.JSAR_ASSERT_REQUIRES_LOCATION
+							+ "/", PackagingType.JSAR, ScopeType.ANY,
+					location);
 		}
+		extractJSArtifacts.extract(JsarRelativeLocations.JSAR_DEBUG_LOCATION
+				+ "/", PackagingType.JSAR, ScopeType.ANY, location);
+
+		extractJSArtifacts.extract(
+				JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
+				PackagingType.JSAR, ScopeType.ANY, location);
+
+		extractJSArtifacts.extract(
+				JsarRelativeLocations.JSAR_DEBUG_REQUIRES_LOCATION + "/",
+				PackagingType.JSAR, ScopeType.ANY, location);
+
+		if (compiledFileDirectory != null) {
+			throw new MojoExecutionException(
+					"compiledFileDirectory is no longer an accepted parameter.  Please remove.  This will " +
+					"now be located within the frameworkTargetDirectory");
+		}
+		
 		if (extractCompiled) {
 			LOGGER.info("Extracting compiled dependencies to location \""
-					+ compiledFileDirectory.getAbsolutePath() + "\"");
+					+ location.getAbsolutePath() + "\"");
 			extractJSArtifacts.extract(
 					JsarRelativeLocations.JSAR_COMPILE_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.ANY, compiledFileDirectory);
+					PackagingType.JSAR, ScopeType.ANY, location);
 		}
 	}
 
 	@Override
-	public final File getFrameworkTargetDirectory() {
+	public File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
 	}
-	
+
 	@Override
-	public final MavenProject getProject() {
+	public MavenProject getProject() {
 		return project;
 	}
 
@@ -194,7 +204,7 @@ public class JsarWarDependencyMojo extends AbstractDependencyMojo {
 	 * @return the artifact set
 	 */
 	@SuppressWarnings("unchecked")
-	public final Set<Artifact> getArtifactSet() {
+	public Set<Artifact> getArtifactSet() {
 		// for debugging files, get transitive dependencies
 		Set<Artifact> artifactSet = getProject().getArtifacts();
 		return artifactSet;

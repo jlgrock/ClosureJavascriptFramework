@@ -10,8 +10,9 @@ import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 
 /**
- * A simple extension that copies the necessary files from the "default directory" 
- * to the war staging directory prior to a war packaging.  This is only used in the war lifecycle.
+ * A simple extension that copies the necessary files from the
+ * "default directory" to the war staging directory prior to a war packaging.
+ * This is only used in the war lifecycle.
  * 
  * @goal war-move
  * @phase pre-package
@@ -28,22 +29,41 @@ public class WarMoveMojo extends AbstractMojo {
 	private File frameworkTargetDirectory;
 
 	/**
-	 * The directory (where the webapp is built) that you want to place the debug and assert javascript.
-	 * This includes the closure library and all dependencies.
-	 * Default value is: ${project.build.directory}/${project.build.finalName}/javascript/debug.
+	 * The directory (where the webapp is built) that you want to place the
+	 * necessary closure compiled files (including debug, assert, and compiled)
+	 * javascript. This also includes the closure library and all dependencies.
+	 * Default value is:
+	 * ${project.build.directory}/${project.build.finalName}/javascript
+	 * /generated.
 	 * 
 	 * @parameter default-value=
-	 *            "${project.build.directory}/${project.build.finalName}/javascript/debug"
+	 *            "${project.build.directory}/${project.build.finalName}/javascript/generated"
+	 */
+	private File warTargetDirectory;
+
+	/**
+	 * The directory (where the webapp is built) that you want to place the
+	 * debug and assert javascript. This includes the closure library and all
+	 * dependencies. Default value is:
+	 * ${project.build.directory}/${project.build.finalName}/javascript/debug.
+	 * 
+	 * @deprecated - In 1.15.0 - This is no longer something that can be broken
+	 *             out of the targetFrameworkDirectory. The compiled files will
+	 *             always be in the compiled folder of the warTargetDirectory.
+	 *             This is due to SourceMapping, which allows you to map
+	 *             compiled code back to the original uncompiled code.
 	 */
 	private File debugDirectory;
 
 	/**
-	 * The directory (where the webapp is built) that you want to place the deploy javascript.  
-	 * This includes the compiled version of the code.
-	 * Default value is: ${project.build.directory}/${project.build.finalName}/javascript/compiled.
+	 * The directory (where the webapp is built) that you want to place the
+	 * deploy javascript. This includes the compiled version of the code.
 	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}${project.build.finalName}${file.separator}javascript${file.separator}compiled"
+	 * @deprecated - In 1.15.0 - This is no longer something that can be broken
+	 *             out of the targetFrameworkDirectory. The compiled files will
+	 *             always be in the compiled folder of the warTargetDirectory.
+	 *             This is due to SourceMapping, which allows you to map
+	 *             compiled code back to the original uncompiled code.
 	 */
 	private File compileDirectory;
 
@@ -62,6 +82,8 @@ public class WarMoveMojo extends AbstractMojo {
 	 * include the appropriate internal dependencies and closure compiler.
 	 * 
 	 * @parameter default-value="true"
+	 * @deprecated In 1.15.0 - due to the addition of SourceMaps, debug must
+	 *             always be provided. At this point, this will not be used.
 	 */
 	private boolean includeDebug;
 
@@ -75,44 +97,74 @@ public class WarMoveMojo extends AbstractMojo {
 	private boolean includeCompiled;
 
 	@Override
-	public final void execute() throws MojoExecutionException, MojoFailureException {
+	public final void execute() throws MojoExecutionException,
+			MojoFailureException {
+		if (compileDirectory != null || debugDirectory != null) {
+			throw new MojoExecutionException(
+					"compileDirectory  and debugDirectory are no longer an accepted parameters.  Please remove.  This will " +
+					"now be located within the warTargetDirectory.");
+		}
+		
 		try {
-			if (includeAssert || includeDebug) {
-				if (!debugDirectory.exists()) {
-					debugDirectory.mkdirs();
-				}
-				
-				DirectoryIO.copyDirectory(JsarRelativeLocations.getClosureLibraryLocation(frameworkTargetDirectory),
-						JsarRelativeLocations.getClosureLibraryLocation(debugDirectory));
-
-				if (JsarRelativeLocations.getInternsLocation(frameworkTargetDirectory).exists()) {
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getInternsLocation(frameworkTargetDirectory),
-						JsarRelativeLocations.getInternsLocation(debugDirectory));
-				}
-				if (includeAssert) {
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getAssertDepsLocation(frameworkTargetDirectory),
-							JsarRelativeLocations.getAssertDepsLocation(debugDirectory));
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getAssertionSourceLocation(frameworkTargetDirectory),
-							JsarRelativeLocations.getAssertionSourceLocation(debugDirectory));
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getAssertRequiresLocation(frameworkTargetDirectory),
-							JsarRelativeLocations.getAssertRequiresLocation(debugDirectory));
-				}
-				if (includeDebug) {
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getDebugDepsLocation(frameworkTargetDirectory),
-							JsarRelativeLocations.getDebugDepsLocation(debugDirectory));
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getDebugSourceLocation(frameworkTargetDirectory),
-							JsarRelativeLocations.getDebugSourceLocation(debugDirectory));
-					DirectoryIO.copyDirectory(JsarRelativeLocations.getDebugRequiresLocation(frameworkTargetDirectory),
-							JsarRelativeLocations.getDebugRequiresLocation(debugDirectory));
-				}
+			if (!warTargetDirectory.exists()) {
+				warTargetDirectory.mkdirs();
 			}
-			
+
+			DirectoryIO.copyDirectory(JsarRelativeLocations
+					.getClosureLibraryLocation(frameworkTargetDirectory),
+					JsarRelativeLocations
+							.getClosureLibraryLocation(warTargetDirectory));
+
+			if (JsarRelativeLocations.getInternsLocation(
+					frameworkTargetDirectory).exists()) {
+				DirectoryIO.copyDirectory(JsarRelativeLocations
+						.getInternsLocation(frameworkTargetDirectory),
+						JsarRelativeLocations
+								.getInternsLocation(warTargetDirectory));
+			}
+
+			// Include Assert
+			if (includeAssert) {
+				DirectoryIO.copyDirectory(JsarRelativeLocations
+						.getAssertDepsLocation(frameworkTargetDirectory),
+						JsarRelativeLocations
+								.getAssertDepsLocation(warTargetDirectory));
+				DirectoryIO
+						.copyDirectory(
+								JsarRelativeLocations
+										.getAssertionSourceLocation(frameworkTargetDirectory),
+								JsarRelativeLocations
+										.getAssertionSourceLocation(warTargetDirectory));
+				DirectoryIO.copyDirectory(JsarRelativeLocations
+						.getAssertRequiresLocation(frameworkTargetDirectory),
+						JsarRelativeLocations
+								.getAssertRequiresLocation(warTargetDirectory));
+			}
+
+			// Include Debug
+			DirectoryIO.copyDirectory(JsarRelativeLocations
+					.getDebugDepsLocation(frameworkTargetDirectory),
+					JsarRelativeLocations
+							.getDebugDepsLocation(warTargetDirectory));
+			DirectoryIO.copyDirectory(JsarRelativeLocations
+					.getDebugSourceLocation(frameworkTargetDirectory),
+					JsarRelativeLocations
+							.getDebugSourceLocation(warTargetDirectory));
+			DirectoryIO.copyDirectory(JsarRelativeLocations
+					.getDebugRequiresLocation(frameworkTargetDirectory),
+					JsarRelativeLocations
+							.getDebugRequiresLocation(warTargetDirectory));
+
+			// Include Compiled
 			if (includeCompiled) {
-				DirectoryIO.copyDirectory(JsarRelativeLocations.getCompileLocation(frameworkTargetDirectory),
-						compileDirectory);
+				DirectoryIO.copyDirectory(JsarRelativeLocations
+						.getCompileLocation(frameworkTargetDirectory),
+						JsarRelativeLocations
+								.getCompileLocation(warTargetDirectory));
 			}
 		} catch (Exception e) {
-			throw new MojoExecutionException("Unable to move files to war archive directory: " + e);
+			throw new MojoExecutionException(
+					"Unable to move files to war archive directory: " + e);
 		}
-	}	
+	}
 }

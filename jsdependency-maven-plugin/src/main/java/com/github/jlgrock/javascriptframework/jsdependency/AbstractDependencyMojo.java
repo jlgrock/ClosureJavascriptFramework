@@ -107,8 +107,6 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	 * 
 	 * @param extractAssert
 	 *            whether to extract assert files
-	 * @param extractDebug
-	 *            whether to extract debug files
 	 * @throws IOException
 	 *             if unable to write files
 	 * @throws MojoFailureException
@@ -116,8 +114,7 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	 * @throws MojoExecutionException
 	 *             from any Mojo API specific calls
 	 */
-	protected final void extractInterns(final boolean extractAssert,
-			final boolean extractDebug) throws IOException,
+	protected final void extractInterns(final boolean extractAssert) throws IOException,
 			MojoFailureException, MojoExecutionException {
 
 		@SuppressWarnings("unchecked")
@@ -140,18 +137,16 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 		}
 
 		// extract internal debug dependencies
-		if (extractDebug) {
-			File debugLocation = JsarRelativeLocations
-					.getInternsDebugLocation(getFrameworkTargetDirectory());
-			LOGGER.info("Extracting internal debug dependencies to location \""
+		File debugLocation = JsarRelativeLocations
+				.getInternsDebugLocation(getFrameworkTargetDirectory());
+		LOGGER.info("Extracting internal debug dependencies to location \""
 
-			+ debugLocation.getAbsolutePath() + File.separator
-					+ JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION
-					+ "\"");
-			extractJSArtifacts.extract(
-					JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
-					PackagingType.JSAR, ScopeType.COMPILE, debugLocation);
-		}
+		+ debugLocation.getAbsolutePath() + File.separator
+				+ JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION
+				+ "\"");
+		extractJSArtifacts.extract(
+				JsarRelativeLocations.JSAR_PROCESSED_SOURCE_LOCATION + "/",
+				PackagingType.JSAR, ScopeType.COMPILE, debugLocation);
 	}
 
 	/**
