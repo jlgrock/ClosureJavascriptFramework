@@ -46,10 +46,6 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private static final String SOURCE_MAP_EXTENSION = ".smap";
 
-	/**
-	 * The path to the source map folder in a web-container.
-	 */
-	private static final String WEB_CONTAINER_SOURCEMAP_PATH = "/javascript/compiled/";
 
 	/**
 	 * The Logger.
@@ -740,7 +736,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private static String normalizeFilePaths(final StringWriter out,
 			final File frameworkTargetDirectory) throws IOException {
 		StringBuffer sourceBuffer = out.getBuffer();
-		String sourceMap = sourceBuffer.toString();
+		//Don't you just have to love windows! 
+		String sourceMap = sourceBuffer.toString().replace("\\\\", "\\");
 		String relPath = RelativePath
 				.getRelPathFromBase(
 						JsarRelativeLocations
@@ -749,7 +746,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		sourceMap = sourceMap
 				.replace(frameworkTargetDirectory.getAbsolutePath() + File.separator,
 						relPath);
-		return sourceMap;
+		//Don't you just have to love windows! 
+		return sourceMap.replace("\\", "/");
 	}
 
 	/**
