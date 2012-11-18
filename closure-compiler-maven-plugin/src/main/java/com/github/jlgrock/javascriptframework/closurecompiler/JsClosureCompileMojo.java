@@ -747,7 +747,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				.replace(frameworkTargetDirectory.getAbsolutePath() + File.separator,
 						relPath);
 		//Don't you just have to love windows! 
-		return sourceMap.replace("\\", "/");
+		return sourceMap.replace('\\', '/');
 	}
 
 	/**
