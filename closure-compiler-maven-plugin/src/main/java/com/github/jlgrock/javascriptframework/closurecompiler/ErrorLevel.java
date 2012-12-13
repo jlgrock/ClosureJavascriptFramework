@@ -9,7 +9,7 @@ public enum ErrorLevel {
 	/**
 	 * The possible error levels.
 	 */
-	SIMPLE("SIMPLE"), WARNING("WARNING"), STRICT("STRICT");
+	NONE("NONE"), SIMPLE("SIMPLE"), WARNING("WARNING"), STRICT("STRICT");
 	
 	/**
 	 * The string that identifies the error level.

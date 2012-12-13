@@ -46,7 +46,6 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private static final String SOURCE_MAP_EXTENSION = ".smap";
 
-
 	/**
 	 * The Logger.
 	 */
@@ -206,6 +205,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * 
 	 * Possible values are:
 	 * <ul>
+	 * <li>NONE
 	 * <li>SIMPLE
 	 * <li>WARNING
 	 * <li>STRICT
@@ -213,6 +213,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * <br/>
 	 * 
 	 * @parameter default-value="STRICT"
+	 * @required
 	 */
 	private String errorLevel;
 
@@ -415,9 +416,10 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			MojoFailureException, IOException {
 		CompilationLevel compilationLevel = null;
 		try {
-			compilationLevel = CompilationLevel.valueOf(compileLevel);
-			LOGGER.info("Compiler set to optimization level \"" + compileLevel
-					+ "\".");
+			compilationLevel = CompilationLevel.valueOf(compileLevel
+					.toUpperCase());
+			LOGGER.info("Compiler set to optimization level \""
+					+ compileLevel.toUpperCase() + "\".");
 		} catch (IllegalArgumentException e) {
 			LOGGER.error("Compilation level invalid.  Aborting.");
 			throw new MojoExecutionException(
@@ -425,34 +427,23 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		CompilerOptions compilerOptions = new CompilerOptions();
-		if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
-				ErrorLevel.WARNING)) {
-			WarningLevel wLevel = WarningLevel.VERBOSE;
-			wLevel.setOptionsForWarningLevel(compilerOptions);
-		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
-				ErrorLevel.STRICT)) {
-			StrictLevel sLevel = StrictLevel.VERBOSE;
-			sLevel.setOptionsForWarningLevel(compilerOptions);
-		}
+		generateCompilerOptions(compilerOptions);
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
 
-		File sourceMapFile = null;
+		File sourceMapFile = new File(
+				JsarRelativeLocations
+						.getCompileLocation(frameworkTargetDirectory),
+				compiledFilename + SOURCE_MAP_EXTENSION);
+
 		if (generateSourceMap) {
-			sourceMapFile = new File(
-					JsarRelativeLocations
-							.getCompileLocation(frameworkTargetDirectory),
-					compiledFilename + SOURCE_MAP_EXTENSION);
-			compilerOptions.setSourceMapFormat(Format.V3);
-			compilerOptions.setSourceMapDetailLevel(DetailLevel.ALL);
-			compilerOptions.setSourceMapOutputPath(sourceMapFile
-					.getAbsolutePath());
+			attachSourceMapFileToOptions(sourceMapFile, compilerOptions);
 		}
 
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG), true);
 		Compiler compiler = new Compiler(ps);
-
+		
 		for (SourceFile jsf : allSources) {
 			LOGGER.debug("source files: " + jsf.getOriginalPath());
 		}
@@ -497,6 +488,57 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Generate and attache the source map to the compiler options.
+	 * 
+	 * @param sourceMapFile
+	 *            the sourceMapFile to attach
+	 * @param compilerOptions
+	 *            the object to attach the options to
+	 */
+	private void attachSourceMapFileToOptions(final File sourceMapFile,
+			final CompilerOptions compilerOptions) {
+		compilerOptions.setSourceMapFormat(Format.V3);
+		compilerOptions.setSourceMapDetailLevel(DetailLevel.ALL);
+		compilerOptions.setSourceMapOutputPath(sourceMapFile.getAbsolutePath());
+	}
+
+	/**
+	 * Generate and attach the compiler options to the object passed in.
+	 * 
+	 * @param compilerOptions
+	 *            the object to modify.
+	 * @throws MojoExecutionException
+	 *             if the option doesn't match one of the valid values
+	 */
+	private void generateCompilerOptions(final CompilerOptions compilerOptions)
+			throws MojoExecutionException {
+		if (ErrorLevel.getCompileLevelByName(errorLevel)
+				.equals(ErrorLevel.NONE)) {
+			WarningLevel wLevel = WarningLevel.QUIET;
+			Compiler.setLoggingLevel(java.util.logging.Level.OFF);
+			wLevel.setOptionsForWarningLevel(compilerOptions);
+		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
+				ErrorLevel.SIMPLE)) {
+			Compiler.setLoggingLevel(java.util.logging.Level.WARNING);
+			WarningLevel wLevel = WarningLevel.DEFAULT;
+			wLevel.setOptionsForWarningLevel(compilerOptions);
+		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
+				ErrorLevel.WARNING)) {
+			Compiler.setLoggingLevel(java.util.logging.Level.ALL);
+			WarningLevel wLevel = WarningLevel.VERBOSE;
+			wLevel.setOptionsForWarningLevel(compilerOptions);
+		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
+				ErrorLevel.STRICT)) {
+			Compiler.setLoggingLevel(java.util.logging.Level.ALL);
+			StrictLevel sLevel = StrictLevel.VERBOSE;
+			sLevel.setOptionsForWarningLevel(compilerOptions);
+		} else {
+			throw new MojoExecutionException(
+					"Invalid value for 'errorLevel' tag.");
+		}
 	}
 
 	@Override
@@ -706,8 +748,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 
 				result.sourceMap.appendTo(out, originalFile.getName());
 
-				String sourceMap = normalizeFilePaths(
-						out,
+				String sourceMap = normalizeFilePaths(out,
 						frameworkTargetDirectory);
 
 				fOut.append(sourceMap);
@@ -730,23 +771,22 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @param frameworkTargetDirectory
 	 *            The current path to replace.
 	 * @return the normalized source map
-	 * @throws IOException if there is a problem reading the files 
+	 * @throws IOException
+	 *             if there is a problem reading the files
 	 * 
 	 */
 	private static String normalizeFilePaths(final StringWriter out,
 			final File frameworkTargetDirectory) throws IOException {
 		StringBuffer sourceBuffer = out.getBuffer();
-		//Don't you just have to love windows! 
+		// Don't you just have to love windows!
 		String sourceMap = sourceBuffer.toString().replace("\\\\", "\\");
-		String relPath = RelativePath
-				.getRelPathFromBase(
-						JsarRelativeLocations
-								.getCompileLocation(frameworkTargetDirectory),
-						frameworkTargetDirectory);
-		sourceMap = sourceMap
-				.replace(frameworkTargetDirectory.getAbsolutePath() + File.separator,
-						relPath);
-		//Don't you just have to love windows! 
+		String relPath = RelativePath.getRelPathFromBase(JsarRelativeLocations
+				.getCompileLocation(frameworkTargetDirectory),
+				frameworkTargetDirectory);
+		sourceMap = sourceMap.replace(
+				frameworkTargetDirectory.getAbsolutePath() + File.separator,
+				relPath);
+		// Don't you just have to love windows!
 		return sourceMap.replace('\\', '/');
 	}
 
