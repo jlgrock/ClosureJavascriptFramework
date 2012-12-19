@@ -1,0 +1,43 @@
+1.15
+-----------
+* Inclusion of SourceMaps with generated output.  For more information on how to use SourceMaps in 
+your browser, please visit my article on [SourceMaps](http://www.justinleegrant.com/?p=145).  Big
+Thanks on that to Patrick Gilmore.
+* Upgrade to Closure Compiler version to r2388
+* Upgrade to include default Closure Library included with the JSDependency plugin to version 2385. 
+* JSDependency plugin uses Maven dependency, so this can be changed in the future.
+* Updates to the Error levels.  There are now 4 levels (please note that these ARE case sensitive):
+** NONE - Does no error checking.  Just attempts to compile.  If there are issues, it won't tell you unless your code is so bad that it can't even compile it.
+** SIMPLE - Will pretty much do the same thing as NONE, except it will print out warnings for everything that is considered bad practice by the google compiler.
+** WARNING - The suggested minimum.  This is what the default is when using the command line Python toolings.  This will print warnings on everything that
+the google closure team has indicated is bad practice and these will cause a build failure whenever the extremely bad practice code are encountered.
+** STRICT - The most extreme (I use it in all my projects).  Anything that is considered bad practice by the google compiler will cause a build failure. 
+
+For a list of the errors that Google has documented, please see the [error list](https://developers.google.com/closure/compiler/docs/error-ref).
+
+1.14
+----------
+* Upgrade to Closure Compiler version to r2180
+* Upgrade to include default Closure Library included with the JSDependency plugin to version 2180.
+* Closure library included as a default now has a version attached to alleviate confusion and accomidate
+future changes to the version.
+
+1.13
+----------
+* Addition of Multithreading capabilities to speed up testing.  This, by default, will use all 
+processors available.  If you would like this to remain using 1-2 cores, please adjust the
+"maxTestThreads" parameter.  This performance improvement increased speed of processing test cases
+by a minimum factor of 4.  Thanks to Gordon Shankman for the help on this.
+*  Update of components.xml so that it is no longer necessary to list all of the plugins in the pom file.
+This was a bug discovered that would occasionally cause problems if there were interface changes
+between two versions.  By default, unless specified by a components.xml, it would use the newest
+version of the plugin available.  This could cause issues for those running older code.
+
+1.12
+---------
+* Upgrade to Closure Compiler version to r1810
+* Upgrade to include default Closure Library included with the JSDependency plugin to version 1635.
+* Addition of preamble, prologue, and epilogue blocks into code injection.  This allows you to wrap 
+any output of the library (for example, in a self executing closure, if that is required).
+ 
+

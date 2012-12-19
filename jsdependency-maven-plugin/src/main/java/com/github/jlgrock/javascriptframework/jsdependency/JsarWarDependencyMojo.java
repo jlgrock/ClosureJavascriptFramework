@@ -10,8 +10,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
-import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.PackagingType;
@@ -134,14 +132,11 @@ public final class JsarWarDependencyMojo extends AbstractDependencyMojo {
 		extractExterns(artifactSet);
 		ArtifactExtractor extractJSArtifacts = new ArtifactExtractor(
 				artifactSet);
+		
+		// extract google dependencies (if needed) - it could be provided by
+		// something else
 		if (!isSkipGoogleExtraction()) {
-			// extract google dependencies (if needed) - it could be provided by
-			// something else
-			LOGGER.info("Extracting google closure library to location \""
-					+ getFrameworkTargetDirectory().getAbsolutePath() + "\"");
-			ZipUtils.unzip(
-					ResourceIO.getResourceAsZipStream("closure-library-r2180.zip"),
-					getFrameworkTargetDirectory());
+			extractAndRenameLibrary();
 		}
 
 		// for the rest of this, only get specified dependency (not transitive)

@@ -16,7 +16,9 @@ public enum StrictLevel {
 
 	/**
 	 * Set one of the predefined Warning levels.
-	 * @param options the predefined option
+	 * 
+	 * @param options
+	 *            the predefined option
 	 */
 	public void setOptionsForWarningLevel(final CompilerOptions options) {
 		switch (this) {
@@ -41,36 +43,26 @@ public enum StrictLevel {
 		options.checkControlStructures = true;
 		options.checkSuspiciousCode = true;
 		options.checkSymbols = true;
-		
+
 		options.setAggressiveVarCheck(CheckLevel.ERROR);
 		options.setBrokenClosureRequiresLevel(CheckLevel.ERROR);
 		options.setCheckGlobalNamesLevel(CheckLevel.ERROR);
 		options.setCheckGlobalThisLevel(CheckLevel.ERROR);
-		//options.setCheckMissingGetCssNameLevel(CheckLevel.ERROR);
+		// options.setCheckMissingGetCssNameLevel(CheckLevel.ERROR);
 		options.setCheckMissingReturn(CheckLevel.ERROR);
 		options.setCheckProvides(CheckLevel.ERROR);
 		options.setCheckRequires(CheckLevel.ERROR);
 		options.setCheckUnreachableCode(CheckLevel.ERROR);
-		
-
-		options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
-				CheckLevel.ERROR);
-		
-		/**
-		 * Important Warning Level Settings
-		 */
-		//Warnings when deprecated, private, or protected are violated.
-		options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
-				CheckLevel.ERROR);
-		//Warnings when private and protected are violated (seems to work the same as access controls).
-		options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
-		//Warnings when non-deprecated code accesses code that's marked deprecated
-		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.ERROR);
 
 		/**
 		 * All other Warning Level Settings
 		 */
+		// Warnings when deprecated, private, or protected are violated.
+		options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS,
+				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
+				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.CAST,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_PROVIDES,
 				CheckLevel.ERROR);
@@ -84,6 +76,11 @@ public enum StrictLevel {
 		options.setWarningLevel(DiagnosticGroups.CONSTANT_PROPERTY,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT,
+				CheckLevel.ERROR);
+		// Warnings when non-deprecated code accesses code that's marked
+		// deprecated
+		options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.DUPLICATE_MESSAGE,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.DUPLICATE_VARS,
 				CheckLevel.ERROR);
@@ -99,9 +96,13 @@ public enum StrictLevel {
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES,
 				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.MISPLACED_TYPE_ANNOTATION,
+				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.STRICT_MODULE_DEP_CHECK,
+				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.SUSPICIOUS_CODE,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.TWEAKS, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.TYPE_INVALIDATION,
@@ -111,6 +112,11 @@ public enum StrictLevel {
 		options.setWarningLevel(DiagnosticGroups.UNDEFINED_VARIABLES,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.UNKNOWN_DEFINES,
-				CheckLevel.ERROR);		
+				CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.VIOLATED_MODULE_DEP,
+				CheckLevel.ERROR);
+		// Warnings when private and protected are violated (seems to work the
+		// same as access controls).
+		options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
 	}
 }

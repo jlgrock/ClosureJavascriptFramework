@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
@@ -15,7 +16,7 @@
 			<artifactId>maven-plugin-api</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-project</artifactId>
@@ -44,4 +45,43 @@
 	<description>The plugin that can reference archives created using the jsar plugin and use them as test dependencies or source code for inclusion in the compiling/minification</description>
 	<url>https://github.com/jlgrock/JavascriptFramework</url>
 	<name>JS Dependency Plugin</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack dojo</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jlgrock.javascript</groupId>
+									<artifactId>closure-library</artifactId>
+									<version>${closure-library.version}</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/additionalResources</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+          <resource>
+            <directory>${project.build.directory}/additionalResources</directory>
+            <filtering>false</filtering>
+            <includes>
+              <include>*.zip</include>
+            </includes>
+          </resource>
+        </resources>
+	</build>
+
 </project>

@@ -10,8 +10,11 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
+import com.github.jlgrock.javascriptframework.mavenutils.io.ResourceIO;
+import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ArtifactExtractor;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
@@ -102,6 +105,23 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	protected abstract void extractDependencies() throws IOException,
 			MojoFailureException, MojoExecutionException;
 
+	/**
+	 * Extracts the closure library and renames it to a standard so that it can be referenced
+	 * at a later point.
+	 * @throws IOException if there is a problem reading the artifact
+	 */
+	protected final void extractAndRenameLibrary() throws IOException {
+		String libName = "closure-library-2385";
+		String zipName = libName + ".zip";
+		LOGGER.info("Extracting google closure library to location \""
+				+ getFrameworkTargetDirectory().getAbsolutePath() + "\"");
+		ZipUtils.unzip(
+				ResourceIO.getResourceAsZipStream(zipName),
+				getFrameworkTargetDirectory());
+		FileUtils.rename(new File(getFrameworkTargetDirectory(), libName), 
+				new File(getFrameworkTargetDirectory(), "closure-library"));
+	}
+	
 	/**
 	 * Extract the interns (assert/debug) files from the package.
 	 * 

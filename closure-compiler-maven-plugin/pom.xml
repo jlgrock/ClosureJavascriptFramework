@@ -10,9 +10,6 @@
 	<name>Closure Compiler Maven Plugin</name>
 	<url>https://github.com/jlgrock/JavascriptFramework</url>
 	<description>The plugin that will create a debug version and run the Google Closure Compiler on the source code to create a heavily minified file.</description>
-	<properties>
-		<closure-compiler.version>r2180</closure-compiler.version>
-	</properties>
 		
 	<dependencies>
 		<!-- Mojo Dependencies -->

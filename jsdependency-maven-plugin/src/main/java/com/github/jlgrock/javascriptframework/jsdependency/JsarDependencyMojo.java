@@ -21,12 +21,6 @@ import com.github.jlgrock.javascriptframework.mavenutils.io.ZipUtils;
  */
 public final class JsarDependencyMojo extends AbstractDependencyMojo {
 	/**
-	 * The Logger.
-	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(JsarDependencyMojo.class);
-	
-	/**
 	 * The Maven Project.
 	 * 
 	 * @parameter expression="${project}"
@@ -39,6 +33,7 @@ public final class JsarDependencyMojo extends AbstractDependencyMojo {
 	public MavenProject getProject() {
 		return project;
 	}
+
 	/**
 	 * The default directory to extract dependency files to. This will do
 	 * anything with a classifier that is unspecified or "internal".
@@ -47,30 +42,24 @@ public final class JsarDependencyMojo extends AbstractDependencyMojo {
 	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 */
 	private File frameworkTargetDirectory;
-	
+
 	@Override
 	public File getFrameworkTargetDirectory() {
 		return frameworkTargetDirectory;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void extractDependencies() throws IOException, MojoFailureException, MojoExecutionException {
+	protected void extractDependencies() throws IOException,
+			MojoFailureException, MojoExecutionException {
 		extractInterns(true);
 		extractExterns(getProject().getArtifacts());
-		
+
+		// extract google dependencies (if needed) - it could be provided by
+		// something else
 		if (!isSkipGoogleExtraction()) {
-			// extract google dependencies (if needed)
-			LOGGER.info("Extracting google closure library to location \""
-					+ getClosureExtractLibDirectory().getAbsolutePath() + "\"");
-			ZipInputStream zis = ResourceIO.getResourceAsZipStream("closure-library-r2180.zip");
-			try {
-				ZipUtils.unzip(zis, getClosureExtractLibDirectory());
-			} finally {
-				zis.close();
-			}
+			extractAndRenameLibrary();
 		}
 	}
-	
-	
+
 }

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -18,6 +19,8 @@
 
 	<properties>
 		<github.project.name>ClosureJavascriptFramework</github.project.name>
+		<closure-compiler.version>r2388</closure-compiler.version>
+		<closure-library.version>2385</closure-library.version>
 		<maven.version>3.0.1</maven.version>
 		<maven.project.version>3.0-alpha-2</maven.project.version>
 		<maven-checkstyle-plugin.version>2.9</maven-checkstyle-plugin.version>
@@ -50,33 +53,14 @@
 		<spock.to.groovy.version>0.4-groovy-1.7</spock.to.groovy.version>
 		<target.jdk>1.5</target.jdk>
 		<selenium.version>2.24.1</selenium.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<dependencies>
-		<!-- Groovy/Spock Testing -->
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>${groovy.full.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.spockframework</groupId>
-			<artifactId>spock-core</artifactId>
-			<version>${spock.to.groovy.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Groovy Testing libs for mocking objects that have no interfaces -->
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-			<version>2.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.objenesis</groupId>
-			<artifactId>objenesis</artifactId>
-			<version>1.2</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
 		</dependency>
 	</dependencies>
 
