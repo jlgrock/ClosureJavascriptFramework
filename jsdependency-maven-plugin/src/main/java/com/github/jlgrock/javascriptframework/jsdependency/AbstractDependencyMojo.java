@@ -113,13 +113,18 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	protected final void extractAndRenameLibrary() throws IOException {
 		String libName = "closure-library-2385";
 		String zipName = libName + ".zip";
+		File libFile = new File(getFrameworkTargetDirectory(), libName);
+		File stdFile = new File(getFrameworkTargetDirectory(), "closure-library");
+		
 		LOGGER.info("Extracting google closure library to location \""
 				+ getFrameworkTargetDirectory().getAbsolutePath() + "\"");
+		FileUtils.deleteDirectory(libFile);
+		FileUtils.deleteDirectory(stdFile);
+		
 		ZipUtils.unzip(
 				ResourceIO.getResourceAsZipStream(zipName),
 				getFrameworkTargetDirectory());
-		FileUtils.rename(new File(getFrameworkTargetDirectory(), libName), 
-				new File(getFrameworkTargetDirectory(), "closure-library"));
+		FileUtils.rename(libFile, stdFile);
 	}
 	
 	/**
