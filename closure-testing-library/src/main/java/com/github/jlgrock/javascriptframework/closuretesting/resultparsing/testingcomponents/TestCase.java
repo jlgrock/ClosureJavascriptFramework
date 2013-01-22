@@ -47,8 +47,8 @@ public class TestCase {
 	/**
 	 * The error message when there is no parseable test cases in the file.
 	 */
-	private static final String NO_TEST_CASES = "\n\tUnable to parse any test cases.  " +
-			"Please add test cases or remove the test case file.";
+	private static final String NO_TEST_CASES = "\n\tUnable to scrape the results of any test cases.  " +
+			"Please check the output to guarantee that test cases are being executed or remove the test case file.";
 	
 	/**
 	 * An additional suffix to the test case name for the test cases where
