@@ -2,15 +2,13 @@ package com.github.jlgrock.javascriptframework.closurecompiler;
 
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 public class ErrorLevelTest {
 	@Test
 	public void testEnum() {
-		ErrorLevel.SIMPLE.equals(ErrorLevel.getCompileLevelByName("SIMPLE"));
-		ErrorLevel.WARNING.equals(ErrorLevel.getCompileLevelByName("WARNING"));
-		ErrorLevel.STRICT.equals(ErrorLevel.getCompileLevelByName("STRICT"));
-
-		ErrorLevel.SIMPLE.equals(ErrorLevel.getCompileLevelByName("Simple"));
-		ErrorLevel.WARNING.equals(ErrorLevel.getCompileLevelByName("Warning"));
-		ErrorLevel.STRICT.equals(ErrorLevel.getCompileLevelByName("Strict"));
+        for (ErrorLevel level : ErrorLevel.values()) {
+            assertEquals(level, ErrorLevel.valueOf(level.name()));
+        }
 	}
 }
