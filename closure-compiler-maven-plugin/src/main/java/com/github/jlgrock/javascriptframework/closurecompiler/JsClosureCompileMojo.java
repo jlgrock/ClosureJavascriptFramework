@@ -309,6 +309,27 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private boolean generateSourceMap;
 
+    /**
+     * When true, generates single debug and assert files that can be loaded synchronously
+     * in addition to the async assert and debug output.  Note that setting this
+     * to true will initiate a second compilation process using the WHITESPACE_ONLY
+     * level with the pretty-print setting enabled.
+     * @parameter default-value="false"
+     */
+    private boolean generateSyncAssertAndDebug;
+
+    /**
+     * If generateSyncAssertAndDebug is true, the filename for the synchronous debug file.
+	 * @parameter default-value="${project.build.finalName}-debug-min.js"
+     */
+    private String syncDebugFilename;
+
+    /**
+     * If generateSyncAssertAndDebug is true, the filename for the synchronous assert file.
+	 * @parameter default-value="${project.build.finalName}-assert-min.js"
+     */
+    private String syncAssertFilename;
+    
 	/**
 	 * The string to match the code fragment in the outputWrapper parameter.
 	 */
@@ -491,6 +512,72 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	}
 
 	/**
+	 * Run the compiler on the calculated dependencies, input files, and
+	 * external files to generate a synchronous debug or assert file.
+	 *
+	 * @param allSources
+	 *            the source files to compile
+	 * @param externs
+	 *            the external dependency javascript files
+     * @param filename
+     *            the filename to generate
+	 * @return true if the compile works, false otherwise
+     * @throws MojoExecutionException
+     *             if the options are set incorrectly for the compiler
+	 * @throws MojoFailureException
+	 *             if there is a problem executing the dependency creation or
+	 *             the compiler
+	 * @throws IOException
+	 *             if there is a problem reading or writing to the files
+	 */
+	private boolean generateSyncLibrary(final List<SourceFile> allSources,
+			final List<SourceFile> externs, final String filename) throws MojoExecutionException,
+            MojoFailureException, IOException {
+		CompilationLevel compilationLevel = CompilationLevel.WHITESPACE_ONLY;
+		CompilerOptions compilerOptions = new CompilerOptions();
+		generateCompilerOptions(compilerOptions);
+		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
+		compilerOptions.setGenerateExports(generateExports);
+        compilerOptions.setPrettyPrint(true);
+
+		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
+				Level.DEBUG), true);
+		Compiler compiler = new Compiler(ps);
+
+		for (SourceFile jsf : allSources) {
+			LOGGER.debug("source files: " + jsf.getOriginalPath());
+		}
+
+		Result result = null;
+		try {
+			LOGGER.debug("externJSSourceFiles: " + externs);
+			LOGGER.debug("allSources: " + allSources);
+			result = compiler.compile(externs, allSources, compilerOptions);
+		} catch (Exception e) {
+			LOGGER.error("There was a problem with the compile.  Please review input.");
+			e.printStackTrace();
+			throw new MojoExecutionException(e.getMessage(), e);
+		}
+
+		listErrors(result);
+
+		if (!result.success) {
+			return false;
+		}
+
+		File syncFile = new File(
+				JsarRelativeLocations
+						.getCompileLocation(frameworkTargetDirectory),
+				filename);
+		Files.createParentDirs(syncFile);
+		Files.touch(syncFile);
+        JsClosureCompileMojo.writeOutput(syncFile, compiler,
+                outputWrapper, OUTPUT_WRAPPER_MARKER);
+
+		return true;
+	}
+
+	/**
 	 * Generate and attache the source map to the compiler options.
 	 * 
 	 * @param sourceMapFile
@@ -515,30 +602,42 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private void generateCompilerOptions(final CompilerOptions compilerOptions)
 			throws MojoExecutionException {
-		if (ErrorLevel.getCompileLevelByName(errorLevel)
-				.equals(ErrorLevel.NONE)) {
-			WarningLevel wLevel = WarningLevel.QUIET;
-			Compiler.setLoggingLevel(java.util.logging.Level.OFF);
-			wLevel.setOptionsForWarningLevel(compilerOptions);
-		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
-				ErrorLevel.SIMPLE)) {
-			Compiler.setLoggingLevel(java.util.logging.Level.WARNING);
-			WarningLevel wLevel = WarningLevel.DEFAULT;
-			wLevel.setOptionsForWarningLevel(compilerOptions);
-		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
-				ErrorLevel.WARNING)) {
-			Compiler.setLoggingLevel(java.util.logging.Level.ALL);
-			WarningLevel wLevel = WarningLevel.VERBOSE;
-			wLevel.setOptionsForWarningLevel(compilerOptions);
-		} else if (ErrorLevel.getCompileLevelByName(errorLevel).equals(
-				ErrorLevel.STRICT)) {
-			Compiler.setLoggingLevel(java.util.logging.Level.ALL);
-			StrictLevel sLevel = StrictLevel.VERBOSE;
-			sLevel.setOptionsForWarningLevel(compilerOptions);
-		} else {
-			throw new MojoExecutionException(
-					"Invalid value for 'errorLevel' tag.");
-		}
+        try {
+            WarningLevel wLevel = null;
+            StrictLevel sLevel = null;
+            java.util.logging.Level logLevel = null;
+            switch (ErrorLevel.valueOf(errorLevel.toUpperCase())) {
+                case NONE:
+                    wLevel = WarningLevel.QUIET;
+                    logLevel = java.util.logging.Level.OFF;
+                    break;
+                case SIMPLE:
+                    wLevel = WarningLevel.DEFAULT;
+                    logLevel = java.util.logging.Level.WARNING;
+                    break;
+                case WARNING:
+                    wLevel = WarningLevel.VERBOSE;
+                    logLevel = java.util.logging.Level.ALL;
+                    break;
+                case STRICT:
+                    sLevel = StrictLevel.VERBOSE;
+                    logLevel = java.util.logging.Level.ALL;
+                    break;
+                default:
+                    throw new MojoExecutionException("Invalid value for 'errorLevel' tag.");
+            }
+            Compiler.setLoggingLevel(logLevel);
+            if (wLevel != null) {
+                wLevel.setOptionsForWarningLevel(compilerOptions);
+            }
+            if (sLevel != null) {
+                sLevel.setOptionsForWarningLevel(compilerOptions);
+            }
+        } catch (IllegalArgumentException iae) {
+            throw new MojoExecutionException("Invalid value for 'errorLevel' tag.");
+        } catch (NullPointerException npe) {
+            throw new MojoExecutionException("'errorLevel' cannot be null");
+        }
 	}
 
 	@Override
@@ -567,7 +666,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					JsarRelativeLocations
 							.getInternsAssertLocation(frameworkTargetDirectory),
 					assertSourceFiles);
-			createDepsAndRequiresJS(baseLocation, assertSourceFiles,
+			List<File> assertDepsFiles = createDepsAndRequiresJS(baseLocation, assertSourceFiles,
 					assertInternFiles, assertFile, assertRequiresFile);
 
 			// create debug file
@@ -600,6 +699,17 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			debugFiles.add(debugFile);
 			debugFiles.addAll(debugDepsFiles);
 
+            // compile synchronous debug and assert files
+            if (generateSyncAssertAndDebug) {
+                // create assert file collection for compilation
+                List<File> assertFiles = new ArrayList<File>();
+                assertFiles.add(getBaseLocation(closureLibraryLocation));
+                assertFiles.add(assertFile);
+                assertFiles.addAll(assertDepsFiles);
+                generateSyncLibrary(convertToSourceFiles(assertFiles), externs, syncAssertFilename);
+                generateSyncLibrary(convertToSourceFiles(debugFiles), externs, syncDebugFilename);
+            }
+            
 			// compile debug into compiled dir
 			boolean result = compile(convertToSourceFiles(debugFiles), externs);
 
