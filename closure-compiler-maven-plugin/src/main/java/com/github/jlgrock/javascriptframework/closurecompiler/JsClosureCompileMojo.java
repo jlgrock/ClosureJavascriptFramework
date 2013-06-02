@@ -329,6 +329,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @parameter default-value="${project.build.finalName}-assert-min.js"
      */
     private String syncAssertFilename;
+
+    /**
+     * If true, the configured output wrapper will be ignored when generating the
+     * synchronous assert and debug files.
+     * @parameter default-value="true"
+     */
+    private boolean ignoreOutputWrapperSyncDebugAndAssert;
     
 	/**
 	 * The string to match the code fragment in the outputWrapper parameter.
@@ -521,6 +528,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *            the external dependency javascript files
      * @param filename
      *            the filename to generate
+     * @param ignoreOutputWrapper
+     *            if true, ignores the outputWrapper if it is configured
 	 * @return true if the compile works, false otherwise
      * @throws MojoExecutionException
      *             if the options are set incorrectly for the compiler
@@ -531,7 +540,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private boolean generateSyncLibrary(final List<SourceFile> allSources,
-			final List<SourceFile> externs, final String filename) throws MojoExecutionException,
+			final List<SourceFile> externs, final String filename, final boolean ignoreOutputWrapper) throws MojoExecutionException,
             MojoFailureException, IOException {
 		CompilationLevel compilationLevel = CompilationLevel.WHITESPACE_ONLY;
 		CompilerOptions compilerOptions = new CompilerOptions();
@@ -539,6 +548,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
         compilerOptions.setPrettyPrint(true);
+        compilerOptions.setClosurePass(true);
 
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG), true);
@@ -572,7 +582,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		Files.createParentDirs(syncFile);
 		Files.touch(syncFile);
         JsClosureCompileMojo.writeOutput(syncFile, compiler,
-                outputWrapper, OUTPUT_WRAPPER_MARKER);
+                (ignoreOutputWrapper ? "" : outputWrapper), OUTPUT_WRAPPER_MARKER);
 
 		return true;
 	}
@@ -706,8 +716,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
                 assertFiles.add(getBaseLocation(closureLibraryLocation));
                 assertFiles.add(assertFile);
                 assertFiles.addAll(assertDepsFiles);
-                generateSyncLibrary(convertToSourceFiles(assertFiles), externs, syncAssertFilename);
-                generateSyncLibrary(convertToSourceFiles(debugFiles), externs, syncDebugFilename);
+                generateSyncLibrary(convertToSourceFiles(assertFiles), externs, syncAssertFilename, ignoreOutputWrapperSyncDebugAndAssert);
+                generateSyncLibrary(convertToSourceFiles(debugFiles), externs, syncDebugFilename, ignoreOutputWrapperSyncDebugAndAssert);
             }
             
 			// compile debug into compiled dir
