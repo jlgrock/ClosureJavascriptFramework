@@ -47,7 +47,7 @@
 		<spock.version>0.5</spock.version>
 		<gmaven.groovy.version>1.3</gmaven.groovy.version>
 		<groovy.version>1.7</groovy.version>
-		<release.plugin.version>2.2.2</release.plugin.version>
+		<release.plugin.version>2.4.2</release.plugin.version>
 		<groovy.full.version>1.7.5</groovy.full.version>
 		<spock.to.groovy.version>0.4-groovy-1.7</spock.to.groovy.version>
 		<target.jdk>1.5</target.jdk>
