@@ -62,12 +62,12 @@ public enum StrictLevel {
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.AMBIGUOUS_FUNCTION_DECL,
 				CheckLevel.ERROR);
-		options.setWarningLevel(DiagnosticGroups.CAST,
-				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_PROVIDES,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+		options.setWarningLevel(DiagnosticGroups.CHECK_STRUCT_DICT_INHERITANCE,
+				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE,
 				CheckLevel.ERROR);
 		options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES,

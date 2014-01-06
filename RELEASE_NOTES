@@ -1,3 +1,13 @@
+1.17
+-----------
+* Upgrade to Closure Library version ‘99cd91’
+* Upgrade to Closure Compiler version ‘v20131014’
+
+1.16
+-----------
+* Addition of ‘ignoreOutputWrapperSyncDebugAndAssert’ parameter to the compiler which, if true, the configured output wrapper will be ignored when generating the synchronous assert and debug files.
+* Upgrade to Closure Library version ‘2385’
+
 1.15
 -----------
 * Inclusion of SourceMaps with generated output.  For more information on how to use SourceMaps in 

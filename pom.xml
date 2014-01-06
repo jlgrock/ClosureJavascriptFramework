@@ -18,8 +18,8 @@
 
 	<properties>
 		<github.project.name>ClosureJavascriptFramework</github.project.name>
-		<closure-compiler.version>r2388</closure-compiler.version>
-		<closure-library.version>2385</closure-library.version>
+		<closure-compiler.version>v20131014</closure-compiler.version>
+		<closure-library.version>99cd91</closure-library.version>
 		<maven.version>3.0.1</maven.version>
 		<maven.project.version>3.0-alpha-2</maven.project.version>
 		<maven-checkstyle-plugin.version>2.9</maven-checkstyle-plugin.version>

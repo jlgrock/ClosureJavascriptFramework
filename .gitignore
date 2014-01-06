@@ -41,5 +41,8 @@ Thumbs.db
 # IDE Files #
 #############
 .classpath
+.classpath/
 .project
+.project/
 .settings
+.settings/

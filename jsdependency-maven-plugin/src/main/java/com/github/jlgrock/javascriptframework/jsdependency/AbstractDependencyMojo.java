@@ -29,6 +29,11 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.ScopeType;
 public abstract class AbstractDependencyMojo extends AbstractMojo {
 
 	/**
+	 * The name of the current closure library - this is updated regularly.
+	 */
+	public static final String CLOSURE_LIBRARY_NAME = "closure-library-99cd91";
+	
+	/**
 	 * @return the current maven project
 	 */
 	public abstract MavenProject getProject();
@@ -111,9 +116,8 @@ public abstract class AbstractDependencyMojo extends AbstractMojo {
 	 * @throws IOException if there is a problem reading the artifact
 	 */
 	protected final void extractAndRenameLibrary() throws IOException {
-		String libName = "closure-library-2385";
-		String zipName = libName + ".zip";
-		File libFile = new File(getFrameworkTargetDirectory(), libName);
+		String zipName = AbstractDependencyMojo.CLOSURE_LIBRARY_NAME + ".zip";
+		File libFile = new File(getFrameworkTargetDirectory(), AbstractDependencyMojo.CLOSURE_LIBRARY_NAME);
 		File stdFile = new File(getFrameworkTargetDirectory(), "closure-library");
 		
 		LOGGER.info("Extracting google closure library to location \""
