@@ -10,7 +10,7 @@
 
 	<groupId>com.github.jlgrock.javascript-framework</groupId>
 	<artifactId>maven-javascript-framework-plugins</artifactId>
-	<version>1.17.1-SNAPSHOT</version>
+	<version>1.17.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JavaScript Framework</name>
 	<description>A compilation of javascript plugins written for the explicit purpose to work well with the Google Closure Compiler and the Google Closure Library</description>
@@ -108,6 +108,18 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>${release.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-api</artifactId>
+						<version>${scm.plugin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>${scm.plugin.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<!-- Check Style: Make sure that it matches basic formatting and usage 
@@ -385,8 +397,8 @@
 		<url>http://github.com/jlgrock/${github.project.name}</url>
 		<connection>scm:git:git://github.com/jlgrock/${github.project.name}.git</connection>
 		<developerConnection>scm:git:git@github.com:jlgrock/${github.project.name}.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<ciManagement>
 		<system>Jenkins</system>
