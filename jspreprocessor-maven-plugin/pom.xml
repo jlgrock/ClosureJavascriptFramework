@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.17.0-SNAPSHOT</version>
+		<version>1.17.0</version>
 	</parent>
 	<artifactId>jspreprocessor-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -29,7 +29,7 @@
 		<connection>scm:git:git://github.com/jlgrock/JavascriptFramework/jspreprocessor-maven-plugin</connection>
 		<developerConnection>scm:git:git://github.com/jlgrock/JavascriptFramework/jspreprocessor-maven-plugin</developerConnection>
 		<url>https://github.com/jlgrock/JavascriptFramework</url>
-	  <tag>HEAD</tag>
+	  <tag>maven-javascript-framework-plugins-1.17.0</tag>
   </scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
