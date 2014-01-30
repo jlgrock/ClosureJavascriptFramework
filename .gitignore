@@ -46,3 +46,8 @@ Thumbs.db
 .project/
 .settings
 .settings/
+
+# IntelliJ IDEA Files #
+#######################
+.idea/
+*.iml
