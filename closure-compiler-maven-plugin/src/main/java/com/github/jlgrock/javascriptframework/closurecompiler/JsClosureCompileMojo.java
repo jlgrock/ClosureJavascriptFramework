@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -309,34 +310,47 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private boolean generateSourceMap;
 
-    /**
-     * When true, generates single debug and assert files that can be loaded synchronously
-     * in addition to the async assert and debug output.  Note that setting this
-     * to true will initiate a second compilation process using the WHITESPACE_ONLY
-     * level with the pretty-print setting enabled.
-     * @parameter default-value="false"
-     */
-    private boolean generateSyncAssertAndDebug;
+	/**
+	 * When true, generates single debug and assert files that can be loaded
+	 * synchronously in addition to the async assert and debug output. Note that
+	 * setting this to true will initiate a second compilation process using the
+	 * WHITESPACE_ONLY level with the pretty-print setting enabled.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean generateSyncAssertAndDebug;
 
-    /**
-     * If generateSyncAssertAndDebug is true, the filename for the synchronous debug file.
+	/**
+	 * If generateSyncAssertAndDebug is true, the filename for the synchronous
+	 * debug file.
+	 * 
 	 * @parameter default-value="${project.build.finalName}-debug-min.js"
-     */
-    private String syncDebugFilename;
+	 */
+	private String syncDebugFilename;
 
-    /**
-     * If generateSyncAssertAndDebug is true, the filename for the synchronous assert file.
+	/**
+	 * If generateSyncAssertAndDebug is true, the filename for the synchronous
+	 * assert file.
+	 * 
 	 * @parameter default-value="${project.build.finalName}-assert-min.js"
-     */
-    private String syncAssertFilename;
+	 */
+	private String syncAssertFilename;
 
-    /**
-     * If true, the configured output wrapper will be ignored when generating the
-     * synchronous assert and debug files.
-     * @parameter default-value="true"
-     */
-    private boolean ignoreOutputWrapperSyncDebugAndAssert;
-    
+	/**
+	 * If true, the configured output wrapper will be ignored when generating
+	 * the synchronous assert and debug files.
+	 * 
+	 * @parameter default-value="true"
+	 */
+	private boolean ignoreOutputWrapperSyncDebugAndAssert;
+
+	/**
+	 * Array of define declarations.
+	 * 
+	 * @parameter
+	 */
+	private Define[] defines;
+
 	/**
 	 * The string to match the code fragment in the outputWrapper parameter.
 	 */
@@ -430,6 +444,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *            the source files to compile
 	 * @param externs
 	 *            the external dependency javascript files
+	 * @param parsedDefines
+	 *            the parsed define configurations
 	 * @return true if the compile works, false otherwise
 	 * @throws MojoExecutionException
 	 *             if the options are set incorrectly for the compiler
@@ -440,8 +456,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private boolean compile(final List<SourceFile> allSources,
-			final List<SourceFile> externs) throws MojoExecutionException,
-			MojoFailureException, IOException {
+			final List<SourceFile> externs,
+			final List<ParsedDefine> parsedDefines)
+			throws MojoExecutionException, MojoFailureException, IOException {
 		CompilationLevel compilationLevel = null;
 		try {
 			compilationLevel = CompilationLevel.valueOf(compileLevel
@@ -455,7 +472,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		CompilerOptions compilerOptions = new CompilerOptions();
-		generateCompilerOptions(compilerOptions);
+		generateCompilerOptions(compilerOptions, parsedDefines);
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
 
@@ -471,7 +488,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG), true);
 		Compiler compiler = new Compiler(ps);
-		
+
 		for (SourceFile jsf : allSources) {
 			LOGGER.debug("source files: " + jsf.getOriginalPath());
 		}
@@ -521,18 +538,20 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * Run the compiler on the calculated dependencies, input files, and
 	 * external files to generate a synchronous debug or assert file.
-	 *
+	 * 
 	 * @param allSources
 	 *            the source files to compile
 	 * @param externs
 	 *            the external dependency javascript files
-     * @param filename
-     *            the filename to generate
-     * @param ignoreOutputWrapper
-     *            if true, ignores the outputWrapper if it is configured
+	 * @param filename
+	 *            the filename to generate
+	 * @param ignoreOutputWrapper
+	 *            if true, ignores the outputWrapper if it is configured
+	 * @param parsedDefines
+	 *            the parsed define configurations
 	 * @return true if the compile works, false otherwise
-     * @throws MojoExecutionException
-     *             if the options are set incorrectly for the compiler
+	 * @throws MojoExecutionException
+	 *             if the options are set incorrectly for the compiler
 	 * @throws MojoFailureException
 	 *             if there is a problem executing the dependency creation or
 	 *             the compiler
@@ -540,15 +559,17 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private boolean generateSyncLibrary(final List<SourceFile> allSources,
-			final List<SourceFile> externs, final String filename, final boolean ignoreOutputWrapper) throws MojoExecutionException,
-            MojoFailureException, IOException {
+			final List<SourceFile> externs, final String filename,
+			final boolean ignoreOutputWrapper,
+			final List<ParsedDefine> parsedDefines)
+			throws MojoExecutionException, MojoFailureException, IOException {
 		CompilationLevel compilationLevel = CompilationLevel.WHITESPACE_ONLY;
 		CompilerOptions compilerOptions = new CompilerOptions();
-		generateCompilerOptions(compilerOptions);
+		generateCompilerOptions(compilerOptions, parsedDefines);
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
-        compilerOptions.setPrettyPrint(true);
-        compilerOptions.setClosurePass(true);
+		compilerOptions.setPrettyPrint(true);
+		compilerOptions.setClosurePass(true);
 
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG), true);
@@ -581,8 +602,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 				filename);
 		Files.createParentDirs(syncFile);
 		Files.touch(syncFile);
-        JsClosureCompileMojo.writeOutput(syncFile, compiler,
-                (ignoreOutputWrapper ? "" : outputWrapper), OUTPUT_WRAPPER_MARKER);
+		JsClosureCompileMojo.writeOutput(syncFile, compiler,
+				(ignoreOutputWrapper ? "" : outputWrapper),
+				OUTPUT_WRAPPER_MARKER);
 
 		return true;
 	}
@@ -607,47 +629,67 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * 
 	 * @param compilerOptions
 	 *            the object to modify.
+	 * @param parsedDefines
+	 *            the parsed define configurations
 	 * @throws MojoExecutionException
 	 *             if the option doesn't match one of the valid values
 	 */
-	private void generateCompilerOptions(final CompilerOptions compilerOptions)
+	private void generateCompilerOptions(final CompilerOptions compilerOptions,
+			final List<ParsedDefine> parsedDefines)
 			throws MojoExecutionException {
-        try {
-            WarningLevel wLevel = null;
-            StrictLevel sLevel = null;
-            java.util.logging.Level logLevel = null;
-            switch (ErrorLevel.valueOf(errorLevel.toUpperCase())) {
-                case NONE:
-                    wLevel = WarningLevel.QUIET;
-                    logLevel = java.util.logging.Level.OFF;
-                    break;
-                case SIMPLE:
-                    wLevel = WarningLevel.DEFAULT;
-                    logLevel = java.util.logging.Level.WARNING;
-                    break;
-                case WARNING:
-                    wLevel = WarningLevel.VERBOSE;
-                    logLevel = java.util.logging.Level.ALL;
-                    break;
-                case STRICT:
-                    sLevel = StrictLevel.VERBOSE;
-                    logLevel = java.util.logging.Level.ALL;
-                    break;
-                default:
-                    throw new MojoExecutionException("Invalid value for 'errorLevel' tag.");
-            }
-            Compiler.setLoggingLevel(logLevel);
-            if (wLevel != null) {
-                wLevel.setOptionsForWarningLevel(compilerOptions);
-            }
-            if (sLevel != null) {
-                sLevel.setOptionsForWarningLevel(compilerOptions);
-            }
-        } catch (IllegalArgumentException iae) {
-            throw new MojoExecutionException("Invalid value for 'errorLevel' tag.");
-        } catch (NullPointerException npe) {
-            throw new MojoExecutionException("'errorLevel' cannot be null");
-        }
+		try {
+			WarningLevel wLevel = null;
+			StrictLevel sLevel = null;
+			java.util.logging.Level logLevel = null;
+			switch (ErrorLevel.valueOf(errorLevel.toUpperCase())) {
+			case NONE:
+				wLevel = WarningLevel.QUIET;
+				logLevel = java.util.logging.Level.OFF;
+				break;
+			case SIMPLE:
+				wLevel = WarningLevel.DEFAULT;
+				logLevel = java.util.logging.Level.WARNING;
+				break;
+			case WARNING:
+				wLevel = WarningLevel.VERBOSE;
+				logLevel = java.util.logging.Level.ALL;
+				break;
+			case STRICT:
+				sLevel = StrictLevel.VERBOSE;
+				logLevel = java.util.logging.Level.ALL;
+				break;
+			default:
+				throw new MojoExecutionException(
+						"Invalid value for 'errorLevel' tag.");
+			}
+			Compiler.setLoggingLevel(logLevel);
+			if (wLevel != null) {
+				wLevel.setOptionsForWarningLevel(compilerOptions);
+			}
+			if (sLevel != null) {
+				sLevel.setOptionsForWarningLevel(compilerOptions);
+			}
+			for (ParsedDefine p : parsedDefines) {
+				if (p.getValueType().isAssignableFrom(String.class)) {
+					compilerOptions.setDefineToStringLiteral(p.getDefineName(),
+							(String) p.getValue());
+				} else if (p.getValueType().isAssignableFrom(Double.class)) {
+					compilerOptions.setDefineToDoubleLiteral(p.getDefineName(),
+							(Double) p.getValue());
+				} else if (p.getValueType().isAssignableFrom(Integer.class)) {
+					compilerOptions.setDefineToNumberLiteral(p.getDefineName(),
+							(Integer) p.getValue());
+				} else if (p.getValueType().isAssignableFrom(Boolean.class)) {
+					compilerOptions.setDefineToBooleanLiteral(
+							p.getDefineName(), (Boolean) p.getValue());
+				}
+			}
+		} catch (IllegalArgumentException iae) {
+			throw new MojoExecutionException(
+					"Invalid value for 'errorLevel' tag.");
+		} catch (NullPointerException npe) {
+			throw new MojoExecutionException("'errorLevel' cannot be null");
+		}
 	}
 
 	@Override
@@ -655,6 +697,17 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
+
+			// parse complex mojo parameter defines
+			List<ParsedDefine> parsedDefines = Collections.emptyList();
+			if (defines != null && defines.length > 0) {
+				LOGGER.debug("Number of defines to parse: " + defines.length);
+				parsedDefines = parseDefines();
+				for (ParsedDefine p : parsedDefines) {
+					LOGGER.debug("parsed define: " + p.toString());
+				}
+			}
+
 			LOGGER.info("Compiling source files and internal dependencies to location \""
 					+ JsarRelativeLocations.getCompileLocation(
 							frameworkTargetDirectory).getAbsolutePath() + "\".");
@@ -676,8 +729,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					JsarRelativeLocations
 							.getInternsAssertLocation(frameworkTargetDirectory),
 					assertSourceFiles);
-			List<File> assertDepsFiles = createDepsAndRequiresJS(baseLocation, assertSourceFiles,
-					assertInternFiles, assertFile, assertRequiresFile);
+			List<File> assertDepsFiles = createDepsAndRequiresJS(baseLocation,
+					assertSourceFiles, assertInternFiles, assertFile,
+					assertRequiresFile);
 
 			// create debug file
 			File debugFile = getGeneratedDebugJS();
@@ -709,19 +763,24 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			debugFiles.add(debugFile);
 			debugFiles.addAll(debugDepsFiles);
 
-            // compile synchronous debug and assert files
-            if (generateSyncAssertAndDebug) {
-                // create assert file collection for compilation
-                List<File> assertFiles = new ArrayList<File>();
-                assertFiles.add(getBaseLocation(closureLibraryLocation));
-                assertFiles.add(assertFile);
-                assertFiles.addAll(assertDepsFiles);
-                generateSyncLibrary(convertToSourceFiles(assertFiles), externs, syncAssertFilename, ignoreOutputWrapperSyncDebugAndAssert);
-                generateSyncLibrary(convertToSourceFiles(debugFiles), externs, syncDebugFilename, ignoreOutputWrapperSyncDebugAndAssert);
-            }
-            
+			// compile synchronous debug and assert files
+			if (generateSyncAssertAndDebug) {
+				// create assert file collection for compilation
+				List<File> assertFiles = new ArrayList<File>();
+				assertFiles.add(getBaseLocation(closureLibraryLocation));
+				assertFiles.add(assertFile);
+				assertFiles.addAll(assertDepsFiles);
+				generateSyncLibrary(convertToSourceFiles(assertFiles), externs,
+						syncAssertFilename,
+						ignoreOutputWrapperSyncDebugAndAssert, parsedDefines);
+				generateSyncLibrary(convertToSourceFiles(debugFiles), externs,
+						syncDebugFilename,
+						ignoreOutputWrapperSyncDebugAndAssert, parsedDefines);
+			}
+
 			// compile debug into compiled dir
-			boolean result = compile(convertToSourceFiles(debugFiles), externs);
+			boolean result = compile(convertToSourceFiles(debugFiles), externs,
+					parsedDefines);
 
 			if (!result) {
 				String message = "Google Closure Compilation failure.  Please review errors to continue.";
@@ -736,6 +795,29 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					"Unable to closure compile files: " + e.getMessage());
 		} finally {
 			MojoLogAppender.endLogging();
+		}
+	}
+
+	/**
+	 * Parse array of Define into list of strongly typed ParsedDefine.
+	 * 
+	 * @return a list of the parsed configurations
+	 * @throws MojoExecutionException
+	 *             if encountering an unsupported types for the defines objects
+	 *             or bad format in the name
+	 */
+	private List<ParsedDefine> parseDefines() throws MojoExecutionException {
+		try {
+			List<ParsedDefine> parsedDefines = new ArrayList<ParsedDefine>();
+			for (Define d : defines) {
+
+				ParsedDefine p = new ParsedDefine();
+				ParsedDefine.parseDefine(d, p);
+				parsedDefines.add(p);
+			}
+			return parsedDefines;
+		} catch (Exception e) {
+			throw new MojoExecutionException("Error parsing define", e);
 		}
 	}
 
