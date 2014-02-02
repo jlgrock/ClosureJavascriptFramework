@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.google.javascript.jscomp.CompilationLevel;
 
-public class JsClosureCompileMojoTest {
+public class CompilationLevelTest {
 	@Test
 	public void testCompilationLevel() {
 		CompilationLevel.SIMPLE_OPTIMIZATIONS.equals(CompilationLevel.valueOf("SIMPLE_OPTIMIZATIONS"));
