@@ -5,7 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -305,37 +310,43 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
 	private boolean generateSourceMap;
 
-    /**
-     * When true, generates single debug and assert files that can be loaded synchronously
-     * in addition to the async assert and debug output.  Note that setting this
-     * to true will initiate a second compilation process using the WHITESPACE_ONLY
-     * level with the pretty-print setting enabled.
-     * @parameter default-value="false"
-     */
-    private boolean generateSyncAssertAndDebug;
+	/**
+	 * When true, generates single debug and assert files that can be loaded
+	 * synchronously in addition to the async assert and debug output. Note that
+	 * setting this to true will initiate a second compilation process using the
+	 * WHITESPACE_ONLY level with the pretty-print setting enabled.
+	 * 
+	 * @parameter default-value="false"
+	 */
+	private boolean generateSyncAssertAndDebug;
 
-    /**
-     * If generateSyncAssertAndDebug is true, the filename for the synchronous debug file.
+	/**
+	 * If generateSyncAssertAndDebug is true, the filename for the synchronous
+	 * debug file.
+	 * 
 	 * @parameter default-value="${project.build.finalName}-debug-min.js"
-     */
-    private String syncDebugFilename;
+	 */
+	private String syncDebugFilename;
 
-    /**
-     * If generateSyncAssertAndDebug is true, the filename for the synchronous assert file.
+	/**
+	 * If generateSyncAssertAndDebug is true, the filename for the synchronous
+	 * assert file.
+	 * 
 	 * @parameter default-value="${project.build.finalName}-assert-min.js"
-     */
-    private String syncAssertFilename;
+	 */
+	private String syncAssertFilename;
 
-    /**
-     * If true, the configured output wrapper will be ignored when generating the
-     * synchronous assert and debug files.
-     * @parameter default-value="true"
-     */
-    private boolean ignoreOutputWrapperSyncDebugAndAssert;
+	/**
+	 * If true, the configured output wrapper will be ignored when generating
+	 * the synchronous assert and debug files.
+	 * 
+	 * @parameter default-value="true"
+	 */
+	private boolean ignoreOutputWrapperSyncDebugAndAssert;
 
 	/**
 	 * Array of define declarations.
-	 *
+	 * 
 	 * @parameter
 	 */
 	private Define[] defines;
@@ -445,8 +456,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private boolean compile(final List<SourceFile> allSources,
-							final List<SourceFile> externs, final List<ParsedDefine> parsedDefines) throws MojoExecutionException,
-			MojoFailureException, IOException {
+			final List<SourceFile> externs,
+			final List<ParsedDefine> parsedDefines)
+			throws MojoExecutionException, MojoFailureException, IOException {
 		CompilationLevel compilationLevel = null;
 		try {
 			compilationLevel = CompilationLevel.valueOf(compileLevel
@@ -476,7 +488,7 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		PrintStream ps = new PrintStream(new Log4jOutputStream(LOGGER,
 				Level.DEBUG), true);
 		Compiler compiler = new Compiler(ps);
-		
+
 		for (SourceFile jsf : allSources) {
 			LOGGER.debug("source files: " + jsf.getOriginalPath());
 		}
@@ -526,20 +538,20 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * Run the compiler on the calculated dependencies, input files, and
 	 * external files to generate a synchronous debug or assert file.
-	 *
+	 * 
 	 * @param allSources
 	 *            the source files to compile
 	 * @param externs
 	 *            the external dependency javascript files
-     * @param filename
-     *            the filename to generate
-     * @param ignoreOutputWrapper
-     *            if true, ignores the outputWrapper if it is configured
+	 * @param filename
+	 *            the filename to generate
+	 * @param ignoreOutputWrapper
+	 *            if true, ignores the outputWrapper if it is configured
 	 * @param parsedDefines
 	 *            the parsed define configurations
 	 * @return true if the compile works, false otherwise
-     * @throws MojoExecutionException
-     *             if the options are set incorrectly for the compiler
+	 * @throws MojoExecutionException
+	 *             if the options are set incorrectly for the compiler
 	 * @throws MojoFailureException
 	 *             if there is a problem executing the dependency creation or
 	 *             the compiler
@@ -547,8 +559,10 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 *             if there is a problem reading or writing to the files
 	 */
 	private boolean generateSyncLibrary(final List<SourceFile> allSources,
-										final List<SourceFile> externs, final String filename, final boolean ignoreOutputWrapper, final List<ParsedDefine> parsedDefines) throws MojoExecutionException,
-			MojoFailureException, IOException {
+			final List<SourceFile> externs, final String filename,
+			final boolean ignoreOutputWrapper,
+			final List<ParsedDefine> parsedDefines)
+			throws MojoExecutionException, MojoFailureException, IOException {
 		CompilationLevel compilationLevel = CompilationLevel.WHITESPACE_ONLY;
 		CompilerOptions compilerOptions = new CompilerOptions();
 		generateCompilerOptions(compilerOptions, parsedDefines);
@@ -589,7 +603,8 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		Files.createParentDirs(syncFile);
 		Files.touch(syncFile);
 		JsClosureCompileMojo.writeOutput(syncFile, compiler,
-				(ignoreOutputWrapper ? "" : outputWrapper), OUTPUT_WRAPPER_MARKER);
+				(ignoreOutputWrapper ? "" : outputWrapper),
+				OUTPUT_WRAPPER_MARKER);
 
 		return true;
 	}
@@ -619,58 +634,62 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * @throws MojoExecutionException
 	 *             if the option doesn't match one of the valid values
 	 */
-	private void generateCompilerOptions(final CompilerOptions compilerOptions, final List<ParsedDefine> parsedDefines)
+	private void generateCompilerOptions(final CompilerOptions compilerOptions,
+			final List<ParsedDefine> parsedDefines)
 			throws MojoExecutionException {
-        try {
-            WarningLevel wLevel = null;
-            StrictLevel sLevel = null;
-            java.util.logging.Level logLevel = null;
-            switch (ErrorLevel.valueOf(errorLevel.toUpperCase())) {
-                case NONE:
-                    wLevel = WarningLevel.QUIET;
-                    logLevel = java.util.logging.Level.OFF;
-                    break;
-                case SIMPLE:
-                    wLevel = WarningLevel.DEFAULT;
-                    logLevel = java.util.logging.Level.WARNING;
-                    break;
-                case WARNING:
-                    wLevel = WarningLevel.VERBOSE;
-                    logLevel = java.util.logging.Level.ALL;
-                    break;
-                case STRICT:
-                    sLevel = StrictLevel.VERBOSE;
-                    logLevel = java.util.logging.Level.ALL;
-                    break;
-                default:
-                    throw new MojoExecutionException("Invalid value for 'errorLevel' tag.");
-            }
-            Compiler.setLoggingLevel(logLevel);
-            if (wLevel != null) {
-                wLevel.setOptionsForWarningLevel(compilerOptions);
-            }
-            if (sLevel != null) {
-                sLevel.setOptionsForWarningLevel(compilerOptions);
-            }
+		try {
+			WarningLevel wLevel = null;
+			StrictLevel sLevel = null;
+			java.util.logging.Level logLevel = null;
+			switch (ErrorLevel.valueOf(errorLevel.toUpperCase())) {
+			case NONE:
+				wLevel = WarningLevel.QUIET;
+				logLevel = java.util.logging.Level.OFF;
+				break;
+			case SIMPLE:
+				wLevel = WarningLevel.DEFAULT;
+				logLevel = java.util.logging.Level.WARNING;
+				break;
+			case WARNING:
+				wLevel = WarningLevel.VERBOSE;
+				logLevel = java.util.logging.Level.ALL;
+				break;
+			case STRICT:
+				sLevel = StrictLevel.VERBOSE;
+				logLevel = java.util.logging.Level.ALL;
+				break;
+			default:
+				throw new MojoExecutionException(
+						"Invalid value for 'errorLevel' tag.");
+			}
+			Compiler.setLoggingLevel(logLevel);
+			if (wLevel != null) {
+				wLevel.setOptionsForWarningLevel(compilerOptions);
+			}
+			if (sLevel != null) {
+				sLevel.setOptionsForWarningLevel(compilerOptions);
+			}
 			for (ParsedDefine p : parsedDefines) {
 				if (p.getValueType().isAssignableFrom(String.class)) {
-					compilerOptions.setDefineToStringLiteral(p.getDefineName(), (String) p.getValue());
-				} else
-				if (p.getValueType().isAssignableFrom(Double.class)) {
-					compilerOptions.setDefineToDoubleLiteral(p.getDefineName(), (Double) p.getValue());
-				} else
-				if (p.getValueType().isAssignableFrom(Integer.class)) {
-					compilerOptions.setDefineToNumberLiteral(p.getDefineName(), (Integer) p.getValue());
-				} else
-				if (p.getValueType().isAssignableFrom(Boolean.class)) {
-					compilerOptions.setDefineToBooleanLiteral(p.getDefineName(), (Boolean) p.getValue());
+					compilerOptions.setDefineToStringLiteral(p.getDefineName(),
+							(String) p.getValue());
+				} else if (p.getValueType().isAssignableFrom(Double.class)) {
+					compilerOptions.setDefineToDoubleLiteral(p.getDefineName(),
+							(Double) p.getValue());
+				} else if (p.getValueType().isAssignableFrom(Integer.class)) {
+					compilerOptions.setDefineToNumberLiteral(p.getDefineName(),
+							(Integer) p.getValue());
+				} else if (p.getValueType().isAssignableFrom(Boolean.class)) {
+					compilerOptions.setDefineToBooleanLiteral(
+							p.getDefineName(), (Boolean) p.getValue());
 				}
 			}
-        } catch (IllegalArgumentException iae) {
-            throw new MojoExecutionException("Invalid value for 'errorLevel' tag.");
-        } catch (NullPointerException npe) {
-            throw new MojoExecutionException("'errorLevel' cannot be null");
-        }
+		} catch (IllegalArgumentException iae) {
+			throw new MojoExecutionException(
+					"Invalid value for 'errorLevel' tag.");
+		} catch (NullPointerException npe) {
+			throw new MojoExecutionException("'errorLevel' cannot be null");
+		}
 	}
 
 	@Override
@@ -680,10 +699,10 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		try {
 
 			// parse complex mojo parameter defines
-			List<ParsedDefine> parsedDefines = Collections.EMPTY_LIST;
+			List<ParsedDefine> parsedDefines = Collections.emptyList();
 			if (defines != null && defines.length > 0) {
 				LOGGER.debug("Number of defines to parse: " + defines.length);
-				parsedDefines = parseDefines(defines);
+				parsedDefines = parseDefines();
 				for (ParsedDefine p : parsedDefines) {
 					LOGGER.debug("parsed define: " + p.toString());
 				}
@@ -710,8 +729,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 					JsarRelativeLocations
 							.getInternsAssertLocation(frameworkTargetDirectory),
 					assertSourceFiles);
-			List<File> assertDepsFiles = createDepsAndRequiresJS(baseLocation, assertSourceFiles,
-					assertInternFiles, assertFile, assertRequiresFile);
+			List<File> assertDepsFiles = createDepsAndRequiresJS(baseLocation,
+					assertSourceFiles, assertInternFiles, assertFile,
+					assertRequiresFile);
 
 			// create debug file
 			File debugFile = getGeneratedDebugJS();
@@ -743,19 +763,24 @@ public class JsClosureCompileMojo extends AbstractMojo {
 			debugFiles.add(debugFile);
 			debugFiles.addAll(debugDepsFiles);
 
-            // compile synchronous debug and assert files
-            if (generateSyncAssertAndDebug) {
-                // create assert file collection for compilation
-                List<File> assertFiles = new ArrayList<File>();
-                assertFiles.add(getBaseLocation(closureLibraryLocation));
-                assertFiles.add(assertFile);
-                assertFiles.addAll(assertDepsFiles);
-                generateSyncLibrary(convertToSourceFiles(assertFiles), externs, syncAssertFilename, ignoreOutputWrapperSyncDebugAndAssert, parsedDefines);
-                generateSyncLibrary(convertToSourceFiles(debugFiles), externs, syncDebugFilename, ignoreOutputWrapperSyncDebugAndAssert, parsedDefines);
-            }
-            
+			// compile synchronous debug and assert files
+			if (generateSyncAssertAndDebug) {
+				// create assert file collection for compilation
+				List<File> assertFiles = new ArrayList<File>();
+				assertFiles.add(getBaseLocation(closureLibraryLocation));
+				assertFiles.add(assertFile);
+				assertFiles.addAll(assertDepsFiles);
+				generateSyncLibrary(convertToSourceFiles(assertFiles), externs,
+						syncAssertFilename,
+						ignoreOutputWrapperSyncDebugAndAssert, parsedDefines);
+				generateSyncLibrary(convertToSourceFiles(debugFiles), externs,
+						syncDebugFilename,
+						ignoreOutputWrapperSyncDebugAndAssert, parsedDefines);
+			}
+
 			// compile debug into compiled dir
-			boolean result = compile(convertToSourceFiles(debugFiles), externs, parsedDefines);
+			boolean result = compile(convertToSourceFiles(debugFiles), externs,
+					parsedDefines);
 
 			if (!result) {
 				String message = "Google Closure Compilation failure.  Please review errors to continue.";
@@ -775,86 +800,19 @@ public class JsClosureCompileMojo extends AbstractMojo {
 
 	/**
 	 * Parse array of Define into list of strongly typed ParsedDefine.
-	 *
-	 * @param defines
-	 * @return
+	 * 
+	 * @return a list of the parsed configurations
 	 * @throws MojoExecutionException
+	 *             if encountering an unsupported types for the defines objects
+	 *             or bad format in the name
 	 */
-	private List<ParsedDefine> parseDefines(Define[] defines) throws MojoExecutionException {
+	private List<ParsedDefine> parseDefines() throws MojoExecutionException {
 		try {
 			List<ParsedDefine> parsedDefines = new ArrayList<ParsedDefine>();
 			for (Define d : defines) {
 
-				// parse define name
 				ParsedDefine p = new ParsedDefine();
-				String defineName = d.getDefineName();
-				if (defineName == null) {
-					throw new Exception("defineName can not be empty");
-				}
-				defineName = defineName.trim();
-				if (defineName.matches(".*\\s.*")) {
-					throw new Exception("defineName [" + defineName + "] can not contain whitespace");
-				}
-				if (defineName.matches(".*=.*")) {
-					throw new Exception("defineName [" + defineName + "] can not contain equal sign");
-				}
-				p.setDefineName(defineName);
-
-				// parse define value type
-				String valueType = d.getValueType();
-				if (valueType == null) {
-					// assume string type by default
-					p.setValueType(String.class);
-				} else {
-					valueType = valueType.trim();
-					ParsedDefine.Type type = ParsedDefine.Type.getByType(valueType);
-					if (type != null) {
-						switch (ParsedDefine.Type.valueOf(valueType.toUpperCase())) {
-							case BOOLEAN:
-								p.setValueType(Boolean.class);
-								break;
-							case DOUBLE:
-								p.setValueType(Double.class);
-								break;
-							case INTEGER:
-								p.setValueType(Integer.class);
-								break;
-							case STRING:
-								p.setValueType(String.class);
-								break;
-						}
-					} else {
-						throw new Exception("unsupported valueType [" + valueType + "]");
-					}
-				}
-
-				// parse define value
-				String value = d.getValue();
-				if (value != null) {
-					value = value.trim();
-					if (p.getValueType().isAssignableFrom(String.class)) {
-						p.setValue(value);
-					} else
-					if (p.getValueType().isAssignableFrom(Boolean.class)) {
-						p.setValue(Boolean.parseBoolean(value));
-					} else
-					if (p.getValueType().isAssignableFrom(Double.class)) {
-						p.setValue(Double.parseDouble(value));
-					} else
-					if (p.getValueType().isAssignableFrom(Integer.class)) {
-						p.setValue(Integer.parseInt(value));
-					} else {
-						// should not happen
-						throw new Exception("unsupported valueType");
-					}
-				} else {
-					if (p.getValueType().isAssignableFrom(String.class)) {
-						// accept empty string
-						p.setValue("");
-					} else {
-						throw new Exception("value of define [" + p.getDefineName() + "] can not be empty");
-					}
-				}
+				ParsedDefine.parseDefine(d, p);
 				parsedDefines.add(p);
 			}
 			return parsedDefines;
