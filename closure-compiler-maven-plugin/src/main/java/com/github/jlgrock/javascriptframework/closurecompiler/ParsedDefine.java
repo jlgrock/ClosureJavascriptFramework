@@ -149,7 +149,7 @@ public final class ParsedDefine {
 	}
 
 	/**
-	 * Parse the particular value, which requires type possible coersion.
+	 * Parse the particular value, which requires type possible coercion.
 	 * 
 	 * @param defineName
 	 *            the value of the define object in the pom file, to set on the
@@ -162,9 +162,12 @@ public final class ParsedDefine {
 	private static void parseDefineName(final String defineName,
 			final ParsedDefine p) throws MojoExecutionException {
 		if (defineName == null) {
-			throw new MojoExecutionException("defineName can not be empty");
+			throw new MojoExecutionException("defineName must be defined");
 		}
 		String trimmedDefineName = defineName.trim();
+		if (trimmedDefineName.length() == 0) {
+			throw new MojoExecutionException("defineName can not be empty");
+		}
 		if (trimmedDefineName.matches(".*\\s.*")) {
 			throw new MojoExecutionException("defineName [" + trimmedDefineName
 					+ "] can not contain whitespace");
@@ -177,7 +180,7 @@ public final class ParsedDefine {
 	}
 
 	/**
-	 * Parse the particular value, which requires type possible coersion.
+	 * Parse the particular value, which requires type possible coercion.
 	 * 
 	 * @param value
 	 *            the value of the define object in the pom file, to set on the
@@ -216,7 +219,7 @@ public final class ParsedDefine {
 	}
 
 	/**
-	 * Parse the particular value, which requires type possible coersion.
+	 * Parse the particular value, which requires type possible coercion.
 	 * 
 	 * @param valueType
 	 *            the valueType of the define object in the pom file, to set on
