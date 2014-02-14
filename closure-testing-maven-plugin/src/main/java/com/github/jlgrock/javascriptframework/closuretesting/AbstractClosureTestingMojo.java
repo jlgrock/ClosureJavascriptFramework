@@ -126,17 +126,16 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	private int maximumFailures;
 
 	/**
-	 * The maximum number of failures allowed before failing the build. By
-	 * limiting this, it will speed up the build if there are many failures.
+	 * The maximum number of seconds to execute before deciding that a test
+	 * case has failed.
 	 * 
 	 * @parameter default-value="10"
 	 */
 	private long testTimeoutSeconds;
 
 	/**
-	 * @return the maximum number of failures allowed before failing the build.
-	 *         By limiting this, it will speed up the build if there are many
-	 *         failures.
+	 * @return the maximum number of seconds to execute before deciding that
+	 *         a test case has failed.
 	 */
 	public final long getTestTimeoutSeconds() {
 		return testTimeoutSeconds;
