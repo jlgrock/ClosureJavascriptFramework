@@ -197,9 +197,9 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	}
 
 	/**
-	 * @return the closureLibrarylocation
+	 * @return the closureLibraryLocation
 	 */
-	public final File getClosureLibrarylocation() {
+	public final File getClosureLibraryLocation() {
 		return closureLibraryLocation;
 	}
 

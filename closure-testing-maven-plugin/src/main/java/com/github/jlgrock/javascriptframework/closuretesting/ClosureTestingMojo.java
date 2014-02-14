@@ -102,7 +102,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		List<File> returnFiles = new ArrayList<File>();
 
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
-		File baseLocation = new File(getClosureLibrarylocation()
+		File baseLocation = new File(getClosureLibraryLocation()
 				.getAbsoluteFile()
 				+ File.separator
 				+ "closure"
