@@ -60,8 +60,8 @@ public class TestUnitDriver extends HtmlUnitDriver {
 	 * @return the modified client
 	 */
 	protected final WebClient modifyWebClient(final WebClient client) {
-		client.setThrowExceptionOnScriptError(true);
-		client.setThrowExceptionOnFailingStatusCode(true);
+		client.getOptions().setThrowExceptionOnScriptError(true);
+		client.getOptions().setThrowExceptionOnFailingStatusCode(true);
 		JavaScriptErrorListener javaScriptErrorListener = new JavaScriptErrorListener() {
 
 			@Override
