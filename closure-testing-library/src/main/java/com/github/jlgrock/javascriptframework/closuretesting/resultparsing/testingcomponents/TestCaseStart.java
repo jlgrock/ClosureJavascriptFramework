@@ -7,7 +7,7 @@ import java.util.Calendar;
  * 
  * meant to parse the following:
  * 
- * 14:42:27.465 Done
+ * 14:42:27.465 Start
  *
  */
 public class TestCaseStart implements IParsedDivObject {
