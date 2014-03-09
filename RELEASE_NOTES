@@ -1,3 +1,8 @@
+1.18
+-----------
+* Enable custom --@define compiler command line options
+* Extend .gitignore for IntelliJ IDEA
+
 1.17
 -----------
 * Upgrade to Closure Library version ‘99cd91’
