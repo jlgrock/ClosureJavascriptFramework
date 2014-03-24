@@ -154,6 +154,26 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	private int maxTestThreads;
 
 	/**
+	 * Version of browser. Allowed values are: <code>CHROME</code>,
+	 * <code>FIREFOX</code> and <code>INTERNET EXPLORER</code>. Abbreviations
+	 * for the later two are supported as well: <code>FF</code> and
+	 * <code>IE</code> respectively.
+	 * If not specified then the version is determined by
+	 * <code>BrowserVersion.getDefault()</code>.
+	 * @link http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/BrowserVersion.html#getDefault()
+	 *
+	 * @parameter
+	 */
+	private String browserVersion;
+
+	/**
+	 * @return the browser version
+	 */
+	public String getBrowserVersion() {
+		return this.browserVersion;
+	}
+
+	/**
 	 * Gets the maximum number of configured test threads. If the configured
 	 * value is &lt; 1, this method returns one less than the number of
 	 * available processors, as returned by

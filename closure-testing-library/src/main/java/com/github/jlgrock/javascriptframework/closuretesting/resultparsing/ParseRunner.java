@@ -43,7 +43,7 @@ public class ParseRunner {
 	 *            the webdriver to execute the web pages
 	 * @param testTimeoutSeconds 
 	 */
-	public ParseRunner(final TestUnitDriver webDriver, long testTimeoutSeconds) {
+	public ParseRunner(final TestUnitDriver webDriver, final long testTimeoutSeconds) {
 		this.driver = webDriver;
 		this.testTimeoutSeconds = testTimeoutSeconds;
 	}

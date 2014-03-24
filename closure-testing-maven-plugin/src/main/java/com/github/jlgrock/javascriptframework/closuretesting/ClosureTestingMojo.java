@@ -12,6 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.apache.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -50,7 +51,7 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			if (!isSkipTests()) {
 				List<TestCase> testCases = parseFiles(files,
 						getMaximumFailures(), getTestTimeoutSeconds(),
-						getMaxTestThreads());
+						getMaxTestThreads(), getBrowserVersion());
 
 				// Encountered Error(s)
 				if (testCases.size() > 0) {
@@ -166,18 +167,20 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 * 
 	 * @param files
 	 *            the files to parse
-	 * @param maxThreads
-	 *            the maximum number of threads to spawn for test execution
 	 * @param maxFailures
 	 *            the maximum number of failures to allow during the parsing.
 	 * @param testTimeoutSeconds
 	 *            the maximum number of seconds to execute before deciding that
 	 *            a test case has failed.
+	 * @param maxThreads
+	 *            the maximum number of threads to spawn for test execution
+	 * @param browserVersion
+	 *            requested browser version (use null for the default version)
 	 * @return the set of test cases received from parsing
 	 */
 	private static List<TestCase> parseFiles(final List<File> files,
-			final int maxFailures, final long testTimeoutSeconds,
-			final int maxThreads) {
+											 final int maxFailures, final long testTimeoutSeconds,
+											 final int maxThreads, final String browserVersion) {
 		final List<TestCase> failures = new ArrayList<TestCase>();
 		int fileCount = (files != null ? files.size() : 0);
 		int threadCount = Math.min(fileCount, maxThreads);
@@ -203,8 +206,11 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			// initialize the ParseRunner queue; one ParseRunner per thread
 			final BlockingQueue<ParseRunner> runnerQueue = new ArrayBlockingQueue<ParseRunner>(
 					threadCount);
+			BrowserVersion bv = TestUnitDriver.getBrowserVersionSafe(browserVersion);
+			LOGGER.debug("HtmlUnit browser version: " + bv.getNickname());
 			for (int idx = 0; idx < threadCount; idx++) {
-				runnerQueue.add(new ParseRunner(new TestUnitDriver(true),
+				runnerQueue.add(new ParseRunner(
+						new TestUnitDriver(true, bv),
 						testTimeoutSeconds));
 			}
 
