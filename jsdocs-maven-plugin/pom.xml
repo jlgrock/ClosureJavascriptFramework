@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.github.jlgrock.javascript-framework</groupId>
 		<artifactId>maven-javascript-framework-plugins</artifactId>
-		<version>1.18.1-SNAPSHOT</version>
+		<version>1.18.1</version>
 	</parent>
 	<artifactId>jsdocs-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -199,7 +199,7 @@
 		<url>http://github.com/andygibson/${github.project.name}</url>
 		<connection>scm:git:git://github.com/jlgrock/${github.project.name}.git</connection>
 		<developerConnection>scm:git:git@github.com:jlgrock/${github.project.name}.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>maven-javascript-framework-plugins-1.18.1</tag>
   </scm>
 
 	<ciManagement>
