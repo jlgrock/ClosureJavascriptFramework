@@ -15,6 +15,10 @@ import java.util.concurrent.Executors;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.apache.log4j.Logger;
 import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -29,11 +33,11 @@ import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder
 /**
  * Will execute the jsclosure suite in a selenium testbed and execute it,
  * parsing values for problems. If problems arise, this can stop the build.
- * 
- * @goal report
- * @phase site
- * @execute phase="test"
  */
+@Mojo( name = "report",
+        defaultPhase = LifecyclePhase.SITE,
+        requiresProject = true,
+        requiresReports = true)
 public class ClosureTestingReportMojo extends AbstractMavenReport {
 	/**
 	 * The Logger.
@@ -43,34 +47,31 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 
 	/**
 	 * The framework directory.  This allows us to get the relative pathing to the expected generated source
-	 * 
-	 * @parameter expression=
-	 *            "${project.build.directory}${file.separator}javascriptFramework"
-	 * @required
 	 */
+    @Parameter( property = "frameworkTargetDirectory",
+            defaultValue = "${project.build.directory}${file.separator}javascriptFramework",
+            required = true)
 	private File frameworkTargetDirectory;
 
 	/**
 	 * Directory where reports will go.
-	 * 
-	 * @parameter expression="${project.reporting.outputDirectory}"
-	 * @required
-	 * @readonly
 	 */
+    @Parameter( property = "outputDirectory",
+            defaultValue = "${project.reporting.outputDirectory}",
+            required = true,
+            readonly = true)
 	private String outputDirectory;
 
 	/**
-	 * @parameter default-value="${project}"
-	 * @required
-	 * @readonly
+	 * The maven project.
 	 */
-	private MavenProject project;
+    @Parameter( defaultValue = "${project}", readonly = true )
+    private MavenProject project;
 
 	/**
-	 * @component
-	 * @required
-	 * @readonly
+	 * The site renderer.
 	 */
+    @Component
 	private Renderer siteRenderer;
 
 	/**
@@ -105,9 +106,8 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 	/**
 	 * The maximum number of seconds to execute before deciding that a test
 	 * case has failed.
-	 * 
-	 * @parameter default-value="10"
 	 */
+    @Parameter( property = "testTimeoutSeconds", defaultValue = "10")
 	private long testTimeoutSeconds;
 
 	/**
@@ -125,9 +125,8 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 	 * outside of this range will result in the default (processor count - 1)
 	 * number of threads. Setting this property to 1 will disable
 	 * multi-threading and run tests serially.
-	 * 
-	 * @parameter default-value="-1"
 	 */
+    @Parameter( property = "maxTestThreads", defaultValue = "-1")
 	private int maxTestThreads;
 
 	/**
@@ -141,7 +140,8 @@ public class ClosureTestingReportMojo extends AbstractMavenReport {
 	 *
 	 * @parameter
 	 */
-	private String browserVersion;
+    @Parameter( property = "browserVersion")
+    private String browserVersion;
 
 	/**
 	 * @return the browser version

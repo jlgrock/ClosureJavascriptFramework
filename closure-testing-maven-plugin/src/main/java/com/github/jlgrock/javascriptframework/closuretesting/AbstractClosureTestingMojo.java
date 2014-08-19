@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Abstract Closure Testing Mojo.
@@ -22,54 +23,52 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 * The test source directory containing test class sources. TODO this should
 	 * eventually be ${project.build.testSourceDirectory}, but the value from
 	 * the maven model is not pulling in. Need to look into this.
-	 * 
-	 * @required
-	 * @parameter default-value=
-	 *            "${basedir}${file.separator}src${file.separator}test${file.separator}javascript"
 	 */
+    @Parameter( property = "testSourceDirectory",
+            defaultValue = "${basedir}${file.separator}src${file.separator}test${file.separator}javascript" )
 	private File testSourceDirectory;
 
 	/**
-	 * Command line working directory. TODO this should eventually be
-	 * ${project.build.testSourceDirectory}, but the value from the maven model
-	 * is not pulling in. Need to look into this.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework"
+	 * Command line working directory.
 	 */
+    @Parameter( property = "frameworkTargetDirectory",
+            defaultValue = "${project.build.directory}${file.separator}javascriptFramework" )
 	private File frameworkTargetDirectory;
 
 	/**
 	 * The location of the closure library.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}closure-library"
 	 */
+    @Parameter( property = "closureLibraryLocation",
+            defaultValue = "${project.build.directory}/javascriptFramework/closure-library" )
 	private File closureLibraryLocation;
 
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler. This should match the name of the closure compiler.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-min.js"
-	 * @required
 	 */
+    @Parameter( property = "compiledFilename", defaultValue = "${project.build.finalName}-min.js", required = true )
 	private String compiledFilename;
 
-	/**
-	 * Set this to "true" to skip running tests, but still compile them. Its use
-	 * is NOT RECOMMENDED, but quite convenient on occasion.
-	 * 
-	 * @parameter default-value="false"
-	 */
-	private boolean skipTests;
+    /**
+     * Set this to "true" to skip running tests, but still compile them. Its use is NOT RECOMMENDED, but quite
+     * convenient on occasion.
+     */
+    @Parameter( property = "skipTests", defaultValue = "false" )
+    protected boolean skipTests;
+
+    /**
+     * Set this to "true" to bypass unit tests entirely. Its use is NOT RECOMMENDED, especially if you enable it using
+     * the "maven.test.skip" property, because maven.test.skip disables both running the tests and compiling the tests.
+     * Consider using the <code>skipTests</code> parameter instead.
+     */
+    @Parameter( property = "maven.test.skip", defaultValue = "false" )
+    protected boolean skip;
 
 	/**
 	 * If set to true, this forces the plug-in to generate and run the test
 	 * cases on the compiled version of the code.
-	 * 
-	 * @parameter default-value="false"
 	 */
+    @Parameter( property = "runTestsOnCompiled", defaultValue = "false" )
 	private boolean runTestsOnCompiled;
 
 	/**
@@ -98,39 +97,34 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 
 	/**
 	 * The string for the {preamble} of the testing harness.
-	 * 
-	 * @parameter default-value=""
 	 */
-	private String preamble = "";
+    @Parameter( property = "preamble")
+	private String preamble;
 
 	/**
 	 * The string for the {prologue} of the testing harness.
-	 * 
-	 * @parameter default-value=""
 	 */
-	private String prologue = "";
+    @Parameter( property = "prologue")
+	private String prologue;
 
 	/**
 	 * The string for the {epilogue} of the testing harness.
-	 * 
-	 * @parameter default-value=""
 	 */
-	private String epilogue = "";
+    @Parameter( property = "epilogue")
+	private String epilogue;
 
 	/**
 	 * The maximum number of test case failures before failing the build. -1
 	 * indicates unlimited.
-	 * 
-	 * @parameter default-value="5"
 	 */
+    @Parameter( property = "maximumFailures", defaultValue = "5" )
 	private int maximumFailures;
 
 	/**
 	 * The maximum number of seconds to execute before deciding that a test
 	 * case has failed.
-	 * 
-	 * @parameter default-value="10"
 	 */
+    @Parameter( property = "testTimeoutSeconds", defaultValue = "10" )
 	private long testTimeoutSeconds;
 
 	/**
@@ -148,9 +142,8 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 * outside of this range will result in the default (processor count - 1)
 	 * number of threads. Setting this property to 1 will disable
 	 * multi-threading and run tests serially.
-	 * 
-	 * @parameter default-value="-1"
 	 */
+    @Parameter( property = "maxTestThreads", defaultValue = "-1" )
 	private int maxTestThreads;
 
 	/**
@@ -161,9 +154,8 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	 * If not specified then the version is determined by
 	 * <code>BrowserVersion.getDefault()</code>.
 	 * @link http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/BrowserVersion.html#getDefault()
-	 *
-	 * @parameter
 	 */
+    @Parameter( property = "testTimeoutSeconds" )
 	private String browserVersion;
 
 	/**
@@ -228,6 +220,13 @@ public abstract class AbstractClosureTestingMojo extends AbstractMojo {
 	public final boolean isSkipTests() {
 		return skipTests;
 	}
+
+    /**
+     * @return the skip
+     */
+    public final boolean isSkip() {
+        return skip;
+    }
 
 	/**
 	 * @return the excludes

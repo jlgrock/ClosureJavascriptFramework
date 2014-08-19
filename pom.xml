@@ -34,7 +34,8 @@
 		<maven-war-plugin.version>2.1.1</maven-war-plugin.version>
 		<cobertura-maven-plugin.version>2.5.1</cobertura-maven-plugin.version>
 		<findbugs-maven-plugin.version>2.3.1</findbugs-maven-plugin.version>
-		<maven-plugin-api.version>3.0.2</maven-plugin-api.version>
+		<maven-plugin-api.version>3.2.3</maven-plugin-api.version>
+        <maven-plugin-plugin.version>3.3</maven-plugin-plugin.version>
 		<maven-report-plugin-api.version>3.0</maven-report-plugin-api.version>
 		<maven-report-plugin-impl.version>2.1</maven-report-plugin-impl.version>
 		<junit-maven-plugin.version>4.8.2</junit-maven-plugin.version>
@@ -319,15 +320,13 @@
 							<excludedGroups>integration</excludedGroups>
 							<argLine>-XX:MaxPermSize=512M -Xmx512m</argLine>
 						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.mortbay.jetty</groupId>
-						<artifactId>jetty-maven-plugin</artifactId>
+                        <version>2.17</version>
 					</plugin>
 					<!-- COBERTURA: Code Coverage Check -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>cobertura-maven-plugin</artifactId>
+                        <version>2.6</version>
 						<configuration>
 							<check>
 								<haltOnFailure>false</haltOnFailure>

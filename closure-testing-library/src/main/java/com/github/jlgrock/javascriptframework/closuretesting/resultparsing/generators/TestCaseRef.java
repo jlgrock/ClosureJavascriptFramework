@@ -159,9 +159,11 @@ public class TestCaseRef {
 			bufferedWriter.write(BEGIN_HEAD);
 
 			// preamble
-			bufferedWriter.write(this.preamble);
+			if (preamble != null && !preamble.isEmpty()) {
+                bufferedWriter.write(preamble);
+            }
 
-			// name of the test case
+            // name of the test case
 			bufferedWriter.write(BEGIN_TITLE);
 			String title = StringEscapeUtils
 					.escapeHtml(RelativePath.getRelPathFromBase(
@@ -193,7 +195,9 @@ public class TestCaseRef {
 			bufferedWriter.write(END_SCRIPT);
 			
 			// prologue
-			bufferedWriter.write(this.prologue);
+            if (prologue != null && !prologue.isEmpty()) {
+                bufferedWriter.write(prologue);
+            }
 
 
 			// test case
@@ -203,7 +207,9 @@ public class TestCaseRef {
 			bufferedWriter.write(END_SCRIPT);
 
 			// epilogue 
-			bufferedWriter.write(this.epilogue);
+            if (epilogue != null && !epilogue.isEmpty()) {
+                bufferedWriter.write(this.epilogue);
+            }
 
 			bufferedWriter.write(END_BODY);
 			bufferedWriter.write(END_HTML);

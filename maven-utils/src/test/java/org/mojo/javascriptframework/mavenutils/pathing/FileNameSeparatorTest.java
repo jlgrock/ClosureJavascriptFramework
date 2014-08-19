@@ -2,8 +2,6 @@ package org.mojo.javascriptframework.mavenutils.pathing;
 
 import java.io.File;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileNameSeparator;

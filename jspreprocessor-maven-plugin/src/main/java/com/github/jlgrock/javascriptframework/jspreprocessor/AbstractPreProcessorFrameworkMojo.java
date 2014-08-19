@@ -1,19 +1,19 @@
 package com.github.jlgrock.javascriptframework.jspreprocessor;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
-
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
+import org.apache.log4j.Logger;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Currently this will search for $$assert in your code and create a copy of the code that 
@@ -30,11 +30,8 @@ public abstract class AbstractPreProcessorFrameworkMojo extends AbstractMojo {
 
 	/**
 	 * The Maven Project.
-	 * 
-	 * @parameter expression="${project}"
-	 * @required
-	 * @readonly
 	 */
+    @Parameter( defaultValue = "${project}", readonly = true )
 	private MavenProject project;
 
 	/**

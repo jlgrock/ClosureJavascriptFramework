@@ -8,24 +8,25 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * A simple extension that copies the necessary files from the
  * "default directory" to the war staging directory prior to a war packaging.
  * This is only used in the war lifecycle.
- * 
- * @goal war-move
- * @phase pre-package
- * @threadSafe
- * @requiresDependencyResolution runtime
  */
+@Mojo( name = "war-move",
+        defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class WarMoveMojo extends AbstractMojo {
 	/**
 	 * The directory to place compiled files into.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 */
+    @Parameter(defaultValue = "${project.build.directory}${file.separator}javascriptFramework")
 	private File frameworkTargetDirectory;
 
 	/**
@@ -35,10 +36,8 @@ public class WarMoveMojo extends AbstractMojo {
 	 * Default value is:
 	 * ${project.build.directory}/${project.build.finalName}/javascript
 	 * /generated.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}/${project.build.finalName}/javascript/generated"
 	 */
+    @Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}/javascript/generated")
 	private File warTargetDirectory;
 
 	/**
@@ -71,9 +70,8 @@ public class WarMoveMojo extends AbstractMojo {
 	 * Whether or not to expand the debug and assertion library. This can be
 	 * useful when including files for an api. When doing this, make sure to
 	 * include the appropriate internal dependencies and closure compiler.
-	 * 
-	 * @parameter default-value="true"
 	 */
+    @Parameter(defaultValue = "true")
 	private boolean includeAssert;
 
 	/**
@@ -81,19 +79,18 @@ public class WarMoveMojo extends AbstractMojo {
 	 * useful when including files for an api. When doing this, make sure to
 	 * include the appropriate internal dependencies and closure compiler.
 	 * 
-	 * @parameter default-value="true"
 	 * @deprecated In 1.15.0 - due to the addition of SourceMaps, debug must
 	 *             always be provided. At this point, this will not be used.
 	 */
+    @Parameter(defaultValue = "true")
 	private boolean includeDebug;
 
 	/**
 	 * Whether or not to expand the compressed library files. This can be useful
 	 * when including files for an api. When doing this, make sure to include
 	 * the appropriate internal dependencies and closure compiler.
-	 * 
-	 * @parameter default-value="true"
 	 */
+    @Parameter(defaultValue = "true")
 	private boolean includeCompiled;
 
 	@Override

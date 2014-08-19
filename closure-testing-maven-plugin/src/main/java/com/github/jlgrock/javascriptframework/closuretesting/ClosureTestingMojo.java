@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -26,14 +27,15 @@ import com.github.jlgrock.javascriptframework.mavenutils.io.DirectoryIO;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
 import com.github.jlgrock.javascriptframework.mavenutils.pathing.FileListBuilder;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 
 /**
  * Will execute the jsclosure suite in a selenium testbed and execute it,
  * parsing values for problems. If problems arise, this can stop the build.
- * 
- * @goal js-closure-test
- * @phase test
  */
+@Mojo( name = "js-closure-test",
+        defaultPhase = LifecyclePhase.TEST)
 public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 
 	/**
@@ -47,19 +49,25 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 			MojoFailureException {
 		MojoLogAppender.beginLogging(this);
 		try {
-			List<File> files = generateFiles();
-			if (!isSkipTests()) {
-				List<TestCase> testCases = parseFiles(files,
-						getMaximumFailures(), getTestTimeoutSeconds(),
-						getMaxTestThreads(), getBrowserVersion());
+			if (!isSkip()) {
+                List<File> files = generateFiles();
+                if (!isSkipTests()) {
+                    List<TestCase> testCases = parseFiles(files,
+                            getMaximumFailures(), getTestTimeoutSeconds(),
+                            getMaxTestThreads(), getBrowserVersion());
 
-				// Encountered Error(s)
-				if (testCases.size() > 0) {
-					printFailures(testCases);
-					throw new MojoFailureException(
-							"There were test case failures.");
-				}
-			}
+                    // Encountered Error(s)
+                    if (testCases.size() > 0) {
+                        printFailures(testCases);
+                        throw new MojoFailureException(
+                                "There were test case failures.");
+                    }
+                } else {
+                    LOGGER.info("Test executions are skipped.");
+                }
+            } else {
+                LOGGER.info("Tests are skipped.");
+            }
 		} catch (MojoFailureException mje) {
 			throw mje;
 		} catch (Exception e) {
@@ -103,7 +111,8 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		List<File> returnFiles = new ArrayList<File>();
 
 		DirectoryIO.recursivelyDeleteDirectory(testOutputDir);
-		File baseLocation = new File(getClosureLibraryLocation()
+
+        File baseLocation = new File(getClosureLibraryLocation()
 				.getAbsoluteFile()
 				+ File.separator
 				+ "closure"
@@ -135,8 +144,8 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 		SuiteGenerator suite = new SuiteGenerator(fileSet, baseLocation,
 				depsFile, testDeps, getPreamble(), getPrologue(), getEpilogue());
 
-		returnFiles.addAll(suite.generateTestFiles(getTestSourceDirectory(),
-				testOutputDir));
+        Set<File> testFiles = suite.generateTestFiles(getTestSourceDirectory(), testOutputDir);
+        returnFiles.addAll(testFiles);
 
 		if (isRunTestsOnCompiled()) {
 			File testCompiledOutputDir = JsarRelativeLocations
@@ -178,9 +187,10 @@ public class ClosureTestingMojo extends AbstractClosureTestingMojo {
 	 *            requested browser version (use null for the default version)
 	 * @return the set of test cases received from parsing
 	 */
-	private static List<TestCase> parseFiles(final List<File> files,
-											 final int maxFailures, final long testTimeoutSeconds,
-											 final int maxThreads, final String browserVersion) {
+	private static List<TestCase> parseFiles(
+            final List<File> files,
+			final int maxFailures, final long testTimeoutSeconds,
+			final int maxThreads, final String browserVersion) {
 		final List<TestCase> failures = new ArrayList<TestCase>();
 		int fileCount = (files != null ? files.size() : 0);
 		int threadCount = Math.min(fileCount, maxThreads);

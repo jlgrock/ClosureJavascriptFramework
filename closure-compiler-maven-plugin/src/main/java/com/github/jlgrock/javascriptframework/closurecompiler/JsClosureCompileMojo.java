@@ -35,12 +35,15 @@ import com.google.javascript.jscomp.SourceFile;
 import com.google.javascript.jscomp.SourceMap.DetailLevel;
 import com.google.javascript.jscomp.SourceMap.Format;
 import com.google.javascript.jscomp.WarningLevel;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * 
- * @goal js-closure-compile
- * @phase compile
+ * The Closure Compiler class.
  */
+@Mojo( name = "js-closure-compile",
+        defaultPhase = LifecyclePhase.COMPILE)
 public class JsClosureCompileMojo extends AbstractMojo {
 	/**
 	 * What extension to use for the source map file.
@@ -162,20 +165,17 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * directory, as this is where the jsdependency plugin will put it by
 	 * default. If you would like to override this and use your own location,
 	 * this can be done by changing this path.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework${file.separator}closure-library"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.directory}${file.separator}javascriptFramework${file.separator}closure-library")
 	private File closureLibraryLocation;
 
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-min.js"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.finalName}-min.js")
 	private String compiledFilename;
 
 	/**
@@ -192,10 +192,9 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * Please see the <a href=
 	 * "http://code.google.com/closure/compiler/docs/compilation_levels.html"
 	 * >Google Compiler levels page</a> for more details.
-	 * 
-	 * @parameter default-value="ADVANCED_OPTIMIZATIONS"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "ADVANCED_OPTIMIZATIONS")
 	private String compileLevel;
 
 	/**
@@ -212,61 +211,55 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * <li>STRICT
 	 * </ul>
 	 * <br/>
-	 * 
-	 * @parameter default-value="STRICT"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "STRICT")
 	private String errorLevel;
 
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.directory}${file.separator}javascriptFramework")
 	private File frameworkTargetDirectory;
 
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-assert.js"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.finalName}-assert.js")
 	private String generatedAssertJS;
 
 	/**
 	 * The file produced that allows inclusion of assert into non-closure based
 	 * systems.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-assert-requires.js"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.finalName}-assert-requires.js")
 	private String generatedAssertRequiresJS;
 
 	/**
 	 * The file produced after running the dependencies and files through the
 	 * compiler.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-debug.js"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.finalName}-debug.js")
 	private String generatedDebugJS;
 
 	/**
 	 * The file produced that allows inclusion of debug into non-closure based
 	 * systems.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-debug-requires.js"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${project.build.finalName}-debug-requires.js")
 	private String generatedDebugRequiresJS;
 
 	/**
-	 * @parameter default-value="true"
+	 * Whether or not to generate the exports file.  This is <pre>true</pre> by default.
 	 */
+    @Parameter(required = true, defaultValue = "true")
 	private boolean generateExports;
 
 	/**
@@ -280,19 +273,16 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * <li>WHEN_IN_SRCS
 	 * </ul>
 	 * <br/>
-	 * 
-	 * @parameter default-value="WHEN_IN_SRCS"
 	 */
+    @Parameter(defaultValue = "WHEN_IN_SRCS")
 	private String inclusionStrategy;
 
 	/**
 	 * The default directory to extract files to. This likely shouldn't be
 	 * changed unless there is a conflict with another plugin.
-	 * 
-	 * @parameter default-value=
-	 *            "${basedir}${file.separator}src${file.separator}test${file.separator}javascript"
-	 * @required
 	 */
+    @Parameter(required = true,
+            defaultValue = "${basedir}${file.separator}src${file.separator}test${file.separator}javascript")
 	private File testSourceDirectory;
 
 	/**
@@ -300,14 +290,14 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * define what your code is. An example of this would be
 	 * "(function() {%output% window['my']['namespace'] = my.namespace;})();",
 	 * which would wrap the entire code in an anonymous function.
-	 * 
-	 * @parameter default-value=""
 	 */
+    @Parameter
 	private String outputWrapper = "";
 
 	/**
-	 * @parameter default-value="true"
+	 * Whether or not to generate the source map file. This is <pre>true</pre> by default.
 	 */
+    @Parameter(defaultValue = "true")
 	private boolean generateSourceMap;
 
 	/**
@@ -315,40 +305,35 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 * synchronously in addition to the async assert and debug output. Note that
 	 * setting this to true will initiate a second compilation process using the
 	 * WHITESPACE_ONLY level with the pretty-print setting enabled.
-	 * 
-	 * @parameter default-value="false"
 	 */
+    @Parameter(defaultValue = "false")
 	private boolean generateSyncAssertAndDebug;
 
 	/**
 	 * If generateSyncAssertAndDebug is true, the filename for the synchronous
 	 * debug file.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-debug-min.js"
 	 */
+    @Parameter(defaultValue = "${project.build.finalName}-debug-min.js")
 	private String syncDebugFilename;
 
 	/**
 	 * If generateSyncAssertAndDebug is true, the filename for the synchronous
 	 * assert file.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-assert-min.js"
 	 */
+    @Parameter(defaultValue = "${project.build.finalName}-assert-min.js")
 	private String syncAssertFilename;
 
 	/**
 	 * If true, the configured output wrapper will be ignored when generating
 	 * the synchronous assert and debug files.
-	 * 
-	 * @parameter default-value="true"
 	 */
+    @Parameter(defaultValue = "true")
 	private boolean ignoreOutputWrapperSyncDebugAndAssert;
 
 	/**
 	 * Array of define declarations.
-	 * 
-	 * @parameter
 	 */
+    @Parameter
 	private Define[] defines;
 
 	/**

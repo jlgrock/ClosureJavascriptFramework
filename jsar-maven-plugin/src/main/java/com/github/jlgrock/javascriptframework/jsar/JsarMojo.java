@@ -5,9 +5,12 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
@@ -20,13 +23,12 @@ import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelati
  * This is essentially a modified JAR plugin, since Plexus offers no way to
  * extend classes from other packages from maven dependencies, this is copied
  * over in its entirety and edited.
- * 
- * @goal jsar
- * @phase package
- * @requiresProject
- * @threadSafe
- * @requiresDependencyResolution runtime
  */
+@Mojo( name = "jsar",
+        defaultPhase = LifecyclePhase.PACKAGE,
+        requiresProject = true,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class JsarMojo extends AbstractMojo {
 	/**
 	 * The Logger.
@@ -35,18 +37,15 @@ public class JsarMojo extends AbstractMojo {
 
 	/**
 	 * The directory to place compiled files into.
-	 * 
-	 * @parameter default-value=
-	 *            "${project.build.directory}${file.separator}javascriptFramework"
 	 */
-	private File frameworkTargetDirectory;
+    @Parameter( defaultValue = "${project.build.directory}${file.separator}javascriptFramework" )
+    private File frameworkTargetDirectory;
 
 	/**
 	 * Classifier to add to the artifact generated. If given, the artifact will
 	 * be an attachment instead.
-	 * 
-	 * @parameter
 	 */
+    @Parameter
 	private String classifier;
 
 	/**
@@ -72,94 +71,85 @@ public class JsarMojo extends AbstractMojo {
 	 * List of files to exclude. Specified as fileset patterns which are
 	 * relative to the input directory whose contents is being packaged into the
 	 * JSAR.
-	 * 
-	 * @parameter
 	 */
+    @Parameter
 	private String[] excludes;
 
 	/**
 	 * Directory containing the generated JSAR.
-	 * 
-	 * @parameter expression="${project.build.directory}"
-	 * @required
 	 */
+    @Parameter( required = true )
 	private File outputDirectory;
 
 	/**
 	 * Name of the generated JSAR.
-	 * 
-	 * @parameter alias="jsarName" expression="${jar.finalName}"
-	 *            default-value="${project.build.finalName}"
-	 * @required
 	 */
+    @Parameter( defaultValue = "${project.build.finalName}", required = true )
 	private String finalName;
 
 	/**
 	 * The JSAR archiver.
-	 * 
-	 * @component role="org.codehaus.plexus.archiver.Archiver"
-	 *            roleHint="javascript"
 	 */
+    @Component(role = org.codehaus.plexus.archiver.Archiver.class, hint="javascript")
 	private JavascriptArchiver jsarArchiver;
 
 	/**
 	 * The Maven project.
-	 * 
-	 * @parameter expression="${project}"
-	 * @required
-	 * @readonly
 	 */
+    @Parameter( defaultValue = "${project}", readonly = true )
 	private MavenProject project;
 
-	/**
+    /**
+     * The Maven Session Object.
+     */
+    @Parameter( defaultValue = "${session}", required = true, readonly = true )
+    protected MavenSession session;
+
+    /**
 	 * The archive configuration to use. See <a
 	 * href="http://maven.apache.org/shared/maven-archiver/index.html">Maven
 	 * Archiver Reference</a>.
-	 * 
-	 * @parameter
 	 */
+    @Parameter
 	private MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
 
 	/**
 	 * Path to the default MANIFEST file to use. It will be used if
 	 * <code>useDefaultManifestFile</code> is set to <code>true</code>.
-	 * 
-	 * @parameter 
-	 *            expression="${project.build.outputDirectory}/META-INF/MANIFEST.MF"
-	 * @required
-	 * @readonly
+     *
 	 * @since 2.2
 	 */
+    @Parameter(
+            defaultValue = "${project.build.outputDirectory}/META-INF/MANIFEST.MF",
+            required = true,
+            readonly = true)
 	private File defaultManifestFile;
 
 	/**
 	 * Set this to <code>true</code> to enable the use of the
 	 * <code>defaultManifestFile</code>.
 	 * 
-	 * @parameter expression="${jar.useDefaultManifestFile}"
-	 *            default-value="false"
-	 * 
 	 * @since 2.2
 	 */
+    @Parameter( defaultValue = "false" )
 	private boolean useDefaultManifestFile;
 
 	/**
-	 * @component
+	 * The project helper.
 	 */
+    @Component
 	private MavenProjectHelper projectHelper;
 
 	/**
 	 * Whether creating the archive should be forced.
-	 * 
-	 * @parameter expression="${jar.forceCreation}" default-value="false"
 	 */
+    @Parameter( defaultValue = "false" )
 	private boolean forceCreation;
 
 	/**
 	 * This will default to compiledFilename + "-debug" if not overridden.
-	 * 
-	 * @parameter default-value="${project.build.finalName}-debug.js"
 	 */
+    @Parameter( defaultValue = "${project.build.finalName}-debug.js" )
 	private String debugFilename;
 
 	/**
@@ -219,29 +209,31 @@ public class JsarMojo extends AbstractMojo {
 		archive.setForced(forceCreation);
 
 		try {
-			// Add all output code
-			File compiledDirectory = JsarRelativeLocations
-					.getOutputLocation(getFrameworkTargetDirectory());
+            // Add all output code
+            File compiledDirectory = JsarRelativeLocations
+                    .getOutputLocation(getFrameworkTargetDirectory());
 
-			//Add files, minus exclusions (such as externs)
-			DefaultFileSet fs = new DefaultFileSet();
-			fs.setDirectory(compiledDirectory);
-			fs.setExcludes(getExcludes());
-			archiver.getArchiver().addFileSet(fs);
+            //Add files, minus exclusions (such as externs)
+            DefaultFileSet fs = new DefaultFileSet();
+            fs.setDirectory(compiledDirectory);
+            fs.setExcludes(getExcludes());
+            archiver.getArchiver().addFileSet(fs);
 
-			// add manifest
-			File existingManifest = getDefaultManifestFile();
+            // add manifest
+            File existingManifest = getDefaultManifestFile();
 
-			if (useDefaultManifestFile && existingManifest.exists()
-					&& archive.getManifestFile() == null) {
-				LOGGER.info("Adding existing MANIFEST to archive. Found under: "
-						+ existingManifest.getPath());
-				archive.setManifestFile(existingManifest);
-			}
-			archiver.createArchive(project, archive);
+            if (useDefaultManifestFile && existingManifest.exists()
+                    && archive.getManifestFile() == null) {
+                LOGGER.info("Adding existing MANIFEST to archive. Found under: "
+                        + existingManifest.getPath());
+                archive.setManifestFile(existingManifest);
+            }
+            archiver.createArchive(session, project, archive);
 
-			return jsarFile;
-		} catch (Exception e) {
+            return jsarFile;
+        } catch ( DependencyResolutionRequiredException e ) {
+            throw new MojoExecutionException("Could not create classes archive", e);
+        } catch (Exception e) {
 			throw new MojoExecutionException("Error assembling JSAR", e);
 		}
 	}
