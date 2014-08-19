@@ -78,7 +78,7 @@ public class JsarMojo extends AbstractMojo {
 	/**
 	 * Directory containing the generated JSAR.
 	 */
-    @Parameter( required = true )
+    @Parameter( defaultValue = "${project.build.directory}", required = true )
 	private File outputDirectory;
 
 	/**
