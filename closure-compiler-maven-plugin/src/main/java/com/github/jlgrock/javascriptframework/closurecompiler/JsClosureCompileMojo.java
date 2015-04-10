@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,6 +18,9 @@ import org.apache.log4j.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStream;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
@@ -29,15 +33,13 @@ import com.google.javascript.jscomp.CommandLineRunner;
 import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.Compiler;
 import com.google.javascript.jscomp.CompilerOptions;
+import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import com.google.javascript.jscomp.JSError;
 import com.google.javascript.jscomp.Result;
 import com.google.javascript.jscomp.SourceFile;
 import com.google.javascript.jscomp.SourceMap.DetailLevel;
 import com.google.javascript.jscomp.SourceMap.Format;
 import com.google.javascript.jscomp.WarningLevel;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * The Closure Compiler class.
@@ -261,6 +263,18 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	 */
     @Parameter(required = true, defaultValue = "true")
 	private boolean generateExports;
+    
+    /**
+     * Source file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT]
+     */
+    @Parameter(required = false, defaultValue = "ECMASCRIPT3")
+    private String languageIn;
+    
+    /**
+     * Output file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT]
+     */
+    @Parameter(required = false, defaultValue = "ECMASCRIPT3")
+    private String languageOut;
 
 	/**
 	 * What to include based off of maven includes. If you are creating an API
@@ -457,6 +471,25 @@ public class JsClosureCompileMojo extends AbstractMojo {
 		}
 
 		CompilerOptions compilerOptions = new CompilerOptions();
+		
+		final LanguageMode inMode;
+		try {
+			inMode = LanguageMode.valueOf(languageIn);
+		} catch (IllegalArgumentException e1) {
+			throw new MojoExecutionException("Invalid languageIn. Must be one of: "
+					+ Arrays.toString(LanguageMode.values()));
+		}
+		
+		final LanguageMode outMode;
+		try {
+			outMode = LanguageMode.valueOf(languageOut);
+		} catch (IllegalArgumentException e1) {
+			throw new MojoExecutionException("Invalid languageOut. Must be one of: "
+					+ Arrays.toString(LanguageMode.values()));
+		}
+		
+		compilerOptions.setLanguageIn(inMode);
+		compilerOptions.setLanguageOut(outMode);
 		generateCompilerOptions(compilerOptions, parsedDefines);
 		compilationLevel.setOptionsForCompilationLevel(compilerOptions);
 		compilerOptions.setGenerateExports(generateExports);
