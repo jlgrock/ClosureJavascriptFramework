@@ -267,13 +267,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
     /**
      * Source file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT]
      */
-    @Parameter(required = false, defaultValue = "ECMASCRIPT3")
+    @Parameter(required = true, defaultValue = "ECMASCRIPT3")
     private String languageIn;
     
     /**
      * Output file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT]
      */
-    @Parameter(required = false, defaultValue = "ECMASCRIPT3")
+    @Parameter(required = true, defaultValue = "ECMASCRIPT3")
     private String languageOut;
 
 	/**
