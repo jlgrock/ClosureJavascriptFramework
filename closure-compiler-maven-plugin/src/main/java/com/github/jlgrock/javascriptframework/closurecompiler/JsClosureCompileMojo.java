@@ -1,27 +1,5 @@
 package com.github.jlgrock.javascriptframework.closurecompiler;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-
 import com.github.jlgrock.javascriptframework.mavenutils.logging.Log4jOutputStream;
 import com.github.jlgrock.javascriptframework.mavenutils.logging.MojoLogAppender;
 import com.github.jlgrock.javascriptframework.mavenutils.mavenobjects.JsarRelativeLocations;
@@ -40,6 +18,27 @@ import com.google.javascript.jscomp.SourceFile;
 import com.google.javascript.jscomp.SourceMap.DetailLevel;
 import com.google.javascript.jscomp.SourceMap.Format;
 import com.google.javascript.jscomp.WarningLevel;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The Closure Compiler class.
@@ -265,13 +264,13 @@ public class JsClosureCompileMojo extends AbstractMojo {
 	private boolean generateExports;
     
     /**
-     * Source file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT]
+     * Source file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT].
      */
     @Parameter(required = true, defaultValue = "ECMASCRIPT3")
     private String languageIn;
     
     /**
-     * Output file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT]
+     * Output file language, one of [ECMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT].
      */
     @Parameter(required = true, defaultValue = "ECMASCRIPT3")
     private String languageOut;
