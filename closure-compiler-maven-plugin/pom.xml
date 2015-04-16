@@ -61,14 +61,16 @@
                         <goals>
                             <goal>descriptor</goal>
                         </goals>
-                    </execution>
+						<phase>process-classes</phase>
+					</execution>
                     <!-- if you want to generate help goal -->
                     <execution>
                         <id>help-goal</id>
                         <goals>
                             <goal>helpmojo</goal>
                         </goals>
-                    </execution>
+						<phase>process-classes</phase>
+					</execution>
                 </executions>
             </plugin>
         </plugins>

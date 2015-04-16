@@ -65,6 +65,7 @@
                         <goals>
                             <goal>descriptor</goal>
                         </goals>
+                        <phase>process-classes</phase>
                     </execution>
                     <!-- if you want to generate help goal -->
                     <execution>
@@ -72,6 +73,7 @@
                         <goals>
                             <goal>helpmojo</goal>
                         </goals>
+                        <phase>process-classes</phase>
                     </execution>
                 </executions>
             </plugin>

@@ -27,7 +27,6 @@
 		<maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
 		<maven-surefire-plugin.version>2.10</maven-surefire-plugin.version>
 		<maven-pmd-plugin.version>2.5</maven-pmd-plugin.version>
-		<maven-plugin-plugin.version>3.2.2</maven-plugin-plugin.version>
 		<maven-project-info-reports-plugin.version>2.3.1</maven-project-info-reports-plugin.version>
 		<maven-site-plugin.version>3.0</maven-site-plugin.version>
 		<maven-source-plugin.version>2.1.2</maven-source-plugin.version>
